@@ -1,0 +1,3 @@
+* implement error dialogbox
+* If a form is already open, don't try to open it again.
+* figure out why some apps don't show callouts until I run inspect.exe
