@@ -1,0 +1,6 @@
+; Format lines like this:
+;	<initials>=<person 1 name>,<person 2 name>,...
+
+
+[people]
+; Add list of test people here.
