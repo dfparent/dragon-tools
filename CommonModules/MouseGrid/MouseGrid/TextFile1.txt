@@ -1,0 +1,3 @@
+﻿Debug command line args:
+
+--size-to-client  --row-height 3 --column-width 4 --always-on-top
