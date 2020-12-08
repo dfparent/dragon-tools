@@ -1,0 +1,8 @@
+
+
+[touch-locations-lync]
+groups=33,247,0
+status=100,107,0
+location=146,124,0
+mood=26,61,0
+

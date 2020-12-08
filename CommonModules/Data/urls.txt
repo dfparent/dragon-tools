@@ -1,0 +1,8 @@
+; Format lines like this:
+;	<spoken name>:<full URL>
+
+[urls]
+google=www.google.com
+weather=www.weather.com
+whether=www.weather.com
+amazon=www.amazon.com
