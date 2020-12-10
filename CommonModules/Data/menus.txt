@@ -1,0 +1,96 @@
+; Format lines like this:
+;	[menus-<process name>]
+;    <menu name>=<menu mnemonic letter>
+
+; The following menu dictionary is here as a marker so we can check to see whether the menus have been loaded.
+; It also provides some common menu definitions
+[menus]
+file=f
+edit=e
+view=v
+home=h
+help=h
+window=w
+
+; Visual Studio
+[menus-devenv]
+file=f
+edit=e
+view=v
+project=p
+build=b
+debug=d
+team=m
+tools=t
+test=s
+analyze=n
+window=w
+help=h
+
+[menus-acrord32]
+file=f
+edit=e
+view=v
+window=w
+help=h
+
+[menus-vs]
+file=f
+edit=e
+search=s
+view=v
+project=p
+build=b
+debug=d
+document=c
+macro=m
+tools=t
+window=w
+help=h
+
+[menus-clearexplorer]
+file=f
+view=v
+go=g
+tools=t
+environment=r
+help=h
+
+[menus-saplogon]
+notification=n
+edit=e
+goto=g
+go to=g
+extras=a
+environment=v
+inspection processing=p
+system=y
+help=h
+purchase order=p
+
+[menus-EXCEL]
+file=f
+home=h
+insert=n
+page layout=p
+formulas=m
+data=a
+review=r
+view=w
+developer=l
+add-ins=x
+acrobat=b
+analysis=y2
+analysis design=y3
+tell me what you want to do=q
+
+; GIT GUI
+[menus-wish]
+repository=r
+edit=e
+branch=b
+commit=c
+mergee=m
+remote=r
+tools=t
+help=h

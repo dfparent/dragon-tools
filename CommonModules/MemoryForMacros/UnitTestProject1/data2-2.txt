@@ -1,0 +1,9 @@
+; Format lines like this:
+;	<spoken name>:<full path>
+;
+
+[paths]
+path in second file=C:\Second File\Path
+
+[files]
+knowbrainer commands=${paths:knowbrainer commands}\MyKBCommands.xml

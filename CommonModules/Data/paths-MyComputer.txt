@@ -1,0 +1,27 @@
+; Format lines like this:
+;	<spoken name>=<full path>
+;
+; After updating, say "refresh memory"
+
+[paths]
+user=C:\Users\<my user name>
+app data=C:\Users\<my user name>\AppData
+roaming=C:\Users\<my user name>\AppData\Roaming
+nuance app data=C:\Users\<my user name>\AppData\Roaming\Nuance\NaturallySpeaking15
+downloads=C:\Users\<my user name>\Downloads   
+docs=C:\Users\<my user name>\Documents 
+documents=C:\Users\<my user name>\Documents 
+desktop=C:\Users\<my user name>\Desktop  
+word startup=C:\Users\<my user name>\Application Data\Microsoft\Word\STARTUP  
+excel add-ins=C:\Users\<my user name>\AppData\Roaming\Microsoft\AddIns  
+office macros=C:\Users\<my user name>\Documents\Personal\Macros 
+knowbrainer commands=C:\Users\<my user name>\AppData\Roaming\KnowBrainer\KnowBrainerCommands 
+
+[files]
+paths=${paths:common data}\paths-MyComputer.txt
+knowbrainer commands=${paths:knowbrainer commands}\MyKBCommands.xml
+no-brainer commands=${paths:knowbrainer commands}\MyKBCommands.xml
+compare executable=C:\Program Files\Beyond Compare 4\BCompare.exe
+;Cygwin executable=
+
+

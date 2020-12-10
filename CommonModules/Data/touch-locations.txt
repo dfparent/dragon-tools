@@ -1,0 +1,11 @@
+; This file stores click location information
+; Format lines like this:
+;	[process name]
+;    	<spoken name>=<x coordinate>,<y coordinate>
+; Coordinates are client coordinates
+; The default dictionary is used to test to see if the dictionaries have been loaded.
+
+[touch-locations]
+default=0,0
+
+

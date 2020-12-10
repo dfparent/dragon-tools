@@ -1,0 +1,8 @@
+C:\Users\Doug\Documents\mydoc.txt
+C:\Users\Doug\Documents\personal
+C:\Users\Doug\Documents\personal.extra
+C:\Users\Doug\Desktop\Douglas Parent\contact
+<Invalid entry reference: desktop2>\Douglas Parent\contact
+C:\Users\Doug\Documents\mydoc.txt\<Dictionary does not exist: people2>\contact
+C:\Users\Doug\Desktop\<Invalid entry reference: dp2>\contact
+This is a <Invalid self-reference> reference.

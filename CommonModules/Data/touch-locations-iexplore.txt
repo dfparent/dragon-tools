@@ -1,0 +1,6 @@
+
+
+[touch-locations-iexplore]
+next=1413,877,0
+previous=1323,881,0
+

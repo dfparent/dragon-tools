@@ -1,0 +1,10 @@
+; Format lines like this:
+;	<initials>=<person 1 name>,<person 2 name>,...
+; After updating, say "refresh memory"
+
+
+[people]
+al=Abraham Lincoln
+dp=Douglas Parent,David Perrin
+gw=George Washington
+zb=Zaphod Beeblebrox

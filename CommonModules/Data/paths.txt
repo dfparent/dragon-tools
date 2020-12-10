@@ -1,0 +1,48 @@
+; Format lines like this:
+;	<spoken name>:<full path>
+
+[paths]
+This PC=This PC
+quick access=Quick access
+auto it=C:\Program Files (x86)\AutoIt3\AutoIt3.exe
+auto it script=C:\Users\KnowBrainer\CommonModules\AutoItScripts
+etc=C:\Windows\System32\Drivers\Etc 
+programs=C:\ProgramFiles 
+program files=C:\Program Files 
+program files x86=C:\Program Files {(}x86{)}  
+network=My Network Places 
+windows=C:\windows  
+windows system=C:\windows\system32 
+system internals=C:\ProgramFiles\SystemInternals 
+common modules=C:\Users\KnowBrainer\CommonModules 
+common data=C:\Users\KnowBrainer\CommonModules\Data 
+inspect=C:\Program Files {(}x86{)}\Windows Kits\10\bin\10.0.18362.0\x86
+temp=C:\Temp
+.net binaries=C:\Windows\Microsoft.NET\Framework\v4.0.30319
+
+; Load Linux paths
+home=~ 					 
+user lib=/usr/lib 
+user bin=/usr/bin  
+user local=/usr/local 					 
+user local bin=/usr/local/bin  
+user local lib=/usr/local/lib 
+user local packages=/usr/local/packages 
+pack=/usr/local/packages 
+packages=/usr/local/packages 
+
+[files]
+common paths=${paths:common data}\paths.txt
+common menus=${paths:common data}\menus.txt
+menus=${paths:common data}\menus.txt
+common urls=${paths:common data}\urls.txt
+urls=${paths:common data}\urls.txt
+people=${paths:common data}\people.txt
+touch locations=${paths:common data}\touch-locations.txt
+touch locations root=${paths:common data}\touch-locations
+mouse grid=${paths:common modules}\MouseGrid\MouseGrid.exe
+flags=${paths:common modules}\ClickByNumbers\ClickByNumbers.exe
+inspect=${paths:inspect}\inspect.exe
+show active window=${paths:common modules}\ShowActiveWindow\ShowActiveWindow.exe
+disable word add in=${paths:common modules}\MicrosoftOfficeAddIns\DisableWordAddIn.reg
+
