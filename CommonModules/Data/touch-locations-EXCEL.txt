@@ -1,0 +1,5 @@
+
+
+[touch-locations-EXCEL]
+delete=575,128,0
+

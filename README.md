@@ -1,7 +1,7 @@
 # dragon-tools
 Macros and tools for use with Dragon Naturallyspeaking 15 and KnowBrainer 2017
 
-<h1>Overview</hi>
+<h1>Overview</h1>
 <p>
 This is a collection of macros and tools that make it easier to work hands free on a Windows PC using Dragon Naturallyspeaking 15.  To use these tools you also need to purchase and install a Dragon add-on called KnowBrainer Professional 2017.
 </p>
@@ -45,8 +45,8 @@ Here are some functionality highlights to pique your interest:
 	<li>Update the contents of these files in C:\Users\KnowBrainer\CommonModules\Data to match what is on your computer:
 	<ul>
 		<li>paths.txt</li>
-	</li>
 	</ul>
+	</li>
 	<li>Update C:\Users\KnowBrainer\CommonModules\Data\people.txt to contain the names of the people you communicate with the most.  Follow the instructions contained in this file.</li>
 	<li>Register the Memory For Macros tools by running the C:\Users\KnowBrainer\CommonModules\MemoryForMacros\RegisterMemoryForMacros.bat file as an administrator from within the same folder as the bat file.  You may need to update the batch file with the correct path to your .NET Framework install.</li>
 </ol>

@@ -1,0 +1,28 @@
+; Format lines like this:
+;	<spoken name>:<full path>
+;
+
+[paths]
+user=C:\Users\Doug
+app data=C:\Users\Doug\AppData
+roaming=C:\Users\Doug\AppData\Roaming
+downloads=C:\Users\Doug\Downloads
+docs=C:\Users\Doug\Documents
+documents=C:\Users\Doug\Documents  
+personal=C:\Users\Doug\Documents\Personal
+desktop=C:\Users\Doug\Desktop  
+word startup=C:\Users\Doug\Application Data\Microsoft\Word\STARTUP  
+excel add-ins=C:\Users\Doug\AppData\Roaming\Microsoft\AddIns  
+office macros=C:\Users\Doug\Documents\Personal\Macros 
+knowbrainer commands=C:\Users\Doug\AppData\Roaming\KnowBrainer\KnowBrainerCommands 
+
+[files]
+my document=${paths:documents}\mydoc.txt
+my personal doc=${paths:documents}\${paths:partial}
+my personal doc2=${my personal doc}.extra
+my friend=${paths:desktop}\${people:dp}\contact
+bad=${paths:desktop2}\${people:dp}\contact
+bad2=${my document}\${people2:dp}\contact
+bad3=${paths:desktop}\${people:dp2}\contact
+self ref=This is a ${self ref} reference.
+ref in file loaded second=${paths:path in second file}\my file.txt

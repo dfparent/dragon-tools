@@ -1,0 +1,24 @@
+; You can switch to an application by name when it is pinned to the taskbar.  Say "app" and the spoken name, below.
+; If there is more than one window for an application open, you can set the taskbar "combined taskbar buttons" setting to "never" and specify a particular window by number, such as "app chrome 2" to select the 2nd application window for chrome.  
+;
+; Windows supports keyboard shortcuts for up to 10 pinned applications, so you can specify up to 10 pinned applications here
+; For each application, provide the sequence number for the pinned application icon on the taskbar, starting with 1 for the leftmost icon, 2 for the icon to its right, 3 for the icon to the right of #2, etc up through 0 for the 10th icon. You can provide multiple names for the same application by listing the application more than once with the same sequence number.
+;
+; You ALSO need to update the taskbar_apps list in KnowBrainer so it can recognize the special apps below (for the "apps <taskbar_apps>" macro).  If you don't, the "apps <dication>" macro will match which searches for the app by window title.  So it may work, but there is a greater chance for Dragon to misunderstand what you're saying.  The "apps <taskbar_apps>" macro is much more accurate and handy for commonly used apps.
+;
+; Format lines like this:
+;	<spoken name>:<sequence number of the app on taskbar>
+
+[apps]
+files=1
+chrome=2
+outlook=3
+mail=3
+skype=4
+one note=5
+plus plus=6
+word=7
+powerpoint=8
+excel=9
+project=0
+microsoft project=0

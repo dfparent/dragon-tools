@@ -1,0 +1,5 @@
+
+
+[touch-locations-notepad]
+this=97,316,0
+

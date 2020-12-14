@@ -1,0 +1,11 @@
+
+
+[touch-locations-OUTLOOK]
+next week=359,226,0
+previous week=329,226,0
+next month=241,215,0
+previous month=59,215,0
+reminder calendar=280,271,0
+do date calendar=282,246,0
+start date calendar=281,217,0
+

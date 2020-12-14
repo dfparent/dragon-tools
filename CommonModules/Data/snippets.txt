@@ -1,0 +1,15 @@
+; You can add new line characters to snippets using "\n".  for example, the following entry
+;
+; test snippet=Hi!\nHow are you?
+;
+; would result in the following snippet output:
+;
+; Hi!
+; How are you?
+;
+; Format lines like this:
+;	<snippet name>:<snippet text>
+
+[snippets]
+my address=1313 Mockingbird Lane, Mockingbird Heights, CA 00000
+signature=Douglas Parent\nAwesome Voice Macros Developer
