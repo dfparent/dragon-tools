@@ -348,13 +348,3 @@ MigrationBackup/
 
 # Ionide (cross platform F# VS Code tools) working folder
 .ionide/
-*.db-wal
-CommonModules/Data/apps-AI834142.txt
-CommonModules/Data/apps-DESKTOP-SDSI3LL.txt
-CommonModules/Data/menus - Copy.txt
-CommonModules/Data/paths-AI834142.txt
-CommonModules/Data/paths-DESKTOP-SDSI3LL.txt
-CommonModules/Data/people-AI834142-new.txt
-CommonModules/Data/people-AI834142.txt.bak
-CommonModules/equationEditor.bas
-Desktop.ini
