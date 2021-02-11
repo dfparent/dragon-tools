@@ -49,5 +49,12 @@ Here are some functionality highlights to pique your interest:
 	</li>
 	<li>Update C:\Users\KnowBrainer\CommonModules\Data\people.txt to contain the names of the people you communicate with the most.  Follow the instructions contained in this file.</li>
 	<li>Register the Memory For Macros tools by running the C:\Users\KnowBrainer\CommonModules\MemoryForMacros\RegisterMemoryForMacros.bat file as an administrator from within the same folder as the bat file.  You may need to update the batch file with the correct path to your .NET Framework install.</li>
+	<li>If you wish, you can also add the Office Add-ins to your Office installation.  These will run when your apps startup and add commands to the Add-Ins Ribbon.  From this ribbon you can run various helpful commands.  There are some voice macros that make use of the functionality in these Office Add-ins so if you want to use those voice macros, you'll need to install the add-ins.
+		<ol>
+			<li>Copy MacrosForVoice.ppam and PowerpointUtilities.ppam to C:\Users\&lt;user folder&gt;\AppData\Roaming\Microsoft\AddIns.  Start Powerpoint and add the addins in Powerpoint Options.</li>
+			<li>Copy MyUtilities.xlam to C:\Users\&lt;user folder&gt;\AppData\Roaming\Microsoft\AddIns.  Start Excel and add the addins in Excel Options.</li>
+			<li>Copy WordUtilities.dotm to C:\Users\&lt;user folder&gt;\AppData\Roaming\Microsoft\Word\STARTUP.  The template file should be automaticallly picked up and run when Words starts.</li>
+		</ol>
+	</li>
 </ol>
 </p>
