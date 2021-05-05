@@ -34,6 +34,7 @@ Here are some functionality highlights to pique your interest:
 <ol>
 	<li>Install Dragon Naturallyspeaking 15 using the default folder locations.</li>
 	<li>Install Knowbrainer Professional 2017 using the default folder locations.</li>
+	<li>Install AutoIt v3 (to support some helpful macros).</li>
 	<li>Create C:\Users\KnowBrainer\CommonModules.  You will need administrator privileges to do so.  Grant either "Everyone" or your user full control of this folder if your user is not already an administrator.</li>
 	<li>Copy the entire contents of CommonModules into C:\Users\KnowBrainer\CommonModules.</li>
 	<li>Rename the following files in C:\Users\KnowBrainer\CommonModules\Data by replacing "MyComputer" with your computer name.  Also, update the contents of these files to match what is on your computer:
