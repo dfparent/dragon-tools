@@ -80,6 +80,7 @@ Module InputUtils
     Public Sub MouseLeftClick(clickPoint As Drawing.Point)
 
         Cursor.Position = clickPoint
+        Thread.Sleep(100)
 
         Dim theInput(0) As INPUT
 

@@ -35,7 +35,8 @@ Public Sub SelectFolder(ListVar1 As String)
 End Sub
 
 Public Sub MoveToFolder(Listvar1 As String)
-    SendKeys("%hmvo")
+    'SendKeys("%hmvo")
+    SendKeys("^+v")
     Wait(0.5)
 
     Dim folders() As String

@@ -15,7 +15,8 @@ Private pathsFilename As String = DATA_PATH & "\paths-" & System.Environment.Mac
 Private commonPathsFilename As String = DATA_PATH & "\paths.txt"
 
 Private urls As Object
-Private urlsFilename As String = DATA_PATH & "\urls.txt"
+Private commonUrlsFileName As String = DATA_PATH & "\urls.txt"
+Private urlsFileName As String = DATA_PATH & "\urls-" & System.Environment.MachineName & ".txt"
 
 Private menus As Object
 Private menusFilename As String = DATA_PATH & "\menus.txt"
@@ -29,6 +30,9 @@ Private appsFileName As String = DATA_PATH & "\apps-" & System.Environment.Machi
 Private snippets As Object
 Private snippetsFileName As String = DATA_PATH & "\snippets.txt"
 
+Private settings As Object
+Private settingsFileName As String = DATA_PATH & "\settings.txt"
+
 Private values As Object
 
 Private commandManager As Object
@@ -41,6 +45,8 @@ Private menusDictName As String = "menus"
 Private touchesDictName As String = "touch-locations"
 Private appsDictName As String = "apps"
 Private snippetsDictName As String = "snippets"
+Private settingsDictName As String = "settings"
+
 
 ' These methods utilize the MemoryForMacros application which loads data and keeps it resident in memory for use across macro calls.
 Private Function LoadCache() As Boolean
@@ -79,7 +85,8 @@ Private Function LoadCache() As Boolean
 
         ' URLs
         If Not memoryApp.IsDictionaryLoaded(urlsDictName) Then
-            memoryApp.LoadDictionaries(urlsFilename)
+            memoryApp.LoadDictionaries(commonUrlsFileName)
+            memoryApp.LoadDictionaries(urlsFilename, True) ' Load with append
         End If
 
         urls = memoryApp.GetDictionary(urlsDictName)
@@ -118,6 +125,16 @@ Private Function LoadCache() As Boolean
         snippets = memoryApp.GetDictionary(snippetsDictName)
         If snippets.Count = 0 Then
             MsgBox("Failed to load snippets from " & snippetsFileName)
+        End If
+
+        ' Settings
+        If Not memoryApp.IsDictionaryLoaded(settingsDictName) Then
+            memoryApp.LoadDictionaries(settingsFileName)
+        End If
+
+        settings = memoryApp.GetDictionary(settingsDictName)
+        If settings.Count = 0 Then
+            MsgBox("Failed to load settings from " & settingsFileName)
         End If
 
         ' Values
@@ -168,6 +185,12 @@ ErrorHandler:
 
 End Sub
 
+Public Sub AddCacheValueSingle(key As String, value As String)
+    Dim valueArray(1) As String
+    valueArray(0) = value
+    AddCacheValue(key, valueArray)
+End Sub
+
 ' Updates the value if it exists.  Adds the value if it does not exist.
 Public Sub UpdateCacheValue(key As String, valueArray() As String)
     If CacheValueExists(key) Then
@@ -176,6 +199,12 @@ Public Sub UpdateCacheValue(key As String, valueArray() As String)
 
     AddCacheValue(key, valueArray)
 
+End Sub
+
+Public Sub UpdateCacheValueSingle(key As String, value As String)
+    Dim valueArray(1) As String
+    valueArray(0) = value
+    UpdateCacheValue(key, valueArray)
 End Sub
 
 ' Checks to see if the value dictionary contains values tied to a particular key.
@@ -195,6 +224,18 @@ ErrorHandler:
     MsgBox("Error in CacheValueExists: " & err.description)
 End Function
 
+public function GetCacheValueSingle(key as string) as string
+	dim values() as string
+	values = GetCacheValue(key)
+	GetCacheValueSingle = nothing
+	
+	if not values is nothing then
+		if UBound(values) > 0 then
+			GetCacheValueSingle = values(0)
+		end if
+	end if
+end function
+
 Public Function GetCacheValue(key As String) As String()
     On Error GoTo ErrorHandler
 
@@ -205,6 +246,7 @@ Public Function GetCacheValue(key As String) As String()
 
     If Not values.ContainsKey(key) Then
         MsgBox("Cannot retrieve values for key """ & key & """.  There is no value keyed to that name.")
+		GetCacheValue = nothing
         Exit Function
     End If
 
@@ -425,20 +467,24 @@ ErrorHandler:
     MsgBox("Error in SaveTouchLocations: " & err.description)
 End Sub
 
-' For spoken commands, set spoken = true
-' For typed commands, set spoken = false
-Public Sub AddDelayedCommand(command As String, spoken As Boolean, delay As Integer)
+Public Enum DelayedCommandType
+    Spoken
+    UseSendKeys
+    UseSendSystemKeys
+End Enum
+
+
+' To make a command repeat indefinitely, set repeatCount < 0
+' To disable a command, set repeatCount = 0
+' Delay is in milliseconds
+Public Sub AddDelayedCommand(command As String, commandType As DelayedCommandType, delayMillis As Integer, Optional repeatCount As Integer = 1)
     On Error GoTo ErrorHandler
 
     If Not LoadCache() Then
         Exit Sub
     End If
 
-    If spoken Then
-        commandManager.AddCommand(command, 0, delay)
-    Else
-        commandManager.AddCommand(command, 1, delay)
-    End If
+    commandManager.AddCommand(command, commandType, delayMillis, repeatCount)
 
 
     Exit Sub
@@ -526,5 +572,22 @@ Public Function GetSnippets() As Object
 
 ErrorHandler:
     MsgBox("Error in GetSnippets: " & err.description)
+
+End Function
+
+Public Function GetSettings() As Object
+    On Error GoTo ErrorHandler
+
+    If Not LoadCache() Then
+        GetSettings = Nothing
+        Exit Function
+    End If
+
+    GetSettings = settings
+
+    Exit Function
+
+ErrorHandler:
+    MsgBox("Error in GetSettings: " & err.description)
 
 End Function

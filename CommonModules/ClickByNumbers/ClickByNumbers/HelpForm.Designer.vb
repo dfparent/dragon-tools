@@ -22,7 +22,6 @@ Partial Class frmHelp
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmHelp))
         Me.rtxtHelp = New System.Windows.Forms.RichTextBox()
         Me.btnClose = New System.Windows.Forms.Button()
         Me.SuspendLayout()
@@ -34,7 +33,7 @@ Partial Class frmHelp
         Me.rtxtHelp.Name = "rtxtHelp"
         Me.rtxtHelp.Size = New System.Drawing.Size(598, 298)
         Me.rtxtHelp.TabIndex = 0
-        Me.rtxtHelp.Text = resources.GetString("rtxtHelp.Text")
+        Me.rtxtHelp.Text = "Text is programmatically set."
         '
         'btnClose
         '

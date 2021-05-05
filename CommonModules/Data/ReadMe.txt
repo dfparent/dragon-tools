@@ -1,7 +1,8 @@
 Memory For Macros dictionary file tips.
 
 You can comment lines in files using the ; character.
-All comment lines found at the top of the file until the first non-commented line will be retained when saving a dictionary.  All other lines in the dictionary file will be rewritten when saving using the voice macros.  Dictionary files are only saved when calling macro code that explicitly saves them.
+All comment lines found at the top of the file until the first non-commented line will be retained when saving a dictionary.  All other lines in the dictionary file will be rewritten when saving.
+Dictionary files are only saved when calling macro code explicitly saves them.
 
 Blank lines are ignored.
 

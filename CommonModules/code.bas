@@ -205,15 +205,13 @@ Public Sub DoCodeBlock(ListVar1 As String, Optional injectSelection As Boolean =
             SendKeys("using")
             Wait(0.1)
             SendKeys("{Tab 2}")
-        ElseIf ListVar1 = "property" Then
-            SendKeys("prop{Tab 2}")
-
-        ElseIf ListVar1 = "full property" Then
-            SendKeys("public void Name {{}~")
-            SendKeys("get {{}~")
-            SendKeys("{Down}~set {{}~")
-            SendKeys("{Up 8}{End}+^{Left}")
-
+        ElseIf ListVar1 = "lock" Then
+            If injectSelection Then
+                SendKeys("^k^s")
+            End If
+            SendKeys("lock")
+            Wait(0.1)
+            SendKeys("{Tab 2}")
         Else
             MsgBox("Code block '" & ListVar1 & "' not yet implemented.")
         End If
@@ -365,9 +363,9 @@ Public Sub DoLogicalOperator(theOperator As String, Optional dictation As String
     lang = GetCodingLanguage()
 
     Select Case theOperator
-        Case "equals", "equal to"
+        Case "equal", "equals", "equal to"
             SendKeys " = "
-        Case "not equals", "not equal to"
+        Case "not equal", "not equals", "not equal to"
             Select Case lang
                 Case Language.VB
                     SendKeys " <> "
@@ -393,7 +391,7 @@ Public Sub DoLogicalOperator(theOperator As String, Optional dictation As String
         SendKeys("{""}{""}")
     ElseIf lcase(dictation) = "no" Then
         SendKeys("null{Escape}")
-    Else
+    ElseIf dictation <> "" Then
         SendKeys(formatCapsNoSpaces(dictation, False))
         SendKeys("^{Space}")
     End If
@@ -520,7 +518,17 @@ Public Sub DoCodeProcedureWithName(scope As String, procedure As String, Optiona
             SendKeys("Name")
         End If
 
-        SendKeys("{(}{)}~{{}~")
+        If procedure <> "property" And procedure <> "property compact" Then
+            SendKeys("{(}{)}")
+        End If
+
+        SendKeys("~{{}~")
+
+        If procedure = "property" Then
+            SendKeys("get {{}~{down}~")
+            SendKeys("set {{}~")
+            SendKeys("{up 6}")
+        End If
 
         If dictation = "" Then
             SendKeys("{Up 2}{Home}^{right 2}^+{Right}")
@@ -655,6 +663,8 @@ Public Sub DoGoToLine(ListVar1 As String)
     Wait 0.1
     SendKeys ListVar1
     SendKeys "{Enter}"
+    Wait(0.1)
+    SendKeys("{End}")
 End Sub
 
 Public Sub DoListMembers()

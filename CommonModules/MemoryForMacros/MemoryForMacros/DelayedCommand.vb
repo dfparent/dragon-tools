@@ -7,6 +7,7 @@ Public Class DelayedCommand
     Private m_delay As Integer
     Private m_command As String
     Private m_commandType As DelayedCommandManager.CommandType
+    Private m_repeatCount As Integer
 
     Public Property Command As String
         Get
@@ -35,10 +36,20 @@ Public Class DelayedCommand
         End Set
     End Property
 
-    Public Sub New(TheCommand As String, TheCommandType As DelayedCommandManager.CommandType, TheDelay As Integer)
+    Public Property RepeatCount As Integer
+        Get
+            Return m_repeatCount
+        End Get
+        Set(value As Integer)
+            m_repeatCount = value
+        End Set
+    End Property
+
+    Public Sub New(TheCommand As String, TheCommandType As DelayedCommandManager.CommandType, TheDelay As Integer, TheRepeatCount As Integer)
         Delay = TheDelay
         Command = TheCommand
         CommandType = TheCommandType
+        RepeatCount = TheRepeatCount
     End Sub
 
 End Class

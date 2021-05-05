@@ -1,4 +1,5 @@
 '#Uses "paths.bas"
+'#Uses "paths.bas"
 '#Uses "utilities.bas"
 '#Uses "cache.bas"
 '#Uses "window.bas"
@@ -6,8 +7,22 @@
 Option Explicit On
 
 Private Const COMPARE_FILE_ONE_VALUE = "CompareFileOne"
-Private DIALOGUE_TITLES() As String = {"Save As", "Save All", "Save Attachment", "Save Print Output As", _
-									   "Change Source:", "Open", "Insert File", "Browse"}
+Private DIALOGUE_TITLES() As String = {"Save As", "Save Copy As", "Save All", "Save Attachment", "Save Print Output As",
+                                       "Change Source:", "Open", "Insert File", "Browse"}
+Private DIALOGUE_SAVE_FILE_NAME_KEY = "DialogSaveFileName"
+
+' Saves the current file name in the dialog box which can sometimes get screwed up while navigating around
+Public Sub ClearSavedDialogFileName()
+    RemoveCacheValue(DIALOGUE_SAVE_FILE_NAME_KEY)
+End Sub
+
+Public Sub DialogSaveFileName()
+    If Not CacheValueExists(DIALOGUE_SAVE_FILE_NAME_KEY) Then
+        SendKeys("%n^c")
+        Wait(0.1)
+        AddCacheValueSingle(DIALOGUE_SAVE_FILE_NAME_KEY, GetClipboard())
+    End If
+End Sub
 
 Public sub doAddressBar
     SendKeys("%d")
@@ -22,10 +37,12 @@ End Sub
 Public Sub doRightSide()
     doAddressBar()
     RepeatKeyStrokes("{Tab}", 3)
-	SendKeys("{Down}{Up}")
+    'SendKeys("{Down}{Up}")
+    SendKeys("{space}")
 End Sub
 
 Public Sub doDialogLeftSide()
+    DialogSaveFileName()
     SendKeys("%d%n")
     SendKeys("+{Tab 3}")
     Wait(0.1)
@@ -34,24 +51,28 @@ End Sub
 Public Sub doDialogRightSide()
 
     ' Save current name.  Sometimes get screwed up when doing this
-    SendKeys("%n^c")
-
-
-    SendKeys("%d{tab}%n")
+    'SendKeys("%d{tab}%n^c")
+    DialogSaveFileName()
+    SendKeys("%n")
     SendKeys("+{Tab 2}")
-    SendKeys("{Down}{Up}")
+    'SendKeys("{Down}{Up}")
+    SendKeys("{space}")
     Wait(0.1)
+
 End Sub
 
 Public sub doDialogFolder(dictation as string)
 
-    If CheckWindowText("Outlook") Then
+    Dim checkTitles() As String
+    ReDim checkTitles(DIALOGUE_TITLES.Length + 1)
+    System.Array.Copy(DIALOGUE_TITLES, checkTitles, DIALOGUE_TITLES.Length)
+    checkTitles(UBound(checkTitles)) = "Outlook"
+
+    If Not CheckWindowText(checkTitles) Then
         Exit Sub
     End If
 
-    If Not CheckWindowText(DIALOGUE_TITLES) Then
-        Exit Sub
-    End If
+    DialogSaveFileName()
 
     ' Is this a known path?
     Dim pathName as string
@@ -63,6 +84,7 @@ Public sub doDialogFolder(dictation as string)
         ' Not a pre known path
         TTSPlayString("Let me find the " & dictation & " folder.")
         doDialogLeftSide()
+        SendKeys("{home}")
         SendKeys(pathName)
         Wait(0.1)
         SendKeys("{Enter}")
@@ -86,8 +108,16 @@ Public Sub DoDialogueSubName(dictation As String)
 
 
     doDialogRightSide()
+    SendKeys("{home}")
     SendKeys(formatNoCapsNoSpaces(dictation))
     SendKeys("{Enter}")
+    'doAddressBar()
+    'SendKeys("{End}\")
+    'Wait(0.5)
+    'SendKeys(dictation)
+    'SendKeys("{Down}")
+    'SendKeys("{Enter}")
+
 End Sub
 
 Public Sub DoDialogueSubNumber(dictation As String)
@@ -119,6 +149,7 @@ Public Sub DoFolder(ListVar1 As String)
         ' Not a pre known path
         TTSPlayString("Unknown path.  Let me find that.")
         doLeftSide()
+        SendKeys("{home}")
         SendKeys pathName
         SendKeys "{Enter}"
         Wait 0.1
@@ -130,7 +161,7 @@ Public Sub DoFolder(ListVar1 As String)
         SendKeys thePath
         SendKeys "{Enter}"
         Wait 0.1
-        SendKeys "{Tab 3}"
+        SendKeys "{Tab 3}{space}"
     End If
 End Sub
 
@@ -149,6 +180,12 @@ Public Sub DoSubName(dictation As String)
     SendKeys Trim(dictation)
     Wait(0.1)
     SendKeys "{Enter}"
+    'SendKeys("{esc 2}")
+    'doAddressBar()
+    'SendKeys("{End}\")
+    'Wait(0.1)
+    'SlowTypeString(dictation)
+    'SendKeys("{Down}{Enter}")
 End Sub
 
 Public Sub CopyFileName()
@@ -159,25 +196,27 @@ Public Sub CopyFileName()
 End Sub
 
 Public Function GetFilePath() As String
-    SendKeys("{F2}^a")
-    Wait(0.1)
-    SendKeys("^c")
-    Wait(0.1)
-    Dim name As String
-    name = GetClipboard()
-    SendKeys("{Esc}")
+    'Dim folderPath As String
+    'folderPath = GetFolderPath()
+    'doRightSide()
+    'SendKeys("{F2}^a")
+    'Wait(0.1)
+    'SendKeys("^c")
+    'Dim name As String
+    'name = GetClipboard()
     'msgbox name
+    'SendKeys("{Esc}")
 
-    doAddressBar()
-    SendKeys("^c")
-    Wait(0.1)
-    Dim path As String
-    path = GetClipboard()
-    'msgbox path
+    SendKeys("%hcp")
+    Wait(1.0)
 
-    SendKeys("{Tab 3}")
+    Dim fullPath As String
+    fullPath = GetClipboard()
+    ' Strip surrounding quotes
+    fullPath = fullPath.Replace("""", "")
 
-    GetFilePath = path & "\" & name
+    'GetFilePath = folderPath & "\" & name
+    GetFilePath = fullPath
 End Function
 
 Public Function GetFolderPath() As String
@@ -185,9 +224,7 @@ Public Function GetFolderPath() As String
     SendKeys("^c")
     Dim path As String
     path = GetClipboard()
-
-    SendKeys("{Tab 3}")
-
+    SendKeys("{Escape}")
     GetFolderPath = path
 End Function
 
@@ -195,7 +232,7 @@ Public Function CopyFilePath() As String
     'msgbox path
     Dim path As String
     path = GetFilePath()
-    PutClipboard(path)
+    'PutClipboard(path)
 
     CopyFilePath = path
 End Function
@@ -207,6 +244,7 @@ End Function
 Public Function CopyUNCPath() As String
     Dim path As String
     path = GetFilePath()
+    'msgbox path
     Dim uncPath As String
     uncPath = ConvertToUncPath(path)
     'msgbox uncPath
@@ -282,4 +320,44 @@ Public Sub DoCompareFiles(Optional compareFolders As Boolean = False)
     'Msgbox commandLine
     'PutClipboard(commandLine)
     Shell commandLine
+End Sub
+
+' Requires 7-Zip to be installed
+Public Sub DoExtractFiles()
+    SendKeys("+{F10}")
+    Wait(0.1)
+    SendKeys("7")
+    Wait(0.1)
+    SendKeys("{Down 2}~")
+End Sub
+
+Public Sub DoGoUp(Optional numberOfFoldersUp As Integer = 1)
+    SaveClipboard()
+
+    doAddressBar()
+    SendKeys("^c")
+    Wait(0.1)
+    Dim path As String
+    path = GetClipboard()
+
+    ' Remove path elements at the end to go to parent folders
+    Dim i As Integer
+    Dim outPath As String
+    outPath = path
+    Dim index As Integer
+    For i = 1 To numberOfFoldersUp
+        ' Remove last directory in path
+        index = outPath.LastIndexOf("\")
+        If index >= 0 Then
+            outPath = outPath.Substring(0, index)
+        Else
+            Beep
+            Exit For
+        End If
+    Next
+
+    PutClipboard(outPath)
+    SendKeys("^v~")
+    Wait(0.1)
+    RestoreClipboard()
 End Sub

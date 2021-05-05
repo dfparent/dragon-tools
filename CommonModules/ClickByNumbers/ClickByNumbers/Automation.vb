@@ -41,7 +41,7 @@ Module Automation
             Try
                 boundingRect = child.GetCachedPropertyValue(AutomationElement.BoundingRectangleProperty, False)
                 If Not boundingRect.IsEmpty Then
-                    frmMain.MakeCallout(boundingRect, "")
+                    frmMain.MakeCallout(boundingRect, boundingRect.Left & "," & boundingRect.Top & ", " & boundingRect.Right & ", " & boundingRect.Bottom)
                     'controls.Add(frmMain.MakeCallout(boundingRect, ""))
                 End If
             Catch ex As Exception

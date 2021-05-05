@@ -114,7 +114,6 @@ Module WindowMonitor
         Select Case eventType
             Case EVENT_SYSTEM_FOREGROUND
                 handleForeground = hwnd
-                RepositionMainForm(hwnd)
 
                 ' Listen to window move events
                 If handleObjectEventHookState <> IntPtr.Zero Then
@@ -126,6 +125,8 @@ Module WindowMonitor
                 Dim processID As Integer
                 GetWindowThreadProcessId(hwnd, processID)
                 handleObjectEventHookState = SetWinEventHook(EVENT_OBJECT_LOCATIONCHANGE, EVENT_OBJECT_LOCATIONCHANGE, IntPtr.Zero, objSysDelegate, processID, 0, WINEVENT_OUTOFCONTEXT Or WINEVENT_SKIPOWNPROCESS)
+
+                RepositionMainForm(hwnd)
 
             Case EVENT_SYSTEM_MOVESIZESTART
                 frmMain.Hide()

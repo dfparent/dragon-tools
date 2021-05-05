@@ -32,6 +32,7 @@ Public Class frmMain
     Private Shared Function SetForegroundWindow(ByVal hWnd As IntPtr) As Boolean
     End Function
 
+    Private Const SPLASH_TIME = 5000
     Private currentTargetWindowHandle As IntPtr
     Private currentSettings As AppSettings
     Private animationOpacity As Integer
@@ -42,6 +43,8 @@ Public Class frmMain
     Private lineWidth As Integer = 4
     Private calloutFont As Font = New Font("Verdana", 8, FontStyle.Bold)
     Private callouts As New Dictionary(Of String, PictureBox)
+    Private Const ClickLocationOffsetX = 5
+    Private Const ClickLocationOffsetY = 5
     Private usedLocations As New Dictionary(Of Drawing.Point, CalloutData)
     Private tt As ToolTip = New ToolTip()
     Private userCalloutEntry As String
@@ -50,7 +53,7 @@ Public Class frmMain
 
     Private Sub frmMain_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         frmSplash.Show()
-        timSplash.Interval = 3000
+        timSplash.Interval = SPLASH_TIME
         timSplash.Start()
 
         ' Make background transparent
@@ -228,8 +231,8 @@ Public Class frmMain
     Public Sub MakeCallout(elementBoundingRectangle As System.Windows.Rect, tooltipText As String)
 
         ' Get display location for callout 
-        ' Place the callout in the top center of the bounding rectangle for the element
-        ' Convert to control coordinates
+        ' Place the callout in the top left of the bounding rectangle for the element
+        ' Convert to client coordinates
         Dim screenLocationPoint As New Drawing.Point(elementBoundingRectangle.Left, elementBoundingRectangle.Top)
         Dim locationPoint As Drawing.Point = Me.PointToClient(screenLocationPoint)
 
@@ -242,8 +245,14 @@ Public Class frmMain
         ' Setup objects
         Dim data As New CalloutData
         data.setTooltipText(tooltipText)
-        data.setClickPoint(New Drawing.Point(locationPoint.X + (elementBoundingRectangle.Width / 2),
-                                             locationPoint.Y + (elementBoundingRectangle.Height / 2)))
+
+        ' Set click point near the callout.  Putting the click location in the center of the element sometimes miss clicks
+        data.setClickPoint(New Drawing.Point(locationPoint.X + ClickLocationOffsetX,
+                                             locationPoint.Y + ClickLocationOffsetY))
+        'data.setClickPoint(New Drawing.Point(locationPoint.X + (elementBoundingRectangle.Width / 2),
+        'locationPoint.Y + (elementBoundingRectangle.Height / 2)))
+
+        data.setElementBoundingRect(elementBoundingRectangle)
 
         usedLocations.Add(locationPoint, data)
 
@@ -335,8 +344,8 @@ Public Class frmMain
     Private Sub Callout_paint(sender As Object, e As PaintEventArgs)
         Dim pb As PictureBox = sender
         Dim data As CalloutData = pb.Tag
-        Dim width As Integer = pb.Width
-        Dim height As Integer = pb.Height
+        'Dim width As Integer = pb.Width
+        'Dim height As Integer = pb.Height
 
         ' Draw callout, leave space for width of line
         'Dim points(4) As Drawing.Point
@@ -356,7 +365,7 @@ Public Class frmMain
         'Draw drop shadow
         'g.DrawString(data.getDisplayText, Me.calloutFont, New SolidBrush(Color.DarkGray), lineWidth / 2 + 1, lineWidth / 2 + 1)
         'g.DrawString(data.getDisplayText, Me.calloutFont, New SolidBrush(Color.Red), lineWidth / 2, lineWidth / 2)
-        g.DrawString(data.getDisplayText, Me.calloutFont, New SolidBrush(Color.DarkGray), 0, 0)
+        'g.DrawString(data.getDisplayText, Me.calloutFont, New SolidBrush(Color.DarkGray), 0, 0)
         g.DrawString(data.getDisplayText, Me.calloutFont, New SolidBrush(Color.Red), 0, 0)
 
 
@@ -365,13 +374,35 @@ Public Class frmMain
     Private Sub Callout_OnPictureMouseEnter(ByVal sender As Object, ByVal e As EventArgs)
         Dim data As CalloutData
         data = sender.Tag
-        If Not data Is Nothing Then
-            tt.Show(data.getTooltipText(), sender)
+        If data Is Nothing Then
+            Exit Sub
         End If
+
+        Dim pb As PictureBox
+        pb = sender
+
+        'Debug.WriteLine("Enter Callout on mouse enter")
+
+        'tt.Show(data.getTooltipText(), sender)
+
+        Dim elementBoundingRect As Windows.Rect
+        elementBoundingRect = data.getElementBoundingRect
+        Dim locationPointTopLeft As Drawing.Point = Me.PointToClient(New Drawing.Point(elementBoundingRect.Left, elementBoundingRect.Top))
+        Dim locationPointBottomRight As Drawing.Point = Me.PointToClient(New Drawing.Point(elementBoundingRect.Right, elementBoundingRect.Bottom))
+
+        txtOutput.Left = locationPointTopLeft.X
+        txtOutput.Top = locationPointTopLeft.Y
+        txtOutput.Width = locationPointBottomRight.X - locationPointTopLeft.X
+        txtOutput.Height = locationPointBottomRight.Y - locationPointTopLeft.Y
+
+        'txtOutput.Visible = True
+
+
     End Sub
 
     Private Sub Callout_OnPictureMouseLeave(ByVal sender As Object, ByVal e As EventArgs)
-        tt.Hide(Me)
+        'tt.Hide(Me)
+        txtOutput.Visible = False
     End Sub
 
     Private Sub FrmMain_Closed(sender As Object, e As EventArgs) Handles Me.Closed
@@ -383,6 +414,9 @@ Public Class frmMain
         If e.KeyData = Keys.F5 Then
             ' Refresh
             RefreshCallouts()
+
+        ElseIf e.KeyCode = Keys.F4 Then
+            HandleToggleShowHideCallouts()
 
         ElseIf e.KeyCode = Keys.F2 Then
             ShowOptions()
@@ -552,7 +586,8 @@ Public Class frmMain
         While Not theControl Is Nothing
             controlsUnderPointer.Add(theControl)
             theControl.Visible = False
-            theControl = Me.GetChildAtPoint(clientLocation)
+            Application.DoEvents()
+            theControl = Me.GetChildAtPoint(clientLocation, GetChildAtPointSkip.Invisible)
         End While
 
     End Sub

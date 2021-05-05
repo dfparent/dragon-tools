@@ -1,0 +1,5 @@
+; Format lines like this:
+;	<setting name>=<setting value>
+
+[settings]
+dictation box shortcut=^+d

@@ -117,27 +117,4 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="rtxtHelp.Text" xml:space="preserve">
-    <value>To perform any below function, first bring the focus to the tool by pressing the Global Hot Key combination:  ctrl + shift + alt + f and then do the following:
-
-	To move the pointer to an element:  type in the callout number and then &lt;tab&gt; 
-	To click on an element: type in the callout number and then &lt;enter&gt;.
-	To shift+click on an element: type in the callout number and then shift+&lt;enter&gt;.
-	To ctrl+click on an element: type in the callout number and then ctrl+&lt;enter&gt;.
-	To double click on an element: type in the callout number and then alt+&lt;enter&gt;.
-	To right click on an element: type in the callout number and then ctrl+shift+&lt;enter&gt;.
-	To pick up an element (mouse down): type in the callout number and then &lt;down arrow&gt;.
-	To drop an element (mouse up): type in the column number and then &lt;up arrow&gt;.
-	To cancel callout entry:  type &lt;esc&gt;.
-	To refresh the callouts: type F5.
-	To show options: type F2.
-	To show this help text:  type F1.
-
-You can also use the following global hot keys (no need to press ctrl+shift+alt+f first):
-
-	To show flag options:  type ctrl+shift+alt+F2.
-	To toggle the sticky keys setting:  type ctrl+shift+alt+F3.
-	To show/hide the callouts:  type ctrl+shift+alt+F4.
-	To refresh the callouts:  type ctrl+shift+alt+F5.</value>
-  </data>
 </root>

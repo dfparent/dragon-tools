@@ -19,92 +19,116 @@ Public enum SHOW_WINDOW_COMMAND
     ForceMinimize = 11
 End Enum
 
+Public Enum WindowDock
+    Center
+    LeftSide
+    RightSide
+    TopHalf
+    BottomHalf
+End Enum
+
 
 Public Sub CenterActiveWindow()
+    DockActiveWindow(WindowRegion.Center)
+End Sub
+
+Public Sub DockActiveWindow(docPosition As WindowDock)
     Dim windowRect As RECT
     Dim handle As Long
-	Dim bRet As Boolean
-	
-	' Get screen size
+    Dim bRet As Boolean
+
+    ' Get screen size
 
     handle = GetForegroundWindow()
-	
-	dim hMonitor as long
-	hMonitor = MonitorFromWindow(handle, MONITOR_DEFAULTTONEAREST)
-	
-	dim info as MONITORINFO
-	info.size = LenB(info)
-	GetMonitorInfo(hMonitor, info)
 
-	dim screenWidth as integer
-	dim screenHeight as integer
-	screenWidth = info.monitorRect.right - info.monitorRect.left
-	screenHeight = info.monitorRect.bottom - info.monitorRect.top
-	
-	'msgbox "Screen size: " & CStr(screenWidth) & "x" & Cstr(screenHeight)
-	'msgbox "Screen location: " & CStr(info.monitorRect.left) & "x" & Cstr(info.monitorRect.top)
-	
-	' Get window size
-	bRet = GetWindowRect(handle, windowRect)
+    Dim hMonitor As Long
+    hMonitor = MonitorFromWindow(handle, MONITOR_DEFAULTTONEAREST)
+
+    Dim info As MONITORINFO
+    info.size = LenB(info)
+    GetMonitorInfo(hMonitor, info)
+
+    Dim screenWidth As Integer
+    Dim screenHeight As Integer
+    screenWidth = info.monitorRect.right - info.monitorRect.left
+    screenHeight = info.monitorRect.bottom - info.monitorRect.top
+
+    'msgbox "Screen size: " & CStr(screenWidth) & "x" & Cstr(screenHeight)
+    'msgbox "Screen location: " & CStr(info.monitorRect.left) & "x" & Cstr(info.monitorRect.top)
+
+    ' Get window size
+    bRet = GetWindowRect(handle, windowRect)
     If Not bRet Then
-		Beep
+        Beep
         'msgbox("Can't get window rectangle.")
         Exit Sub
     End If
 
-	dim width as integer
-	dim height as integer
-	width = windowRect.right - windowRect.left
-	height = windowRect.Bottom - windowRect.Top
-	
-	'msgbox CStr(width) & "x" & Cstr(height)
-	
-	' Need to add the monitor location in case it is not the primary monitor
-	MoveWindow(handle, info.monitorRect.left + (screenWidth / 2) - (width / 2), info.monitorRect.top + (screenHeight / 2) - (height / 2), width, height, true)
-	
-	
+    Dim width As Integer
+    Dim height As Integer
+    width = windowRect.right - windowRect.left
+    height = windowRect.Bottom - windowRect.Top
 
+    'msgbox CStr(width) & "x" & Cstr(height)
+
+    Select Case docPosition
+        Case WindowDock.Center
+            ' Need to add the monitor location in case it is not the primary monitor
+            MoveWindow(handle, info.monitorRect.left + (screenWidth / 2) - (width / 2), info.monitorRect.top + (screenHeight / 2) - (height / 2), width, height, True)
+
+        Case WindowDock.LeftSide
+            SendKeys("{WindowsHold}{Left}")
+
+        Case WindowDock.RightSide
+            SendKeys("{WindowsHold}{Right}")
+
+        Case WindowDock.TopHalf
+            MoveWindow(handle, info.monitorRect.left, info.monitorRect.top, screenWidth, screenHeight / 2, True)
+
+        Case WindowDock.BottomHalf
+            MoveWindow(handle, info.monitorRect.left, info.monitorRect.top + (screenHeight / 2), screenWidth, screenHeight / 2, True)
+    End Select
 End Sub
 
-public sub ResizeActiveWindow(makeLarger as boolean, widthresizeby as integer, heightresizeby as integer)
+Public Sub ResizeActiveWindow(makeLarger As Boolean, widthresizeby As Integer, heightresizeby As Integer)
     Dim windowRect As RECT
     Dim handle As Long
-	
-	' Get window size
-    handle = GetForegroundWindow()
-	bRet = GetWindowRect(handle, windowRect)
 
-	dim x, y, w, h as integer
-	x = windowRect.Left
-	y = windowRect.Top
-	w = windowRect.Right - windowRect.Left
-	h = windowRect.Bottom - windowRect.Top
-	
-	' Change size
-	if makeLarger then
-		MoveWindow(handle, x, y, w + widthresizeby, h + heightresizeby, true)
-	else
-		MoveWindow(handle, x, y, w - widthresizeby, h - heightresizeby, true)	
-	end if
-	
-	'SendKeys "%{Space}"	
-	'Wait 0.5
-	'SendKeys "s"
-	'Wait 0.5
-	
-	'if makeLarger then
-	'	SendKeys "{Right}"
-	'	RepeatKeyStrokes("{Right}", resizeby)
-	'	RepeatKeyStrokes("{Down}", resizeby)
-	'else
-	'	SendKeys "{Right}"
-	'	RepeatKeyStrokes("{Left}", resizeby)
-	'	SendKeys "{Down}"
-	'	RepeatKeyStrokes("{Up}", resizeby)
-	'end if
-	'Wait 0.3
-	'SendKeys "{Enter}"
-end Sub
+    ' Get window size
+    handle = GetForegroundWindow()
+    bRet = GetWindowRect(handle, windowRect)
+
+    Dim x, y, w, h As Integer
+    x = windowRect.Left
+    y = windowRect.Top
+    w = windowRect.Right - windowRect.Left
+    h = windowRect.Bottom - windowRect.Top
+
+    ' Change size
+    If makeLarger Then
+        MoveWindow(handle, x, y, w + widthresizeby, h + heightresizeby, True)
+    Else
+        MoveWindow(handle, x, y, w - widthresizeby, h - heightresizeby, True)
+    End If
+
+    'SendKeys "%{Space}"	
+    'Wait 0.5
+    'SendKeys "s"
+    'Wait 0.5
+
+    'if makeLarger then
+    '	SendKeys "{Right}"
+    '	RepeatKeyStrokes("{Right}", resizeby)
+    '	RepeatKeyStrokes("{Down}", resizeby)
+    'else
+    '	SendKeys "{Right}"
+    '	RepeatKeyStrokes("{Left}", resizeby)
+    '	SendKeys "{Down}"
+    '	RepeatKeyStrokes("{Up}", resizeby)
+    'end if
+    'Wait 0.3
+    'SendKeys "{Enter}"
+End Sub
 
 Public Function GetActiveWindowRect(ByRef windowRect As RECT)
     Dim handle As Long
@@ -153,11 +177,10 @@ Public Sub ActivateWindow(handle As Long)
     SetForegroundWindow(handle)
 End Sub
 
-Public Function GetWindowTitleText(handle As Long) As String
+Public Function GetWindowTitleText(Optional handle As Long = 0) As String
     Dim length As Integer
     If handle = 0 Then
-        GetWindowTitleText = ""
-        Exit Function
+        handle = GetForegroundWindow()
     End If
     length = GetWindowTextLength(handle)
     If length = 0 Then

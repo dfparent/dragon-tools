@@ -1,4 +1,4 @@
-'#Uses "mouse.bas"
+'#Uses "clickbynumbers.bas"
 '#Uses "keyboard.bas"
 '#Uses "cache.bas"
 '#Language "WWB.NET"
@@ -12,7 +12,7 @@ Public Function getAppNumber(appName As String) As String
     apps = GetApps()
 
     If Not apps.ContainsKey(appName) Then
-        Beep
+        'Beep
         getAppNumber = ""
         Exit Function
     End If
@@ -26,13 +26,15 @@ ErrorHandler:
 
 End Function
 
-Public Sub goToApp(appName As String, Optional count As String = "1", Optional openNew As Boolean = False)
+' Returns true if successful, false if not
+Public Function goToApp(appName As String, Optional count As String = "1", Optional openNew As Boolean = False) As Boolean
     On Error GoTo ErrorHandler
 
     Dim number As String
     number = getAppNumber(appName)
     If number = "" Then
-        Exit Sub
+        goToApp = False
+        Exit Function
     End If
 
     PressWindowsKey(number, count, openNew)
@@ -45,9 +47,10 @@ Public Sub goToApp(appName As String, Optional count As String = "1", Optional o
         SendKeys("%^+{F5}")
     End If
 
-    Exit Sub
+    goToApp = True
+    Exit Function
 
 ErrorHandler:
     MsgBox("Error in goToApp: " & err.description)
-End Sub
+End Function
 

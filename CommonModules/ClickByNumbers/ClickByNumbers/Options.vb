@@ -11,7 +11,7 @@ Public Class frmOptions
         ' Load the names of all the processes for which we have settings, plus <default>
         cboApplyTo.Items.Clear()
 
-        Dim key As RegistryKey = My.Computer.Registry.CurrentUser.OpenSubKey(REGISTRY_PATH)
+        Dim key As RegistryKey = My.Computer.Registry.CurrentUser.OpenSubKey(REGISTRY_PATH_APP_SETTINGS)
         If key IsNot Nothing Then
             cboApplyTo.Items.AddRange(key.GetSubKeyNames())
             key.Close()

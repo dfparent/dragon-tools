@@ -5,6 +5,39 @@
 'option explicit
 
 Private Const ADOBE_BOOKMARK_VALUE = "adobe-bookmarks"
+Private Const ZOOM_INCREMENT = 10
+
+Public Sub Zoom(inOut As String, Optional count As Integer = 1)
+    SendKeys("^y")
+    Wait(0.1)
+    SendKeys("^c")
+    Dim zoomValue As String
+    zoomValue = GetClipboard()
+
+
+    If zoomValue = "Actual Size" Then
+        zoomValue = "100"
+    ElseIf Instr(1, zoomValue, "Fit") <> 0 Then
+        ' Guess
+        zoomValue = "50"
+    Else
+        ' Remove % sign
+        zoomValue = Left(zoomValue, Len(zoomValue) - 1)
+    End If
+
+
+    Dim zoomNum As Integer
+    zoomNum = CInt(zoomValue)
+
+    If inOut = "In" Then
+        zoomNum = zoomNum + ZOOM_INCREMENT * count
+    ElseIf inOut = "Out" Then
+        zoomNum = zoomNum - ZOOM_INCREMENT * count
+    End If
+
+    SendKeys(CStr(zoomNum))
+    SendKeys("~")
+End Sub
 
 Public Sub SetBookmark()
     SendKeys("%vng")

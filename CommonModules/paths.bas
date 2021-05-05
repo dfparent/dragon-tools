@@ -42,9 +42,9 @@ Public function getUrl(url as String)
     Dim urls As Object
     urls = GetURLs()
     url = LCase(url)
-    if not urls.ContainsKey(url) then
-        ' MsgBox "There is no defined '" & file & "' file."
-        return ""
+    if not urls.ContainsKey(url) Then
+        MsgBox "There is no defined '" & url & "' url."
+        Return ""
     end If
 
     Return urls(url)(0)

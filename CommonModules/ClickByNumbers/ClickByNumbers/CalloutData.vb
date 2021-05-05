@@ -3,6 +3,7 @@
     Private displayText As String
     Private tooltipText As String
     Private clickPoint As Point     ' In screen coordinates
+    Private elementBoundingRect As Windows.Rect
 
     Public Function getNumber() As String
         Return Me.number
@@ -35,4 +36,13 @@
     Public Sub setTooltipText(text As String)
         Me.tooltipText = text
     End Sub
+
+    Public Sub setElementBoundingRect(boundingRect As Windows.Rect)
+        elementBoundingRect = boundingRect
+    End Sub
+
+    Public Function getElementBoundingRect() As Windows.Rect
+        Return elementBoundingRect
+    End Function
+
 End Class

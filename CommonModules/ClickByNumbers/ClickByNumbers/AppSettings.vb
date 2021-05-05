@@ -32,10 +32,10 @@ Public Class AppSettings
         processNameValue = processName
 
 
-        Dim key As RegistryKey = My.Computer.Registry.CurrentUser.OpenSubKey(REGISTRY_PATH & "\" & processNameValue, False)
+        Dim key As RegistryKey = My.Computer.Registry.CurrentUser.OpenSubKey(REGISTRY_PATH_APP_SETTINGS & "\" & processNameValue, False)
         If key Is Nothing Then
             ' Key does not exist.  Try the default settings
-            key = My.Computer.Registry.CurrentUser.OpenSubKey(REGISTRY_PATH & "\" & DEFAULT_PROCESS_NAME, False)
+            key = My.Computer.Registry.CurrentUser.OpenSubKey(REGISTRY_PATH_APP_SETTINGS & "\" & DEFAULT_PROCESS_NAME, False)
         End If
 
         If key IsNot Nothing Then
@@ -75,9 +75,9 @@ Public Class AppSettings
             Return False
         End If
 
-        Dim key As RegistryKey = My.Computer.Registry.CurrentUser.OpenSubKey(REGISTRY_PATH & "\" & processNameValue, True)
+        Dim key As RegistryKey = My.Computer.Registry.CurrentUser.OpenSubKey(REGISTRY_PATH_APP_SETTINGS & "\" & processNameValue, True)
         If key Is Nothing Then
-            key = My.Computer.Registry.CurrentUser.CreateSubKey(REGISTRY_PATH & "\" & processNameValue, True)
+            key = My.Computer.Registry.CurrentUser.CreateSubKey(REGISTRY_PATH_APP_SETTINGS & "\" & processNameValue, True)
             If key Is Nothing Then
                 Return False
             End If
@@ -105,7 +105,7 @@ Public Class AppSettings
         End If
 
         Try
-            My.Computer.Registry.CurrentUser.DeleteSubKey(REGISTRY_PATH & "\" & processNameValue, False)
+            My.Computer.Registry.CurrentUser.DeleteSubKey(REGISTRY_PATH_APP_SETTINGS & "\" & processNameValue, False)
         Catch ex As Exception
             Return False
         End Try

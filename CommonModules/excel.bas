@@ -24,7 +24,7 @@ Public Function GetCellAddress() As String
     Wait 0.1
 
     Dim address As String
-    address = Clipboard
+    address = GetClipboard
 
     ' Remove sheet designation
     'address = address.Substring(address.IndexOf("!") + 1)
@@ -33,8 +33,16 @@ Public Function GetCellAddress() As String
     'address = address.Replace("$", "")
 
     'MsgBox(address)
-
+    GetCellAddress = address
 End Function
+
+Public Sub GoToCellAddress(address As String)
+    SendKeys("^g")
+    Wait(0.1)
+
+    SendKeys(address)
+    SendKeys("~")
+End Sub
 
 Public Function GetCurrentRow() As Integer
 
@@ -50,6 +58,7 @@ Public Sub goToCell(columnLetter1, rowNumber1, Optional columnLetter2 = "", Opti
 
     SendKeys(GetCellAddressFromDictation(columnLetter1, rowNumber1, columnLetter2, rowNumber2, rowNumber3, rowNumber4))
     SendKeys("~")
+    Wait(0.1)
 End Sub
 
 Private Function GetCellAddressFromDictation(columnLetter1, rowNumber1, Optional columnLetter2 = "", Optional rowNumber2 = "", Optional rowNumber3 = "", Optional rowNumber4 = "") As String
@@ -92,43 +101,47 @@ Public Sub SelectThrough(columnLetter1, rowNumber1, Optional columnLetter2 = "",
 
 End Sub
 
-Public Sub PickColor(color As String)
-    SendKeys("{Home}")
+Public Sub AutoSeries(direction As String, startValue As Integer, stopValue As Integer)
 
-    Select Case color
-        Case "Black"
-            SendKeys("{Right}~")
-            Exit Sub
-        Case "Grey"
-            SendKeys("{Right 2}~")
-            Exit Sub
-        Case "White"
-            SendKeys("{Enter}")
-            Exit Sub
-    End Select
+    Dim stepValue As Integer
+    If startValue < stopValue Then
+        stepValue = 1
+    Else
+        stepValue = -1
+    End If
 
-    SendKeys("{Home}{Down 6}")
+    Dim i As Integer
+    For i = startValue To stopValue Step stepValue
+        SendKeys(CStr(i))
+        Select Case LCase(direction)
+            Case "up"
+                SendKeys("{Up}")
+            Case "down"
+                SendKeys("{Down}")
+            Case "left"
+                SendKeys("{Left}")
+            Case "right"
+                SendKeys("{Right}")
+            Case Else
+                Exit Sub
+        End Select
+        'Wait(0.1)
+    Next
 
-    Select Case color
-        Case "Green"
-            SendKeys("{Right 5}{Enter}")
-        Case "Light Green"
-            SendKeys("{Right 4}{Enter}")
-        Case "Blue", "Light Blue", "Teal"
-            SendKeys("{Right 6}{Enter}")
-        Case "Dark Blue"
-            SendKeys("{Right 7}{Enter}")
-        Case "Navy Blue"
-            SendKeys("{Right 8}{Enter}")
-        Case "Maroon"
-            SendKeys("{Enter}")
-        Case "Yellow"
-            SendKeys("{Right 3}{Enter}")
-        Case "Purple"
-            SendKeys("{Right 9}{Enter}")
-        Case "Red"
-            SendKeys("{Right}{Enter}")
-        Case "Orange"
-            SendKeys("{Right 2}{Enter}")
-    End Select
+    ' Go Back
+    For i = startValue To stopValue Step stepValue
+        Select Case LCase(direction)
+            Case "up"
+                SendKeys("{Down}")
+            Case "down"
+                SendKeys("{Up}")
+            Case "left"
+                SendKeys("{Right}")
+            Case "right"
+                SendKeys("{Left}")
+            Case Else
+                Exit Sub
+        End Select
+        'Wait(0.1)
+    Next
 End Sub

@@ -44,10 +44,9 @@ Partial Class frmMain
         Me.lblPrompt.FlatStyle = System.Windows.Forms.FlatStyle.Popup
         Me.lblPrompt.Font = New System.Drawing.Font("Calibri", 14.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblPrompt.ForeColor = System.Drawing.SystemColors.ControlText
-        Me.lblPrompt.Location = New System.Drawing.Point(594, 346)
-        Me.lblPrompt.Margin = New System.Windows.Forms.Padding(6, 0, 6, 0)
+        Me.lblPrompt.Location = New System.Drawing.Point(297, 180)
         Me.lblPrompt.Name = "lblPrompt"
-        Me.lblPrompt.Size = New System.Drawing.Size(322, 48)
+        Me.lblPrompt.Size = New System.Drawing.Size(162, 25)
         Me.lblPrompt.TabIndex = 0
         Me.lblPrompt.Text = "Loading numbers..."
         Me.lblPrompt.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
@@ -61,11 +60,13 @@ Partial Class frmMain
         '
         'txtOutput
         '
-        Me.txtOutput.Location = New System.Drawing.Point(172, 506)
-        Me.txtOutput.Margin = New System.Windows.Forms.Padding(6)
+        Me.txtOutput.BackColor = System.Drawing.SystemColors.ButtonHighlight
+        Me.txtOutput.ForeColor = System.Drawing.Color.Red
+        Me.txtOutput.Location = New System.Drawing.Point(86, 263)
         Me.txtOutput.Multiline = True
         Me.txtOutput.Name = "txtOutput"
-        Me.txtOutput.Size = New System.Drawing.Size(1076, 333)
+        Me.txtOutput.ReadOnly = True
+        Me.txtOutput.Size = New System.Drawing.Size(540, 175)
         Me.txtOutput.TabIndex = 1
         Me.txtOutput.Visible = False
         '
@@ -81,12 +82,12 @@ Partial Class frmMain
         Me.trayIconMenuStrip.ImageScalingSize = New System.Drawing.Size(32, 32)
         Me.trayIconMenuStrip.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ExitTrayIconMenuStripItem})
         Me.trayIconMenuStrip.Name = "trayIconMenuStrip"
-        Me.trayIconMenuStrip.Size = New System.Drawing.Size(128, 40)
+        Me.trayIconMenuStrip.Size = New System.Drawing.Size(93, 26)
         '
         'ExitTrayIconMenuStripItem
         '
         Me.ExitTrayIconMenuStripItem.Name = "ExitTrayIconMenuStripItem"
-        Me.ExitTrayIconMenuStripItem.Size = New System.Drawing.Size(127, 36)
+        Me.ExitTrayIconMenuStripItem.Size = New System.Drawing.Size(92, 22)
         Me.ExitTrayIconMenuStripItem.Text = "E&xit"
         '
         'timAnimation
@@ -94,15 +95,14 @@ Partial Class frmMain
         '
         'frmMain
         '
-        Me.AutoScaleDimensions = New System.Drawing.SizeF(12.0!, 25.0!)
+        Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.Color.LightGray
-        Me.ClientSize = New System.Drawing.Size(1600, 865)
+        Me.ClientSize = New System.Drawing.Size(800, 450)
         Me.Controls.Add(Me.txtOutput)
         Me.Controls.Add(Me.lblPrompt)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
-        Me.Margin = New System.Windows.Forms.Padding(6)
         Me.Name = "frmMain"
         Me.Opacity = 0.75R
         Me.ShowInTaskbar = False

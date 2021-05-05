@@ -1,6 +1,7 @@
 '#Uses "utilities.bas"
 '#Uses "keyboard.bas"
 '#Uses "imports.bas"
+'#Uses "cache.bas"
 'Option Explicit On
 
 
@@ -23,7 +24,23 @@ const MOUSEEVENTF_WHEEL = &H800
 const MOUSEEVENTF_HWHEEL = &H1000
 'Courtesy of Mike Jerry
 
-public enum MouseButton
+Public Const WHEEL_CTS_ENABLED_KEY = "WheelClickToScrollEnabled"
+Public Const WHEEL_CTS_HOME_LOCATION_X_KEY = "WheelClickToScrollHomeLocationX"
+Public Const WHEEL_CTS_HOME_LOCATION_Y_KEY = "WheelClickToScrollHomeLocationY"
+Public Const WHEEL_CTS_SCROLL_DELTA = 10
+
+Public Enum WheelScrollDirection
+    N
+    NE
+    E
+    SE
+    S
+    SW
+    W
+    NW
+End Enum
+
+Public enum MouseButton
 	Left
 	Right
 	Middle
@@ -249,6 +266,61 @@ Public Sub WheelMouse(Direction As String, Optional numMoves As Integer = 5, Opt
 
 End Sub
 
+' Enables the wheel click / move the mouse to scroll feature
+Public Sub WheelClickToScroll(enable As Boolean, Optional scrollDirection As WheelScrollDirection = WheelScrollDirection.S, Optional scrollSpeedFactor As Integer = 1)
+    Dim x As Long
+    Dim y As Long
+
+    If enable Then
+        If Not CacheValueExists(WHEEL_CTS_ENABLED_KEY) Then
+            ' Turn it on
+            UpdateCacheValueSingle(WHEEL_CTS_ENABLED_KEY, "true")
+            GetMousePositionRelativeToScreen(WindowCorner.NE, x, y)
+            UpdateCacheValueSingle(WHEEL_CTS_HOME_LOCATION_X_KEY, CStr(x))
+            UpdateCacheValueSingle(WHEEL_CTS_HOME_LOCATION_Y_KEY, CStr(y))
+
+            ClickMouse(KeyModifier.none, MouseButton.Middle)
+        Else
+            x = GetCacheValueSingle(WHEEL_CTS_HOME_LOCATION_X_KEY)
+            y = GetCacheValueSingle(WHEEL_CTS_HOME_LOCATION_Y_KEY)
+        End If
+    Else
+        ' Disable
+        If CacheValueExists(WHEEL_CTS_ENABLED_KEY) Then
+            RemoveCacheValue(WHEEL_CTS_ENABLED_KEY)
+            RemoveCacheValue(WHEEL_CTS_HOME_LOCATION_X_KEY)
+            RemoveCacheValue(WHEEL_CTS_HOME_LOCATION_Y_KEY)
+        End If
+        Exit Sub
+    End If
+
+    ' Calculate mouse position
+    Dim newX As Integer
+    Dim newY As Integer
+    Dim scrollDelta As Integer
+    scrollDelta = WHEEL_CTS_SCROLL_DELTA * scrollSpeedFactor
+
+    Select Case scrollDirection
+        Case WheelScrollDirection.N
+            newY = y - scrollDelta
+        Case WheelScrollDirection.NE
+
+        Case WheelScrollDirection.E
+            newX = x + scrollDelta
+        Case WheelScrollDirection.SE
+        Case WheelScrollDirection.S
+            newY = y + scrollDelta
+        Case WheelScrollDirection.SW
+        Case WheelScrollDirection.W
+            newX = x - scrollDelta
+        Case WheelScrollDirection.NW
+    End Select
+
+    SetMousePosition(0, newX, newY)
+
+End Sub
+
+
 Public Sub DoMouseEvent(button As MouseButton, position As MouseButtonPosition)
 
     If button = MouseButton.Left And position = MouseButtonPosition.Down Then
@@ -363,46 +435,4 @@ Public Sub ConvertMousePositionToScreenCoordinates(relativeX as long, relativeY 
 
 End Sub
 
-Public Sub PressClickByNumbersHotKey()
-    SendKeys("%^+f")
-    Wait 0.1
-End Sub
 
-Public function IsClickByNumbersRunning() as Boolean
-    IsClickByNumbersRunning = IsProcessRunning("ClickByNumbers")
-End function
-
-' This works with the Window Labeler application
-Public Sub DoClickByNumbersAction(action As String)
-    Select Case action
-        Case "click"
-            SendKeys("{Enter}")
-
-        Case "shift click"
-            SendKeys("+{Enter}")
-
-        Case "control click"
-            SendKeys("^{Enter}")
-
-        Case "double-click"
-            SendKeys("%{Enter}")
-
-        Case "right-click"
-            SendKeys("^+{Enter}")
-
-        Case "pick up", "drag", "mouse down"
-            SendKeys("{Down}")
-
-        Case "put down", "drop", "mouse up"
-            SendKeys("{Up}")
-
-        Case "move to"
-            SendKeys("{Tab}")
-
-        Case Else
-            Msgbox("Unrecognized Action: " & action)
-    End Select
-
-    Wait 0.1
-	
-End Sub

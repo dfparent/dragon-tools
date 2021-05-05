@@ -1,8 +1,10 @@
 ﻿Imports System.Runtime.InteropServices
 Imports System.Windows.Input
+Imports Microsoft.Win32
 
 Module GlobalHotKeys
     Public Const WM_HOTKEY As Integer = &H312
+    Public Const DEFAULT_BRING_TO_FOREGROUND_HOTKEY As Key = Key.F1
 
     Enum KeyModifier
         None = 0
@@ -29,7 +31,9 @@ Module GlobalHotKeys
     End Function
 
     Public Sub RegisterHotkeys()
-        RegisterHotKey(frmMain.Handle, HotKeys.BringAppToForeground, KeyModifier.Alt Or KeyModifier.Control Or KeyModifier.Shift, KeyInterop.VirtualKeyFromKey(Key.F))
+        RegisterHotKey(frmMain.Handle, HotKeys.BringAppToForeground,
+                       KeyModifier.Alt Or KeyModifier.Control Or KeyModifier.Shift,
+                       KeyInterop.VirtualKeyFromKey(GetBringToForegroundHotkey()))
         RegisterHotKey(frmMain.Handle, HotKeys.FlagOptions, KeyModifier.Alt Or KeyModifier.Control Or KeyModifier.Shift, KeyInterop.VirtualKeyFromKey(Key.F2))
         RegisterHotKey(frmMain.Handle, HotKeys.ToggleStickyFlags, KeyModifier.Alt Or KeyModifier.Control Or KeyModifier.Shift, KeyInterop.VirtualKeyFromKey(Key.F3))
         RegisterHotKey(frmMain.Handle, HotKeys.ShowHideFlags, KeyModifier.Alt Or KeyModifier.Control Or KeyModifier.Shift, KeyInterop.VirtualKeyFromKey(Key.F4))
@@ -62,4 +66,38 @@ Module GlobalHotKeys
         End Select
 
     End Sub
+
+    Public Function GetBringToForegroundHotkey() As Key
+        Dim key As RegistryKey = My.Computer.Registry.CurrentUser.OpenSubKey(REGISTRY_PATH_GLOBAL_SETTINGS, False)
+        Dim converter As KeyConverter = New KeyConverter()
+
+        If key Is Nothing Then
+            ' Key does not exist.  Add it.
+            key = My.Computer.Registry.CurrentUser.CreateSubKey(REGISTRY_PATH_GLOBAL_SETTINGS, True)
+            If key Is Nothing Then
+                MsgBox("Click By Numbers failed to create hot key registry key.")
+                Return DEFAULT_BRING_TO_FOREGROUND_HOTKEY
+            End If
+
+            Try
+                key.SetValue(REGISTRY_VALUE_BRING_TO_FOREGROUND_HOTKEY, converter.ConvertToString(DEFAULT_BRING_TO_FOREGROUND_HOTKEY))
+                key.Close()
+                key = My.Computer.Registry.CurrentUser.OpenSubKey(REGISTRY_PATH_GLOBAL_SETTINGS, False)
+            Catch ex As Exception
+                MsgBox("Click My Numbers failed to save new hotkey registry key.")
+                Return DEFAULT_BRING_TO_FOREGROUND_HOTKEY
+            End Try
+        End If
+
+        GetBringToForegroundHotkey = converter.ConvertFromString(key.GetValue(REGISTRY_VALUE_BRING_TO_FOREGROUND_HOTKEY, converter.ConvertToString(DEFAULT_BRING_TO_FOREGROUND_HOTKEY)))
+        key.Close()
+    End Function
+
+    Public Function GetBringToForegroundHotKeyString() As String
+        Dim converter As KeyConverter = New KeyConverter()
+        Dim hotkey As Key
+        hotkey = GetBringToForegroundHotkey()
+
+        Return converter.ConvertToString(hotkey)
+    End Function
 End Module

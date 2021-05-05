@@ -45,4 +45,5 @@ flags=${paths:common modules}\ClickByNumbers\ClickByNumbers.exe
 inspect=${paths:inspect}\inspect.exe
 show active window=${paths:common modules}\ShowActiveWindow\ShowActiveWindow.exe
 disable word add in=${paths:common modules}\MicrosoftOfficeAddIns\DisableWordAddIn.reg
+disable excel add in=${paths:common modules}\MicrosoftOfficeAddIns\DisableExcelAddIn.reg
 

@@ -38,9 +38,10 @@ Sub PressWindowsKey(appKey As String, count As String, Optional shift As Boolean
 
     'SendKeys "{" & appKey & " " & count & "}", True
     'Wait(0.5)
-    RepeatKeystrokes(appKey, CInt(count), 0.2)
+    RepeatKeystrokes(appKey, CInt(count), 0.3)
 
     ' Windows key up
+    KeyUp(VK_LWIN)
     KeyUp(VK_LWIN)
 
     If shift Then

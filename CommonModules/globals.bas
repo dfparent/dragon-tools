@@ -17,6 +17,9 @@ Public Enum ModifierKey
     Windows = 8
 End Enum
 
+' Command string format:
+'   <type of command>:<command content>:delay;
+' e.g. Command:app next:0.1;
 Public Sub DoSaveCommands()
     ' Prompt the user for each command
     If MsgBox("Do you want to save a new set of commands for playback later (this will erase any previously saved commands)?", vbYesNo, "Save Commands") = vbNo Then
@@ -29,13 +32,19 @@ Public Sub DoSaveCommands()
     Dim value As String
     Dim commands As New System.Text.StringBuilder()
 
+    Dim delay As String
+    delay = InputBox("How much of a delay between commands?", "Record Commands", "0.1")
+    If delay = "" Then
+        delay = "0.1"
+    End If
+
     Do While (more)
         Dim newCommand As String
         '        If PromptForCommandDialog(newCommand) = False Then
-        newCommand = InputBox("Please enter content for the command." & vbcrlf & "To play keystrokes, preface with ""SendKeys:"" (i.e. 'SendKeys:^v').  " & vbcrlf &
-                              "To play a spoken command, preface with ""Command:"" (i.e. 'Command:Minimize Window').  " & vbcrlf &
-                              "Default is ""SendKeys:"" (i.e. '^v')." & vbcrlf &
-                              "Note:  mixing Command and SendKeys tends not to work as expected.", "Record Commands")
+        newCommand = InputBox("Enter your commands. Usage:" & vbcrlf &
+                              "For keystrokes, use ""SendKeys:"" with Dragon notation: (i.e. SendKeys:{ctrl+v} or {ctrl+v}).  " & vbcrlf &
+                              "For special keystrokes, use ""SendSystemKeys:"" ." & vbcrlf &
+                              "For spoken commands, use ""Command:"" (i.e. Command:Minimize Window).  ", "Record Commands")
         If newCommand = "" Then
             more = False
         Else
@@ -43,23 +52,43 @@ Public Sub DoSaveCommands()
                 commands.Append(";")
             End If
             commands.Append(newCommand)
-
+            commands.Append(":")
+            commands.Append(delay)
             If MsgBox("Add another command?", vbYesNo) = vbNo Then
                 more = False
             End If
         End If
     Loop
 
-    Dim delay As String
-    delay = InputBox("How much of a delay between commands?", "Record Commands", "0.1")
-    If delay = "" Then
-        delay = "0.1"
-    End If
-
-    SaveCommand(delay & ";" & commands.ToString())
+    SaveCommand(commands.ToString())
 
 End Sub
+
+' Delay is in seconds
+Public Sub DoRepeatCommonCommand(theCommand As String, optional delay as string = "")
+    Dim waitTime As Double
+	
+	if delay = "" then
+		delay = InputBox("Say 'Stop Commands' to stop." & vbcrlf & "How much of a delay between commands (in seconds)?", "Repeat common command", "0.1")
+		If delay = "" Then
+			Exit Sub
+		End If
+	end if
+    waitTime = CDbl(delay)
+
+    ClearDelayedCommands()
+
+    AddDelayedCommand("{" & theCommand & "}", DelayedCommandType.UseSendKeys, waitTime * 1000, -1)
+
+    RunDelayedCommands()
+
+End Sub
+
 ' Repeats commands saved using "save commands" macro
+' If count < 0, run the first command repeatedly until told to stop
+' Command string format:
+'   <type of command>:<command content>:delay;
+' e.g. Command:app next:0.1;
 Public Sub DoRepeatCommands(Optional count As Integer = 1)
 
     Dim theCommand As String
@@ -74,61 +103,70 @@ Public Sub DoRepeatCommands(Optional count As Integer = 1)
     Dim commands() As String
     commands = Split(theCommand, ";")
 
-    ' First "command" is the delay
     Dim delay As String
-    delay = commands(0)
-    dim waitTime as Double
-	waitTime = CDbl(delay)
-
+    Dim waitTime As Double
     Dim i As Integer, j As Integer
     Dim command As String
-    Dim haveCommands As Boolean
+    Dim delayedCommandRepeat As Integer
+    delayedCommandRepeat = 1
+
+    If count < 0 Then
+        ' Will hand off the repeating to the MemoryForMacros process
+        count = 1
+        delayedCommandRepeat = -1
+    End If
+
+    ClearDelayedCommands()
+
+    Dim commandParts() As String
+
+    If count > 1 Then
+        If MsgBox("Repeat current commands " & CStr(count) & " times (say 'stop commands' to stop)?", vbYesNo) = vbNo Then
+            Exit Sub
+        End If
+    End If
 
     For i = 1 To count
-        If i > 1 Then
-            If MsgBox("Completed " & CStr(i - 1) & " out of " & CStr(count) & " iterations." & vbCrLf & vbCrLf & "Keep going?", vbYesNo) = vbNo Then
-                Exit Sub
-            End If
-        End If
-
-        haveCommands = False
-
-        For j = 1 To UBound(commands)
+        For j = 0 To UBound(commands)
             'msgbox("Command: " & commands(j))
-
-            If commands(j).StartsWith("Command:") Then
-                ' Once we have a command, everything else needs to be Through delayed commands
-                If Not haveCommands Then
-                    ClearDelayedCommands()
-                End If
-                haveCommands = True
-                command = commands(j).Substring(8)
-                AddDelayedCommand(command, True, waitTime * 1000)
-            ElseIf commands(j).StartsWith("SendKeys:") Then
-                command = commands(j).Substring(9)
-                If haveCommands Then
-                    MsgBox("hi")
-                    AddDelayedCommand(command, False, waitTime * 1000)
-                Else
-                    SendKeys(command)
-                    wait(waitTime)
+            commandParts = Split(commands(j), ":")
+            If UBound(commandParts) = 2 Then
+                ' Includes command type
+                If commandParts(0) = "Command" Then
+                    command = commandParts(1)
+                    waitTime = CDbl(commandParts(2))
+                    AddDelayedCommand(command, DelayedCommandType.Spoken, waitTime * 1000, delayedCommandRepeat)
+                ElseIf commandParts(0) = "SendKeys" Then
+                    command = commandParts(1)
+                    waitTime = CDbl(commandParts(2))
+                    AddDelayedCommand(command, DelayedCommandType.UseSendKeys, waitTime * 1000, delayedCommandRepeat)
+                ElseIf commandParts(0) = "SendSystemKeys" Then
+                    command = commandParts(1)
+                    waitTime = CDbl(commandParts(2))
+                    AddDelayedCommand(command, DelayedCommandType.UseSendSystemKeys, waitTime * 1000, delayedCommandRepeat)
                 End If
             Else
-                If haveCommands Then
-                    AddDelayedCommand(commands(j), False, waitTime * 1000)
-                Else
-                    SendKeys(commands(j))
-                    Wait(waitTime)
-                End If
+                ' Default command type
+                command = commandParts(0)
+                'MsgBox(command)
+                waitTime = CDbl(commandParts(1))
+                AddDelayedCommand(command, DelayedCommandType.UseSendKeys, waitTime * 1000, delayedCommandRepeat)
+            End If
+
+            If delayedCommandRepeat < 0 Then
+                Exit For
             End If
         Next j
         'Wait(waitTime)
 
-        If haveCommands Then
-            RunDelayedCommands()
-        End If
     Next i
 
+    RunDelayedCommands()
+
+End Sub
+
+Public Sub DoStopCommands()
+    KillDelayedCommands()
 End Sub
 
 ' Allows user to edit the current saved play commands
@@ -142,7 +180,7 @@ Public Sub DoEditPlayCommands()
     End If
 
     Dim newCommand As String
-    newCommand = InputBox("Please edit the command.  Commands are separated by "";""", "Record Commands", theCommand)
+    newCommand = InputBox("Please edit the command.  Commands are separated by "";"".  Use Dragon SendKeys notation (e.g. use {ctrl+c}, not ^c).", "Record Commands", theCommand)
     If newCommand = "" Or newCommand = theCommand Then
         Exit Sub
     End If
@@ -151,6 +189,26 @@ Public Sub DoEditPlayCommands()
     SaveCommand(newCommand)
 
 End Sub
+
+' Dictation consists of a sequence of commands, each separated by the word "then".
+' For example: "got up then go down then press enter"
+' using this, the user cana series of short commands without needing to pause in between
+Public Sub DoCommandSequence(dictation As String)
+    Dim commands() As String
+    commands = dictation.Split(New String() {" then ", " Then "}, System.StringSplitOptions.None)
+
+    ClearDelayedCommands()
+
+    Dim aCommand As String
+    For Each aCommand In commands
+        'msgbox(aCommand)
+        AddDelayedCommand(aCommand, DelayedCommandType.Spoken, 100)
+    Next
+
+    RunDelayedCommands()
+
+End Sub
+
 ' "plain" prints out Text in all lowercase with no spaces
 ' "plain space" inserts a space before printing out the Text in all lowercase with no spaces
 ' "plain uppercase" prints out the text in all uppercase With no spaces
@@ -225,32 +283,17 @@ End Sub
 
 ' Prints text for performing a "SendKeys" on a special key
 ' Key can be a dictation string like "PgDn\Page Down"
-' For modifiers, pass in a combination of ModifierKey values.  You can add them to specify multiple.
-Public Sub DoMacroCodeKeys(dictationKey As String, Optional count As Integer = 1, Optional modifiers As Long = 0, Optional includeSendKeys As Boolean = False)
+' For modifiers, pass in a string containing the modifier symbols, i.e. %^ or ^+.  Use "w" for the windows key.
+Public Sub DoMacroCodeKeys(dictationKey As String, Optional count As Integer = 1, Optional modifiers As String = "", Optional includeSendKeys As Boolean = False)
     If includeSendKeys Then
         SendKeys("SendKeys{(}""""{)}")
         SendKeys("{left 2}")
     End If
 
-    If modifiers And ModifierKey.Alternate Then SendKeys("{%}")
-    If modifiers And ModifierKey.Control Then SendKeys("{^}")
-    If modifiers And ModifierKey.Shift Then SendKeys("{+}")
-    If modifiers And ModifierKey.Windows Then SendKeys("{{}WindowsHold}")
-
-    'Dim modifier As ModifierKey
-    'For Each modifier In modifiers
-    '    'msgbox CStr(modifier)
-    '    Select Case modifier
-    '        Case ModifierKey.Alternate
-    '            SendKeys("{%}")
-    '        Case ModifierKey.Control
-    '            SendKeys("{^}")
-    '        Case ModifierKey.Shift
-    '            SendKeys("{+}")
-    '        Case ModifierKey.Windows
-    '            SendKeys("{{}WindowsHold}")
-    '    End Select
-    'Next
+    If modifiers.Contains("%") Then SendKeys("{%}")
+    If modifiers.Contains("^") Then SendKeys("{^}")
+    If modifiers.Contains("+") Then SendKeys("{+}")
+    If modifiers.Contains("w") Then SendKeys("{{}WindowsHold}")
 
     SendKeys("{{}" & Split(dictationKey, "\")(0))
 
@@ -261,6 +304,42 @@ Public Sub DoMacroCodeKeys(dictationKey As String, Optional count As Integer = 1
     SendKeys("}")
 
 End Sub
+
+'Public Sub DoMacroCodeKeys(dictationKey As String, Optional count As Integer = 1, Optional modifiers As Long = 0, Optional includeSendKeys As Boolean = False)
+'    If includeSendKeys Then
+'        SendKeys("SendKeys{(}""""{)}")
+'        SendKeys("{left 2}")
+'    End If
+
+'    If modifiers And ModifierKey.Alternate Then SendKeys("{%}")
+'    If modifiers And ModifierKey.Control Then SendKeys("{^}")
+'    If modifiers And ModifierKey.Shift Then SendKeys("{+}")
+'    If modifiers And ModifierKey.Windows Then SendKeys("{{}WindowsHold}")
+
+'    'Dim modifier As ModifierKey
+'    'For Each modifier In modifiers
+'    '    'msgbox CStr(modifier)
+'    '    Select Case modifier
+'    '        Case ModifierKey.Alternate
+'    '            SendKeys("{%}")
+'    '        Case ModifierKey.Control
+'    '            SendKeys("{^}")
+'    '        Case ModifierKey.Shift
+'    '            SendKeys("{+}")
+'    '        Case ModifierKey.Windows
+'    '            SendKeys("{{}WindowsHold}")
+'    '    End Select
+'    'Next
+
+'    SendKeys("{{}" & Split(dictationKey, "\")(0))
+
+'    If count > 1 Then
+'        SendKeys(" " & CStr(count))
+'    End If
+
+'    SendKeys("}")
+
+'End Sub
 
 Public Sub DoMacroTrimLastChar(theChar As String)
     ' Get working text
@@ -285,7 +364,7 @@ Public Sub DoMacroTrimLastChar(theChar As String)
     out = Mid(fullText, 1, index - 1) & Mid(fullText, index + 1)
 
     PutClipboard(out)
-    SendKeys("^v{Right}")
+    SendKeys("^v")
     'Wait 0.1
     'Clipboard(saveClipboard)
 
