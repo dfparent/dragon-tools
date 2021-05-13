@@ -34,8 +34,8 @@ namespace KillDragon
 
                 StringBuilder toKillList = new StringBuilder();
                 string killsString = null;
-                ConsoleKeyInfo key = new ConsoleKeyInfo('K', ConsoleKey.K, false, false, false);
-
+                ConsoleKeyInfo key = new ConsoleKeyInfo();
+                
 
                 do
                 {
@@ -87,6 +87,12 @@ namespace KillDragon
                             }
                         }
                     }
+                    else
+                    {
+                        // Know brainer is not running anymore, continue on
+                        key = new ConsoleKeyInfo('K', ConsoleKey.K, false, false, false);
+                    }
+
                 } while (key.Key != ConsoleKey.K);
 
 

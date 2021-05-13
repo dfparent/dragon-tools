@@ -11,11 +11,12 @@ Private DIALOGUE_TITLES() As String = {"Save As", "Save Copy As", "Save All", "S
                                        "Change Source:", "Open", "Insert File", "Browse"}
 Private DIALOGUE_SAVE_FILE_NAME_KEY = "DialogSaveFileName"
 
-' Saves the current file name in the dialog box which can sometimes get screwed up while navigating around
 Public Sub ClearSavedDialogFileName()
     RemoveCacheValue(DIALOGUE_SAVE_FILE_NAME_KEY)
 End Sub
 
+' Saves the current file name in the dialog box which can sometimes get screwed up while navigating around
+' The macro that opens the dialog box originally should call ClearSavedDialogFileName so that the original file name is properly savd
 Public Sub DialogSaveFileName()
     If Not CacheValueExists(DIALOGUE_SAVE_FILE_NAME_KEY) Then
         SendKeys("%n^c")
@@ -26,7 +27,7 @@ End Sub
 
 Public sub doAddressBar
     SendKeys("%d")
-    Wait(0.1)
+    Wait(0.5)
 End sub
 
 public sub doLeftSide
@@ -43,7 +44,7 @@ End Sub
 
 Public Sub doDialogLeftSide()
     DialogSaveFileName()
-    SendKeys("%d%n")
+    SendKeys("%n")
     SendKeys("+{Tab 3}")
     Wait(0.1)
 End Sub
@@ -57,7 +58,7 @@ Public Sub doDialogRightSide()
     SendKeys("+{Tab 2}")
     'SendKeys("{Down}{Up}")
     SendKeys("{space}")
-    Wait(0.1)
+    Wait(0.3)
 
 End Sub
 
@@ -80,7 +81,7 @@ Public sub doDialogFolder(dictation as string)
     dim thePath as string
     thePath = getPath(pathName)
 
-    if thePath = "" Then
+    If thePath = "" Then
         ' Not a pre known path
         TTSPlayString("Let me find the " & dictation & " folder.")
         doDialogLeftSide()
@@ -89,7 +90,7 @@ Public sub doDialogFolder(dictation as string)
         Wait(0.1)
         SendKeys("{Enter}")
         Wait(0.1)
-        SendKeys("{tab}%n")
+        'SendKeys("{tab}%n")
     Else
         ' Pre known
         'TTSPlayString("Pre set path")
@@ -97,8 +98,9 @@ Public sub doDialogFolder(dictation as string)
         SendKeys(thePath)
         SendKeys("{Enter}")
         Wait(0.5)
-        SendKeys("{tab}%n")
-    End if
+        'SendKeys("%n")
+    End If
+    doDialogRightSide()
 End Sub
 
 Public Sub DoDialogueSubName(dictation As String)

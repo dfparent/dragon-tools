@@ -48795,6 +48795,24 @@ End Sub
 End Sub
 ]]></content>
     </Command>
+    <Command name="row duplicate" group="" enabled="true">
+      <description></description>
+      <content type="WinWrap Basic"><![CDATA[Sub Main
+    SendKeys("^+c")
+    SendKeys("{down}")
+    SendKeys("^+v")
+End Sub
+]]></content>
+    </Command>
+    <Command name="copy paste" group="" enabled="true">
+      <description></description>
+      <content type="WinWrap Basic"><![CDATA[Sub Main
+    SendKeys("^c")
+    Wait(0.1)
+    SendKeys("{down}^v")
+End Sub
+]]></content>
+    </Command>
   </Commands>
   <Commands scope="application" module="saplogon" company="SAP, Walldorf" moduleDescription="SAP Logon for Windows">
     <Command name="go back" group="" enabled="true">
