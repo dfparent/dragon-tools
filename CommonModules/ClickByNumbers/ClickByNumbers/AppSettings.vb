@@ -6,6 +6,7 @@ Public Class AppSettings
     Private isStickyValue As Boolean = True
     Private isDisabledValue As Boolean = False
     Private opacityValue As Integer = DEFAULT_OPACITY
+    Private prefetchEnabledValue As Boolean = False
     Private usesWindowHandleDiscoveryValue As Boolean = True
     Private usesUIAutomationDiscoveryValue As Boolean = True
     Private usesMSAADiscoveryValue As Boolean = False
@@ -43,6 +44,7 @@ Public Class AppSettings
                 isStickyValue = key.GetValue(REGISTRY_VALUE_STICKY, True)
                 isDisabledValue = key.GetValue(REGISTRY_VALUE_DISABLED, False)
                 opacityValue = key.GetValue(REGISTRY_VALUE_OPACITY, DEFAULT_OPACITY)
+                prefetchEnabledValue = key.GetValue(REGISTRY_VALUE_PREFETCH_ENABLED, False)
                 usesWindowHandleDiscoveryValue = key.GetValue(REGISTRY_VALUE_USES_WINDOW_HANDLE_DISCOVERY, True)
                 usesUIAutomationDiscoveryValue = key.GetValue(REGISTRY_VALUE_USES_UI_AUTOMATION_DISCOVERY, True)
                 usesMSAADiscoveryValue = key.GetValue(REGISTRY_VALUE_USES_MSAA_DISCOVERY, False)
@@ -51,6 +53,7 @@ Public Class AppSettings
                 isStickyValue = True
                 isDisabledValue = False
                 opacityValue = DEFAULT_OPACITY
+                prefetchEnabledValue = False
                 usesWindowHandleDiscoveryValue = True
                 usesUIAutomationDiscoveryValue = True
                 usesMSAADiscoveryValue = False
@@ -62,6 +65,7 @@ Public Class AppSettings
             isStickyValue = True
             isDisabledValue = False
             opacityValue = DEFAULT_OPACITY
+            prefetchEnabledValue = False
             usesWindowHandleDiscoveryValue = True
             usesUIAutomationDiscoveryValue = True
             usesMSAADiscoveryValue = False
@@ -87,6 +91,7 @@ Public Class AppSettings
             key.SetValue(REGISTRY_VALUE_STICKY, isStickyValue)
             key.SetValue(REGISTRY_VALUE_DISABLED, isDisabledValue)
             key.SetValue(REGISTRY_VALUE_OPACITY, opacityValue)
+            key.SetValue(REGISTRY_VALUE_PREFETCH_ENABLED, prefetchEnabledValue)
             key.SetValue(REGISTRY_VALUE_USES_WINDOW_HANDLE_DISCOVERY, usesWindowHandleDiscoveryValue)
             key.SetValue(REGISTRY_VALUE_USES_UI_AUTOMATION_DISCOVERY, usesUIAutomationDiscoveryValue)
             key.SetValue(REGISTRY_VALUE_USES_MSAA_DISCOVERY, usesMSAADiscoveryValue)
@@ -167,4 +172,12 @@ Public Class AppSettings
         End Set
     End Property
 
+    Public Property PrefetchEnabled As Boolean
+        Get
+            Return prefetchEnabledValue
+        End Get
+        Set(value As Boolean)
+            prefetchEnabledValue = value
+        End Set
+    End Property
 End Class

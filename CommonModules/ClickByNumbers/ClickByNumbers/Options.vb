@@ -53,6 +53,7 @@ Public Class frmOptions
 
         chkSticky.Checked = currentSettings.IsSticky
         chkDisable.Checked = currentSettings.IsDisabled
+        chkPrefetchFlags.Checked = currentSettings.PrefetchEnabled
         updnOpacity.Value = currentSettings.Opacity
         chkUsesWindowHandles.Checked = currentSettings.UsesWindowHandleDiscovery
         chkUsesUIAutomation.Checked = currentSettings.UsesUIAutomationDiscovery
@@ -68,6 +69,15 @@ Public Class frmOptions
 
     Private Sub chkDisable_CheckedChanged(sender As Object, e As EventArgs) Handles chkDisable.CheckedChanged
         currentSettings.IsDisabled = chkDisable.Checked
+        If chkDisable.Checked Then
+            chkPrefetchFlags.Enabled = True
+        Else
+            chkPrefetchFlags.Enabled = False
+        End If
+        MakeDirty(True)
+    End Sub
+    Private Sub chkPrefetchFlags_CheckedChanged(sender As Object, e As EventArgs) Handles chkPrefetchFlags.CheckedChanged
+        currentSettings.PrefetchEnabled = chkPrefetchFlags.Checked
         MakeDirty(True)
     End Sub
 
@@ -143,7 +153,4 @@ Public Class frmOptions
 
     End Sub
 
-    Private Sub Label2_Click(sender As Object, e As EventArgs) Handles Label2.Click
-
-    End Sub
 End Class

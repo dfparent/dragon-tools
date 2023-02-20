@@ -160,6 +160,10 @@ Public Sub UnloadCache()
     memoryApp = Nothing
 End Sub
 
+'==============================
+' Cache Values
+'==============================
+
 ' Use this to store individual values in between macro runs.
 ' These values are not persisted and will be lost the next time the MemoryForMacros process is terminated.
 ' Any number of values for any purpose can be stored in this dictionary.
@@ -224,17 +228,15 @@ ErrorHandler:
     MsgBox("Error in CacheValueExists: " & err.description)
 End Function
 
-public function GetCacheValueSingle(key as string) as string
-	dim values() as string
-	values = GetCacheValue(key)
-	GetCacheValueSingle = nothing
-	
-	if not values is nothing then
-		if UBound(values) > 0 then
-			GetCacheValueSingle = values(0)
-		end if
-	end if
-end function
+Public Function GetCacheValueSingle(key As String) As String
+    Dim values() As String
+    values = GetCacheValue(key)
+    GetCacheValueSingle = Nothing
+
+    If UBound(values) > 0 Then
+        GetCacheValueSingle = values(0)
+    End If
+End Function
 
 Public Function GetCacheValue(key As String) As String()
     On Error GoTo ErrorHandler
@@ -275,6 +277,32 @@ ErrorHandler:
     MsgBox("Error in RemoveCacheValue: " & err.description)
 End Sub
 
+Public Sub ListCacheValueKeys()
+    If Not LoadCache() Then
+        Exit Sub
+    End If
+
+    Dim text As String
+    Dim key As String
+    For Each key In values.Keys
+        If text.Length > 0 Then
+            text = text & vbcrlf
+        End If
+        text = text & key
+    Next
+
+    If text.Length = 0 Then
+        MsgBox("No values have been saved.  Save a value using the ""save to value"" command.")
+    Else
+        MsgBox(text)
+    End If
+
+End Sub
+
+'==============================
+' People
+'==============================
+
 Public Function GetPeople() As Object
     On Error GoTo ErrorHandler
 
@@ -307,6 +335,10 @@ Public Sub SavePeople()
 ErrorHandler:
     MsgBox("Error in SavePeople: " & err.description)
 End Sub
+
+'==============================
+' Paths, files, URLs and menus
+'==============================
 
 Public Function GetPaths() As Object
     On Error GoTo ErrorHandler
@@ -399,6 +431,10 @@ ErrorHandler:
 
 End Function
 
+'==============================
+' Touch Locations
+'==============================
+
 Public Function GetTouchesFileName(processName As String) As String
     GetTouchesFileName = touchesFileRoot & "-" & processName & ".txt"
 End Function
@@ -467,12 +503,16 @@ ErrorHandler:
     MsgBox("Error in SaveTouchLocations: " & err.description)
 End Sub
 
+
+'==============================
+' Delayed commands
+'==============================
+
 Public Enum DelayedCommandType
     Spoken
     UseSendKeys
     UseSendSystemKeys
 End Enum
-
 
 ' To make a command repeat indefinitely, set repeatCount < 0
 ' To disable a command, set repeatCount = 0
@@ -492,6 +532,20 @@ Public Sub AddDelayedCommand(command As String, commandType As DelayedCommandTyp
 ErrorHandler:
     MsgBox("Error in AddDelayedCommand: " & err.description)
 End Sub
+
+' Need a bit more delay on these to allow them to happen.  Recognition is slower than typing keys
+Public Sub AddSpokenDelayedCommand(command As String, Optional delayMillis As Integer = 100, Optional repeatCount As Integer = 1)
+    AddDelayedCommand(command, DelayedCommandType.Spoken, delayMillis, repeatCount)
+End Sub
+
+Public Sub AddSendKeysDelayedCommand(command As String, Optional delayMillis As Integer = 100, Optional repeatCount As Integer = 1)
+    AddDelayedCommand(command, DelayedCommandType.UseSendKeys, delayMillis, repeatCount)
+End Sub
+
+Public Sub AddSendSystemKeysDelayedCommand(command As String, Optional delayMillis As Integer = 100, Optional repeatCount As Integer = 1)
+    AddDelayedCommand(command, DelayedCommandType.UseSendSystemKeys, delayMillis, repeatCount)
+End Sub
+
 
 Public Sub ClearDelayedCommands()
     On Error GoTo ErrorHandler
@@ -541,6 +595,10 @@ ErrorHandler:
     MsgBox("Error in KillDelayedCommands: " & err.description)
 
 End Sub
+
+'==============================
+' Apps, snippets, and settings
+'==============================
 
 Public Function GetApps() As Object
     On Error GoTo ErrorHandler

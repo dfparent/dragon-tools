@@ -1,5 +1,6 @@
 ﻿Imports System.Collections
 Imports System.Collections.Concurrent
+Imports System.Threading
 Imports System.Timers
 Imports System.Windows.Forms
 Imports DNSTools
@@ -25,6 +26,7 @@ Public Class DelayedCommandManager
         m_timer.AutoReset = False
         m_timer.Enabled = False
         AddHandler m_timer.Elapsed, New ElapsedEventHandler(AddressOf Me.HandleElapsedTimer)
+        'Debug.AutoFlush = True
     End Sub
 
     Private m_commands As New ConcurrentQueue(Of DelayedCommand)
@@ -119,6 +121,7 @@ Public Class DelayedCommandManager
             m_dragon.Register()
             m_dragon.RecognitionMimic(theNextCommand.Command)
             m_dragon.UnRegister(False)
+
         Else
             ' Typed
             Dim errorMessage As String = ""

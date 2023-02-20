@@ -32,31 +32,20 @@ namespace KillDragon
                 Console.WriteLine("*********************************************************************************************");
                 Console.WriteLine();
 
-                StringBuilder toKillList = new StringBuilder();
                 string killsString = null;
                 ConsoleKeyInfo key = new ConsoleKeyInfo();
                 
 
                 do
                 {
-                    toKillList.Clear();
-                    foreach (string name in processes)
-                    {
-                        Process[] processList = Process.GetProcessesByName(name);
-                        if (processList.Length > 0)
-                        {
-                            toKillList.AppendLine(name);
-                        }
-                    }
-
-                    if (toKillList.Length == 0)
+                    killsString = GetRunningProcessListString(processes);
+                    
+                    if (killsString.Length == 0)
                     {
                         Console.WriteLine("There are no Dragon process running.  Press any key to close.");
                         Console.ReadKey(true);
                         return;
                     }
-
-                    killsString = toKillList.ToString();
 
                     if (killsString.Contains(KB_PROCESS_1))
                     //if (killsString.Contains(KB_PROCESS_1) || killsString.Contains(KB_PROCESS_2)) // Uncomment for testing only
@@ -95,39 +84,55 @@ namespace KillDragon
 
                 } while (key.Key != ConsoleKey.K);
 
-
-
-                Console.WriteLine();
-                Console.WriteLine("Here are the currently running Dragon/KB processes:");
-                Console.WriteLine();
-                Console.Write(killsString);
-                Console.WriteLine();
-                Console.WriteLine("Do you want to kill these processes? (Y/N)");
-                key = Console.ReadKey(true);
-                if (key.Key != ConsoleKey.Y)
+                bool exitApp = false;
+                do
                 {
+                    killsString = GetRunningProcessListString(processes);
+
                     Console.WriteLine();
-                    Console.WriteLine("No action taken.");
-                    Console.WriteLine("Press any key to close.");
-                    Console.ReadKey(true);
-                    return;
-                }
-
-                foreach (string name in processes)
-                {
-                    foreach (Process aProcess in Process.GetProcessesByName(name))
+                    Console.WriteLine("Here are the currently running Dragon/KB processes:");
+                    Console.WriteLine();
+                    Console.Write(killsString);
+                    Console.WriteLine();
+                    Console.WriteLine("Do you want to kill these processes?");
+                    Console.WriteLine("Press K to kill the processes.");
+                    Console.WriteLine("Press R to refresh the list.");
+                    Console.WriteLine("Press X to exit without killing any processes.");
+                    key = Console.ReadKey(true);
+                    if (key.Key == ConsoleKey.X)
                     {
-                        Console.WriteLine("Killing " + name);
-                        aProcess.Kill();
+                        Console.WriteLine();
+                        Console.WriteLine("No action taken.");
+                        Console.WriteLine("Press any key to close.");
+                        Console.ReadKey(true);
+                        exitApp = true;
                     }
-                }
+                    else if (key.Key == ConsoleKey.R)
+                    {
+                        continue;
+                    }
+                    else if (key.Key == ConsoleKey.K)
+                    {
+                        Console.WriteLine();
+                        foreach (string name in processes)
+                        {
+                            foreach (Process aProcess in Process.GetProcessesByName(name))
+                            {
+                                Console.WriteLine("Killing " + name);
+                                aProcess.Kill();
+                            }
+                        }
 
-                Console.WriteLine();
-                Console.WriteLine("Done.  You may now restart Dragon.  Press any key to close.");
-                Console.ReadKey();
+                        Console.WriteLine();
+                        Console.WriteLine("Done.  You may now restart Dragon.  Press any key to close.");
+                        Console.ReadKey();
+                        exitApp = true;
+                    }
+                } while (!exitApp);
             }
             catch (Exception ex)
             {
+                Console.WriteLine();
                 Console.WriteLine(ex.Message);
                 Console.WriteLine();
                 Console.WriteLine("Press any key to close.");
@@ -135,5 +140,19 @@ namespace KillDragon
             }
         }
 
+        private static string GetRunningProcessListString(List<string> checkProcesses)
+        {
+            StringBuilder toKillList = new StringBuilder();
+            foreach (string name in checkProcesses)
+            {
+                Process[] processList = Process.GetProcessesByName(name);
+                if (processList.Length > 0)
+                {
+                    toKillList.AppendLine(name);
+                }
+            }
+
+            return toKillList.ToString();
+        }
     }
 }

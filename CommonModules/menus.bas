@@ -11,8 +11,9 @@ Public sub ClickMenu(menuName as string)
     If menus.ContainsKey(menuName) Then
         SendKeys("%{" & menus(menuName)(0) & "}")
     Else
-		Beep
-	end if 
+        ' Guess at the menu mnemonic by using the first character
+        SendKeys("%" + menuName.Substring(0, 1))
+    End if 
 end sub
 
 ' Clicks a submenu on the current process
@@ -23,7 +24,8 @@ public Sub ClickSubMenu(menuName as string)
     If menus.ContainsKey(menuName) Then
         SendKeys("{" & menus(menuName)(0) & "}")
     Else
-		Beep
-	end if 
-end Sub
+        ' Guess at the menu mnemonic by using the first character
+        SendKeys(menuName.Substring(0, 1))
+    End If
+End Sub
 

@@ -52,21 +52,20 @@ Func RunScript()
         If $aList[$i][1] <> $dgnHwnd and $aList[$i][1] <> $activeHwnd Then
 			; Try to activate a few times
 		   Do
+				; Show splash text here because it steals focus from the intended window
+			    SplashTextOn("", "Window: " & @CRLF & $aList[$i][0], 500, 100, @DesktopWidth / 2 - 250, @DesktopHeight / 2 - 50, $DLG_NOTITLE)
+				Sleep(100)
 				local $handle = WinActivate($aList[$i][1])
 				local $state = WinGetState($handle)
-				;MsgBox($MB_SYSTEMMODAL + $MB_ICONWARNING, "Done", $state)
 				If BitAND($state, $WIN_STATE_ACTIVE) and BitAND($state, $WIN_STATE_VISIBLE) Then
-				    ;MsgBox($MB_SYSTEMMODAL + $MB_ICONWARNING, "Done", "Hi")
 				    ;If BitAND($state, $WIN_STATE_MINIMIZED) Then
 					;   WinSetState($handle, "", @SW_RESTORE)
 					;endIf
-				    SplashTextOn("", "Found window: " & @CRLF & $aList[$i][0], 500, 100, @DesktopWidth - 500, @DesktopHeight - 100, $DLG_NOTITLE)
-				    Sleep(3000)
+				    Sleep(500)
 				   ;MsgBox($MB_SYSTEMMODAL + $MB_ICONWARNING, "Done", $title)
 				   Exit
 				Else
 					;MsgBox($MB_SYSTEMMODAL + $MB_ICONWARNING, "Debug", $state)
-					SplashTextOn("", "Trying: " & @CRLF & $aList[$i][0], 500, 100, @DesktopWidth - 500, @DesktopHeight - 100, $DLG_NOTITLE)
 					$count = $count + 1
 					;Sleep(10)
 				endif

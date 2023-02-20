@@ -25,12 +25,7 @@ Module Automation
         Dim visibleCondition = New PropertyCondition(AutomationElement.IsOffscreenProperty, False)
         Dim searchCondition As New AndCondition(visibleCondition, Windows.Automation.Automation.ControlViewCondition)
         Using cacheRequest.Activate()
-            Try
-                colChildren = windowAE.FindAll(TreeScope.Subtree, searchCondition)
-            Catch ex As Exception
-                frmMain.ShowPrompt(ex.Message, 2000)
-                Exit Sub
-            End Try
+            colChildren = windowAE.FindAll(TreeScope.Subtree, searchCondition)
         End Using
 
         Dim boundingRect As System.Windows.Rect
@@ -45,7 +40,9 @@ Module Automation
                     'controls.Add(frmMain.MakeCallout(boundingRect, ""))
                 End If
             Catch ex As Exception
-                frmMain.ShowPrompt(ex.Message, 2000)
+                ' Do nothing
+                Debug.WriteLine("Exception processing automation children:  " & ex.Message)
+                Throw ex
             End Try
         Next
 

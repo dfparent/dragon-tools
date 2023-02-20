@@ -7,6 +7,7 @@
     Public Const REGISTRY_VALUE_STICKY As String = "IsSticky"
     Public Const REGISTRY_VALUE_DISABLED As String = "IsDisabled"
     Public Const REGISTRY_VALUE_OPACITY As String = "Opacity"
+    Public Const REGISTRY_VALUE_PREFETCH_ENABLED As String = "PrefetchEnabled"
     Public Const REGISTRY_VALUE_USES_WINDOW_HANDLE_DISCOVERY As String = "UsesWindowHandleDiscovery"
     Public Const REGISTRY_VALUE_USES_UI_AUTOMATION_DISCOVERY As String = "UsesUIAutomationDiscovery"
     Public Const REGISTRY_VALUE_USES_MSAA_DISCOVERY As String = "UsesMSAADiscovery"

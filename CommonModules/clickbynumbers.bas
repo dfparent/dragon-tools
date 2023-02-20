@@ -42,13 +42,25 @@ Public Sub DoClickByNumbersAction(numbers As String, Optional action As String =
         Case "right-click"
             SendKeys("^+{Enter}")
 
-        Case "pick up", "drag", "mouse down"
+        Case "pick up", "mouse down"
             SendKeys("{Down}")
 
-        Case "put down", "drop", "mouse up"
+        Case "drag"
+            SendKeys("g")
+
+        Case "put down", "mouse up"
             SendKeys("{Up}")
 
-        Case "move to"
+        Case "drop"
+            SendKeys("p")
+
+        Case "control drop"
+            SendKeys("^p")
+
+        Case "shift drop"
+            SendKeys("+p")
+
+        Case "move to", "move"
             SendKeys("{Tab}")
 
         Case Else

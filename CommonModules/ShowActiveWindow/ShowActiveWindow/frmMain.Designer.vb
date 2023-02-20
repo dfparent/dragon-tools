@@ -27,6 +27,7 @@ Partial Class frmMain
         Me.trayIcon = New System.Windows.Forms.NotifyIcon(Me.components)
         Me.trayContextMenuStrip = New System.Windows.Forms.ContextMenuStrip(Me.components)
         Me.ExitToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.timRefresh = New System.Windows.Forms.Timer(Me.components)
         Me.trayContextMenuStrip.SuspendLayout()
         Me.SuspendLayout()
         '
@@ -42,24 +43,27 @@ Partial Class frmMain
         Me.trayContextMenuStrip.ImageScalingSize = New System.Drawing.Size(32, 32)
         Me.trayContextMenuStrip.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ExitToolStripMenuItem})
         Me.trayContextMenuStrip.Name = "trayContextMenuStrip"
-        Me.trayContextMenuStrip.Size = New System.Drawing.Size(128, 40)
+        Me.trayContextMenuStrip.Size = New System.Drawing.Size(94, 26)
         '
         'ExitToolStripMenuItem
         '
         Me.ExitToolStripMenuItem.Name = "ExitToolStripMenuItem"
-        Me.ExitToolStripMenuItem.Size = New System.Drawing.Size(127, 36)
+        Me.ExitToolStripMenuItem.Size = New System.Drawing.Size(93, 22)
         Me.ExitToolStripMenuItem.Text = "E&xit"
+        '
+        'timRefresh
+        '
+        Me.timRefresh.Interval = 1000
         '
         'frmMain
         '
-        Me.AutoScaleDimensions = New System.Drawing.SizeF(12.0!, 25.0!)
+        Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.Color.LightGray
-        Me.ClientSize = New System.Drawing.Size(1600, 865)
+        Me.ClientSize = New System.Drawing.Size(800, 450)
         Me.ControlBox = False
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
-        Me.Margin = New System.Windows.Forms.Padding(6)
         Me.MaximizeBox = False
         Me.MinimizeBox = False
         Me.Name = "frmMain"
@@ -76,4 +80,5 @@ Partial Class frmMain
     Friend WithEvents trayIcon As NotifyIcon
     Friend WithEvents trayContextMenuStrip As ContextMenuStrip
     Friend WithEvents ExitToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents timRefresh As Timer
 End Class

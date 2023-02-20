@@ -1,3 +1,4 @@
+'#Uses "imports.bas"
 '#Uses "utilities.bas"
 '#Uses "keyboardconstants.bas"
 
@@ -11,7 +12,7 @@ Private Const KEYEVENTF_KEYUP As Integer = &H2
 
 Public Sub KeyDown(keyCode As Integer)
     keybd_event(keyCode, 0, KEYEVENTF_EXTENDEDKEY, 0)
-	Wait(0.1)
+    Wait(0.1)
 End Sub
 
 Public Sub KeyUp(keyCode As Integer)
@@ -42,6 +43,7 @@ Sub PressWindowsKey(appKey As String, count As String, Optional shift As Boolean
 
     ' Windows key up
     KeyUp(VK_LWIN)
+	Wait(0.1)
     KeyUp(VK_LWIN)
 
     If shift Then
@@ -81,6 +83,46 @@ Sub PressModifiedKey(keyCode As Integer, Optional shift As Boolean = False, Opti
         KeyUp(VK_ALT)
     End If
 
+End Sub
+
+Public Sub PressModifierKey(key As KeyModifier)
+    Select Case key
+        Case KeyModifier.alt
+            KeyDown(VK_ALT)
+        Case KeyModifier.control
+            KeyDown(VK_CONTROL)
+        Case KeyModifier.shift
+            KeyDown(VK_SHIFT)
+        Case KeyModifier.win
+            KeyDown(VK_LWIN)
+    End Select
+End Sub
+
+Public Sub ReleaseModifierKey(key As KeyModifier)
+    Select Case key
+        Case KeyModifier.alt
+            KeyUp(VK_ALT)
+        Case KeyModifier.control
+            KeyUp(VK_CONTROL)
+        Case KeyModifier.shift
+            KeyUp(VK_SHIFT)
+        Case KeyModifier.win
+            KeyUp(VK_LWIN)
+    End Select
+End Sub
+
+Public Sub KeyPressTypeString(dictation As String)
+    Dim i As Integer
+    For i = 1 To Len(dictation)
+        Dim code As Integer
+        Dim aChar As String
+        Dim lcaseChar As String
+        aChar = Mid(dictation, i, 1)
+        lcaseChar = LCase(aChar)
+        code = CharToKeyCode(aChar)
+        PressModifiedKey(code, aChar <> lcaseChar)
+        Wait(0.1)
+    Next i
 End Sub
 
 Public Sub ShowKeyTips()

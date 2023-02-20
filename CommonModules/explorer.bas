@@ -1,5 +1,4 @@
 '#Uses "paths.bas"
-'#Uses "paths.bas"
 '#Uses "utilities.bas"
 '#Uses "cache.bas"
 '#Uses "window.bas"
@@ -27,58 +26,68 @@ End Sub
 
 Public sub doAddressBar
     SendKeys("%d")
-    Wait(0.5)
+    Wait(0.1)
 End sub
 
 public sub doLeftSide
 	doAddressBar()
-    SendKeys("{Tab 2}")
+    SendKeys("{F6}")
 End Sub
 
 Public Sub doRightSide()
     doAddressBar()
-    RepeatKeyStrokes("{Tab}", 3)
-    'SendKeys("{Down}{Up}")
-    SendKeys("{space}")
+    'RepeatKeyStrokes("{Tab}", 3)
+    RepeatKeyStrokes("{F6}", 2)		
+	'SendKeys("{Down}{Up}")
+	SendKeys("{space}")
 End Sub
 
-Public Sub doDialogLeftSide()
-    DialogSaveFileName()
-    SendKeys("%n")
-    SendKeys("+{Tab 3}")
-    Wait(0.1)
+Public Sub doDialogLeftSide(Optional doWindowCheck As Boolean = True)
+    If doWindowCheck Then
+        If Not CheckWindowText(DIALOGUE_TITLES) Then
+            Exit Sub
+        End If
+    End If
+
+    'DialogSaveFileName()
+    doAddressBar()
+    SendKeys("{F6 2}")
+    Wait 0.1
 End Sub
 
-Public Sub doDialogRightSide()
+Public Sub doDialogRightSide(Optional doWindowCheck As Boolean = True)
+
+    If doWindowCheck Then
+        If Not CheckWindowText(DIALOGUE_TITLES) Then
+            Exit Sub
+        End If
+    End If
+
 
     ' Save current name.  Sometimes get screwed up when doing this
     'SendKeys("%d{tab}%n^c")
-    DialogSaveFileName()
-    SendKeys("%n")
-    SendKeys("+{Tab 2}")
-    'SendKeys("{Down}{Up}")
-    SendKeys("{space}")
+    'DialogSaveFileName()
+    doAddressBar()
+    SendKeys("{F6 3}")
+    'SendKeys("%d{tab 4}")
+    SendKeys("{Down}{Up}")
+    'SendKeys("{space}")
     Wait(0.3)
 
 End Sub
 
-Public sub doDialogFolder(dictation as string)
+Public Sub doDialogFolder(dictation As String)
 
-    Dim checkTitles() As String
-    ReDim checkTitles(DIALOGUE_TITLES.Length + 1)
-    System.Array.Copy(DIALOGUE_TITLES, checkTitles, DIALOGUE_TITLES.Length)
-    checkTitles(UBound(checkTitles)) = "Outlook"
-
-    If Not CheckWindowText(checkTitles) Then
+    If Not CheckWindowText(DIALOGUE_TITLES) Then
         Exit Sub
     End If
 
     DialogSaveFileName()
 
     ' Is this a known path?
-    Dim pathName as string
+    Dim pathName As String
     pathName = Trim$(dictation)
-    dim thePath as string
+    Dim thePath As String
     thePath = getPath(pathName)
 
     If thePath = "" Then
@@ -100,7 +109,6 @@ Public sub doDialogFolder(dictation as string)
         Wait(0.5)
         'SendKeys("%n")
     End If
-    doDialogRightSide()
 End Sub
 
 Public Sub DoDialogueSubName(dictation As String)
@@ -109,9 +117,9 @@ Public Sub DoDialogueSubName(dictation As String)
     End If
 
 
-    doDialogRightSide()
+    doDialogRightSide(False)
     SendKeys("{home}")
-    SendKeys(formatNoCapsNoSpaces(dictation))
+    SendKeys(Trim(dictation))
     SendKeys("{Enter}")
     'doAddressBar()
     'SendKeys("{End}\")
@@ -127,7 +135,7 @@ Public Sub DoDialogueSubNumber(dictation As String)
         Exit Sub
     End If
 
-    doDialogRightSide()
+    doDialogRightSide(False)
     SendKeys("{Home}")
 
     Dim count As Integer
@@ -139,7 +147,49 @@ Public Sub DoDialogueSubNumber(dictation As String)
 
 End Sub
 
-Public Sub DoFolder(ListVar1 As String)
+Public Sub DoDialogueSubFirstLast(dictation As String)
+    If Not CheckWindowText(DIALOGUE_TITLES) Then
+        Exit Sub
+    End If
+
+    doDialogRightSide(False)
+    SendKeys("{home}")
+    If LCase(dictation) = "last" Then
+        SendKeys("{end}")
+    End If
+    SendKeys("{enter}")
+End Sub
+
+Public Sub DoDialogBookmarkFolder()
+    If Not CheckWindowText(DIALOGUE_TITLES) Then
+        Exit Sub
+    End If
+
+    doAddressBar()
+    SendKeys("^c")
+    Wait 0.1
+    Dim text As String
+    text = GetClipboard()
+    UpdateCacheValueSingle("folder", text)
+End Sub
+
+Public Sub DoDialogGoToBookmarkFolder()
+    If Not CheckWindowText(DIALOGUE_TITLES) Then
+        Exit Sub
+    End If
+
+    doAddressBar()
+    Dim text As String
+    text = GetCacheValueSingle("folder")
+    If text.Length = 0 Then
+        MsgBox("No bookmark saved.  Save a bookmark using the ""bookmark folder"" command.")
+    Else
+        SendKeys(text)
+        SendKeys("~")
+    End If
+End Sub
+
+Public Sub DoFolder(Optional ListVar1 As String = "")
     ' Is this a known path?
     Dim pathName As String
     pathName = Trim$(ListVar1)
@@ -149,25 +199,29 @@ Public Sub DoFolder(ListVar1 As String)
 
     If thePath = "" Then
         ' Not a pre known path
-        TTSPlayString("Unknown path.  Let me find that.")
-        doLeftSide()
-        SendKeys("{home}")
-        SendKeys pathName
-        SendKeys "{Enter}"
-        Wait 0.1
-        doRightSide()
+        'TTSPlayString("Unknown path.  Let me find that.")
+        'doLeftSide()
+        'SendKeys("{home}")
+        'SendKeys pathName
+        'SendKeys "{Enter}"
+        'Wait 0.1
+        'doRightSide()
     Else
         ' Pre known
         'TTSPlayString("Pre set path")
         doAddressBar()
+        'MsgBox(thePath)
         SendKeys thePath
         SendKeys "{Enter}"
         Wait 0.1
-        SendKeys "{Tab 3}{space}"
+        'If WaitForWindowTitleChange() Then
+            SendKeys "{F6 2}{space}"
+        'End If
     End If
 End Sub
 
 Public Sub DoSubNumber(listvar1 As String)
+
     doRightSide()
     SendKeys("{home}")
     Dim count As Long
@@ -180,7 +234,7 @@ Public Sub DoSubName(dictation As String)
     doRightSide()
     SendKeys "{home}"
     SendKeys Trim(dictation)
-    Wait(0.1)
+    Wait(0.5)
     SendKeys "{Enter}"
     'SendKeys("{esc 2}")
     'doAddressBar()

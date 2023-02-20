@@ -162,7 +162,7 @@ Imports System.Threading
         commandManager = app.GetDelayedCommandManager()
         commandManager.AddCommand("Computer", 2000)
         commandManager.AddCommand("Bad Computer", 1000)
-        commandManager.AddCommand("What Time Is It?")
+        commandManager.AddCommand("What Time Is It?", MemoryForMacros.DelayedCommandManager.CommandType.Spoken)
 
         commandManager.StartCommands()
 

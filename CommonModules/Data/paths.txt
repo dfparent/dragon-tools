@@ -1,5 +1,5 @@
 ; Format lines like this:
-;	<spoken name>:<full path>
+;	<spoken name>=<full path>
 
 [paths]
 This PC=This PC

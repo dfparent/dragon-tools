@@ -1,3 +1,5 @@
+'#Uses "keyboard.bas"
+'#Uses "window.bas"
 '#Language "WWB.NET"
 Option Explicit On
 
@@ -50,6 +52,52 @@ Public Sub MoveToFolder(Listvar1 As String)
         SendKeys("{Right}")
         Wait(0.2)
     Next
+
+
+End Sub
+
+Public Sub GoToField(fieldName As String, Optional name As String = "")
+    'ShowKeyTips()
+    Select Case LCase(fieldName)
+        Case "to"
+            SendKeys("%u+{tab 3}")
+        Case "cc"
+            SendKeys("%u+{tab 2}")
+        Case "bcc"
+            SendKeys("%u+{tab}")
+		case else
+			Msgbox("Unsupported field: " & fieldName)
+    End Select
+
+    'SendKeys("{end}")
+
+    If name <> "" Then
+        SendKeys(name)
+    End If
+
+End Sub
+
+Public Sub SnoozeReminder(ListVar1 As String)
+    If Not CheckWindowText("Reminder(s)") Then
+        Exit Sub
+    End If
+
+    SendKeys("%c")
+    Dim snooze As String
+    If ListVar1 = "Half Hour" Then
+        snooze = "30 Minutes"
+    Else
+        snooze = ListVar1
+    End If
+    SendKeys(snooze)
+    'SendKeys "{Down}%s"
+    SendKeys("%s")
+    Wait(0.3)
+
+    ' Sometimes the reminder window is now closed
+    If CheckWindowText("Reminder(s)") Then
+        SendKeys("{Tab 3}")
+    End If
 
 
 End Sub

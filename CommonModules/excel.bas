@@ -5,6 +5,26 @@
 Private Declare Function SetFocus Lib "user32" (ByVal hwnd As Long) As Long
 Private Declare Function FindWindowEx Lib "user32" Alias "FindWindowExA" (ByVal hWnd1 As Long, ByVal hWnd2 As Long, ByVal lpsz1 As String, ByVal lpsz2 As String) As Long
 
+Public Sub ReplaceCellContents(dictation As String)
+    SendKeys("{F2}^+{Home}^c")
+
+    Dim text As String
+    text = GetClipboard()
+
+    Dim findText As String
+    Dim replaceText As String
+
+    If Not ParseReplaceDictation(dictation, findText, replaceText) Then
+        SendKeys("{escape}")
+        Exit Sub
+    End If
+
+    text = Replace(text, findText, replaceText)
+
+    PutClipboard(text)
+    SendKeys("^v~")
+End Sub
+
 Sub SetFocusNameBox()
     Dim Res As Long
 	dim hExcel, hExcel2, hNameBox as long
@@ -16,6 +36,7 @@ End Sub
 
 ' Gets the "A1" designation for the current selection
 Public Function GetCellAddress() As String
+
     SendKeys("+{F10}")
     Wait(0.1)
     SendKeys "a"
@@ -128,20 +149,23 @@ Public Sub AutoSeries(direction As String, startValue As Integer, stopValue As I
         'Wait(0.1)
     Next
 
+	' Select last entered number
+	SendKeys("{up}")
+	
     ' Go Back
-    For i = startValue To stopValue Step stepValue
-        Select Case LCase(direction)
-            Case "up"
-                SendKeys("{Down}")
-            Case "down"
-                SendKeys("{Up}")
-            Case "left"
-                SendKeys("{Right}")
-            Case "right"
-                SendKeys("{Left}")
-            Case Else
-                Exit Sub
-        End Select
-        'Wait(0.1)
-    Next
+'    For i = startValue To stopValue Step stepValue
+'        Select Case LCase(direction)
+'            Case "up"
+'                SendKeys("{Down}")
+'            Case "down"
+'                SendKeys("{Up}")
+'            Case "left"
+'                SendKeys("{Right}")
+'            Case "right"
+'                SendKeys("{Left}")
+'            Case Else
+'                Exit Sub
+'        End Select
+'        'Wait(0.1)
+'    Next
 End Sub

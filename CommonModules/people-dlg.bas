@@ -30,6 +30,7 @@ Public Function ShowPersonDialog(match As String, showPeople() As String, ByRef 
 
     selectedName = showPeople(dlg.lstPeople)
     ShowPersonDialog = True
+
 End Function
 
 Private Function DialogFunc(DlgItem$, Action%, SuppValue?) As Boolean

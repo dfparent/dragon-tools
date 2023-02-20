@@ -1,3 +1,4 @@
+
 Public Const VK_ADD = &H6B
 Public Const VK_ATTN = &HF6
 Public Const VK_BACK = &H8 'back space
@@ -126,3 +127,65 @@ Public Const VK_W = &H57
 Public Const VK_X = &H58
 Public Const VK_Y = &H59
 Public Const VK_Z = &H5A
+
+Private Declare Function ToAscii Lib "user32" (ByVal uVirtKey As Integer, ByVal uScanCode As Integer, ByVal lpKeyState() As Byte, ByVal lpChar() As Byte, ByVal uFlags As Integer) As Integer
+
+Public Function CharToKeyCode(theChar As String) As Integer
+
+    ' Only single character strings allowed
+    If Len(theChar) > 1 Then
+        CharToKeyCode = 0
+        Exit Function
+    End If
+
+    If IsNumeric(theChar) Then
+        Dim theNum As Integer
+        theNum = CInt(theChar)
+        CharToKeyCode = theNum + &H30
+        Exit Function
+    End If
+
+    ' Is this a letter?
+    If UCase$(theChar) <> LCase$(theChar) Then
+        Dim index As Integer
+        index = Instr("abcdefghijklmnopqrstuvwxyz", LCase(theChar))
+        CharToKeyCode = index + &H40
+        Exit Function
+    End If
+
+    ' Punctuation or other
+    Select Case theChar
+        Case "+"
+            CharToKeyCode = &H6B
+        Case "."
+            CharToKeyCode = &H6E
+        Case "/"
+            CharToKeyCode = &H6F ' /
+        Case "*"
+            CharToKeyCode = &H6A ' *
+        Case "0"
+            CharToKeyCode = &H60
+        Case "1"
+            CharToKeyCode = &H61
+        Case "2"
+            CharToKeyCode = &H62
+        Case "3"
+            CharToKeyCode = &H63
+        Case "4"
+            CharToKeyCode = &H64
+        Case "5"
+            CharToKeyCode = &H65
+        Case "6"
+            CharToKeyCode = &H66
+        Case "7"
+            CharToKeyCode = &H67
+        Case "8"
+            CharToKeyCode = &H68
+        Case "9"
+            CharToKeyCode = &H69
+        Case " "
+            CharToKeyCode = &H20 'space bar
+        Case "-"
+            CharToKeyCode = &H6D ' -
+    End Select
+End Function

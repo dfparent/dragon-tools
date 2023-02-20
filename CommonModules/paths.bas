@@ -1,4 +1,5 @@
 '#Uses "cache.bas"
+'#Uses "PathSelect-dlg.bas"
 '#Language "WWB.NET"
 Option Explicit On
 
@@ -9,8 +10,8 @@ Public Function getPath(path As String) As String
     paths = GetPaths()
     path = LCase(path)
     If Not paths.ContainsKey(path) Then
-        'MsgBox "There is no defined '" & path & "' path."
-        Return ""
+        ' Returns empty string if No selection
+        Return SelectPath(path)
     End If
 
     Return paths(path)(0)
@@ -19,6 +20,20 @@ ErrorHandler:
     Msgbox "Error: " & err.description
     Return ""
 End Function
+
+Public Sub ShowPaths()
+    On Error GoTo ErrorHandler
+    Dim paths As Object
+
+    paths = GetPaths()
+    SelectPath("")
+
+    Exit Sub
+
+ErrorHandler:
+    Msgbox "Error: " & err.description
+
+End Sub
 
 Public Function getFile(file As String) As String
     On Error GoTo ErrorHandler
@@ -37,19 +52,62 @@ ErrorHandler:
     Return ""
 End Function
 
-Public function getUrl(url as String)
-    on error goto ErrorHandler
+Public Function getUrl(url As String) As String
+    On Error GoTo ErrorHandler
     Dim urls As Object
     urls = GetURLs()
     url = LCase(url)
-    if not urls.ContainsKey(url) Then
-        MsgBox "There is no defined '" & url & "' url."
-        Return ""
-    end If
+    If Not urls.ContainsKey(url) Then
+        'MsgBox "There is no defined '" & url & "' url."
+        ' Returns empty string if No selection
+        Return SelectUrl(url)
+    End If
 
     Return urls(url)(0)
 
 ErrorHandler:
-	Msgbox "Error: " & err.description
-	return ""
-end function
+    Msgbox "Error: " & err.description
+    Return ""
+End Function
+
+Public Function SelectPath(name As String) As String
+    On Error GoTo ErrorHandler
+    Dim paths As Object
+
+    paths = GetPaths()
+
+    Dim selectedPath As String
+    If Not SelectDataDialog(name, paths, "path", selectedPath) Then
+        ' User Cancelled
+        Exit Function
+    End If
+
+    Return selectedPath
+
+
+ErrorHandler:
+    Msgbox("Error: " & err.description)
+    Return ""
+
+End Function
+
+Public Function SelectUrl(url As String) As String
+    On Error GoTo ErrorHandler
+    Dim urls As Object
+
+    urls = GetURLs()
+
+    Dim selectedUrl As String
+    If Not SelectDataDialog(url, urls, "URL", selectedUrl) Then
+        ' User Cancelled
+        Exit Function
+    End If
+
+    Return selectedUrl
+
+
+ErrorHandler:
+    Msgbox("Error: " & err.description)
+    Return ""
+
+End Function

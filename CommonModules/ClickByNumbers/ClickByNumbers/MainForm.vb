@@ -59,9 +59,13 @@ Public Class frmMain
         ' Make background transparent
         Me.TransparencyKey = transparentColor
         Me.BackColor = transparentColor
-
+        Me.Hide()
         GlobalHotKeys.RegisterHotkeys()
         WindowMonitor.InitializeSystemMonitor()
+
+        ' Debug.Listeners.Add(New TextWriterTraceListener(Console.Out))
+        Debug.AutoFlush = True
+
     End Sub
 
     ' Use force = true to force a refresh on the current window
@@ -76,6 +80,9 @@ Public Class frmMain
         End If
 
         SyncLock lockObject
+            Debug.WriteLine("Resize to target")
+            Me.Hide()
+
             If currentTargetWindowHandle <> handle Then
                 currentTargetWindowHandle = handle
                 ReloadSettings()
@@ -97,8 +104,9 @@ Public Class frmMain
 
             callouts.Clear()
 
-            If currentSettings.IsDisabled Then
-                ' Callouts are not enabled, so don't load them yet.
+            ' Load callouts if we need to display them, or if prefetch is enabled
+            If currentSettings.IsDisabled And Not currentSettings.PrefetchEnabled Then
+                ' Callouts are not enabled and no prefetch, so don't load them yet.
                 Exit Sub
             End If
 
@@ -111,7 +119,10 @@ Public Class frmMain
             Me.Width = clientRect.Right
             Me.Height = clientRect.Bottom
 
-            ShowPrompt("Loading numbers...")
+            If Not currentSettings.IsDisabled Then
+                ShowPrompt("Loading numbers...")
+            End If
+
 
             If currentSettings.UsesWindowHandleDiscovery Then
                 ' Create callouts for child windows with handles
@@ -125,23 +136,34 @@ Public Class frmMain
                     targetWindowAE = AutomationElement.FromHandle(handle)
                     Automation.processAutomationChildren(targetWindowAE)
                 Catch ex As Exception
-                    ShowPrompt("Error getting automation children", 5000)
+                    If Not currentSettings.IsDisabled Then
+                        ShowPrompt("Error getting automation children: " & ex.Message, 5000)
+                    End If
+                    Debug.WriteLine("Error getting automation children: " & ex.Message)
+                    Exit Sub
                 End Try
             End If
 
             If currentSettings.UsesMSAADiscovery Then
-                MSAAUtils.ProcessAccessibleWindow(handle)
+                Try
+                    MSAAUtils.ProcessAccessibleWindow(handle)
+                Catch ex As Exception
+                    If Not currentSettings.IsDisabled Then
+                        ShowPrompt("Error getting MSAA children: " & ex.Message, 5000)
+                    End If
+                    Debug.WriteLine("Error getting MSAA children: " & ex.Message)
+                    Exit Sub
+                End Try
             End If
 
-            If startingTargetWindowHandle = currentTargetWindowHandle Then
-                ' Target window has not changed, so proceed
-                RenderCallouts()
-                ' Check for window change again.  Can happen when clicking results in another window launching
-                If startingTargetWindowHandle <> currentTargetWindowHandle Then
-                    SetCalloutsEnabled(False)
-                End If
-            End If
+            RenderCallouts()
 
+            ' Check for window change again.  Can happen when clicking results in another window launching
+            If startingTargetWindowHandle <> currentTargetWindowHandle Then
+                SetCalloutsEnabled(False)
+            ElseIf Not currentSettings.IsDisabled Then
+                ShowCallouts()
+            End If
 
             HidePrompt()
 
@@ -157,6 +179,7 @@ Public Class frmMain
     End Sub
 
     Public Sub ShowPrompt(text As String, Optional timeout As Integer = 0)
+        Debug.WriteLine("Show Prompt")
         If timeout > 0 Then
             timPrompt.Interval = timeout
             timPrompt.Start()
@@ -167,6 +190,8 @@ Public Class frmMain
         lblPrompt.Left = (Me.Width / 2) - lblPrompt.Width / 2
         lblPrompt.Top = (Me.Height / 2) - lblPrompt.Height / 2
         lblPrompt.Visible = True
+        Me.Opacity = 1
+        Me.Show()
 
         Application.DoEvents()
     End Sub
@@ -184,6 +209,7 @@ Public Class frmMain
     End Sub
 
     Public Sub HidePrompt()
+        Debug.WriteLine("Hide Prompt")
         lblPrompt.Visible = False
         timPrompt.Stop()
     End Sub
@@ -191,6 +217,9 @@ Public Class frmMain
     Private Sub TimPrompt_Tick(sender As Object, e As EventArgs) Handles timPrompt.Tick
         timPrompt.Stop()
         lblPrompt.Visible = False
+        If currentSettings.IsDisabled Then
+            Me.Hide()
+        End If
     End Sub
 
     Private Sub timSplash_Tick(sender As Object, e As EventArgs) Handles timSplash.Tick
@@ -261,6 +290,7 @@ Public Class frmMain
     ' Once you have created the callouts, create the Picture Boxes and render them.
     ' We do this all at once for performance reasons
     Public Sub RenderCallouts()
+        Debug.WriteLine("Render callouts")
 
         Dim controlRange As New List(Of Control)
         callouts.Clear()
@@ -301,13 +331,20 @@ Public Class frmMain
             AddHandler pb.MouseEnter, AddressOf Callout_OnPictureMouseEnter
             AddHandler pb.MouseLeave, AddressOf Callout_OnPictureMouseLeave
 
-            'Me.Controls.Add(pb)
+            'Controls.Add(pb)
             controlRange.Add(pb)
 
         Next
 
         ' Show them
         Controls.AddRange(controlRange.ToArray())
+
+    End Sub
+
+    Public Sub ShowCallouts()
+        Debug.WriteLine("Show callouts")
+
+        Me.Show()
 
         ' Start animation
         Me.Opacity = currentSettings.Opacity / 100
@@ -316,16 +353,27 @@ Public Class frmMain
     End Sub
 
     Public Sub SetCalloutsEnabled(enabled As Boolean)
+        Debug.WriteLine("Set callouts enabled")
+
+        If enabled And currentSettings.IsDisabled And currentSettings.PrefetchEnabled Then
+            currentSettings.IsDisabled = Not enabled
+            'ShowPrompt("Loading numbers...")
+            ShowCallouts()
+            'HidePrompt()
+            Exit Sub
+        End If
+
         currentSettings.IsDisabled = Not enabled
         If enabled Then
             ResizeToTargetWindow(currentTargetWindowHandle, True)
         Else
             timAnimation.Stop()
-            Dim pb As PictureBox
-            For Each kvp As KeyValuePair(Of String, PictureBox) In callouts
-                pb = kvp.Value
-                pb.Visible = False
-            Next
+            Me.Hide()
+            'Dim pb As PictureBox
+            'For Each kvp As KeyValuePair(Of String, PictureBox) In callouts
+            ' pb = kvp.Value
+            ' pb.Visible = False
+            ' Next
         End If
     End Sub
 
@@ -444,17 +492,21 @@ Public Class frmMain
             AddToPrompt(theChar)
             userCalloutEntry = userCalloutEntry & theChar
 
-        ElseIf e.KeyCode = Keys.Tab Or e.KeyCode = Keys.Enter Or e.KeyCode = Keys.Up Or e.KeyCode = Keys.Down Then
+        ElseIf e.KeyCode = Keys.Tab Or e.KeyCode = Keys.Enter Or e.KeyCode = Keys.Up Or e.KeyCode = Keys.Down Or e.KeyCode = Keys.G Or e.KeyCode = Keys.P Then
             ' Do some sort of mouse action
 
             Dim clickPoint As Drawing.Point = GetCallOutClickPoint()
             HideCalloutsUnderPointer(clickPoint)
+            'SetCalloutsEnabled(False)
+
             Thread.Sleep(100)
             SetForegroundWindow(currentTargetWindowHandle)
             Thread.Sleep(100)
 
             ' Wait for window
             WaitForWindow(currentTargetWindowHandle, 5)
+
+            Dim doDrag As Boolean = False
 
             If e.KeyData = Keys.Enter Then
                 ' Simple mouseclick
@@ -481,23 +533,60 @@ Public Class frmMain
                 InputUtils.MouseRightClick(clickPoint)
 
             ElseIf e.KeyCode = Keys.Down Then
+                ' Mouse down
                 InputUtils.MouseLeftDown(clickPoint)
 
             ElseIf e.KeyCode = Keys.Up Then
+                ' Mouse up
                 InputUtils.MouseLeftUp(clickPoint)
 
             ElseIf e.KeyCode = Keys.Tab Then
+                ' Move 
                 Cursor.Position = clickPoint
+
+            ElseIf e.KeyCode = Keys.G Then
+                ' Prep for drag operation
+                Cursor.Position = clickPoint
+
+                ' Don't hide the callouts or refresh them
+                doDrag = True
+
+            ElseIf e.KeyCode = Keys.P Then
+                ' Drop
+                SetCalloutsEnabled(False)
+                Thread.Sleep(100)
+                If e.KeyData = (Keys.Control + Keys.P) Then
+                    InputUtils.KeyDown(Keys.Control)
+                    InputUtils.MouseLeftDown(Cursor.Position)
+                    Cursor.Position = clickPoint
+                    Thread.Sleep(100)
+                    InputUtils.MouseLeftUp(clickPoint)
+                    InputUtils.KeyUp(Keys.Control)
+                ElseIf e.KeyData = (Keys.Shift + Keys.P) Then
+                    InputUtils.KeyDown(Keys.Shift)
+                    InputUtils.MouseLeftDown(Cursor.Position)
+                    Cursor.Position = clickPoint
+                    Thread.Sleep(100)
+                    InputUtils.MouseLeftUp(clickPoint)
+                    InputUtils.KeyUp(Keys.Shift)
+                Else
+                    InputUtils.MouseLeftDown(Cursor.Position)
+                    Cursor.Position = clickPoint
+                    Thread.Sleep(100)
+                    InputUtils.MouseLeftUp(clickPoint)
+                End If
             End If
 
             FinishCalloutEntry()
             ShowHiddenCallouts()
-            If Not currentSettings.IsSticky Then
-                SetCalloutsEnabled(False)
-            ElseIf e.KeyCode = Keys.Enter Then
-                RefreshCallouts()
+            If Not doDrag Then
+                If Not currentSettings.IsSticky Then
+                    SetCalloutsEnabled(False)
+                ElseIf e.KeyCode = Keys.Enter Then
+                    RefreshCallouts()
+                    'SetCalloutsEnabled(True)
+                End If
             End If
-
         End If
 
     End Sub
@@ -550,6 +639,7 @@ Public Class frmMain
     End Sub
 
     Public Sub RefreshCallouts()
+        Debug.WriteLine("Refresh Callouts")
         ResizeToTargetWindow(currentTargetWindowHandle, True)
         FinishCalloutEntry()
         SetForegroundWindow(currentTargetWindowHandle)

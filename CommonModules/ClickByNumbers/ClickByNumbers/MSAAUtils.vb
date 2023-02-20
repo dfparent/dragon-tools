@@ -1,6 +1,7 @@
 ﻿Imports System.Runtime.InteropServices
 Imports Accessibility
 Imports System.Windows.Forms
+Imports System.Threading
 
 Module MSAAUtils
     <DllImport("oleacc.dll")>
@@ -79,79 +80,85 @@ Module MSAAUtils
     ' Returns true on success
     ' Returns fasle if an error occurred.
     Public Function ProcessAccessibleChildren(parentAcc As Accessibility.IAccessible, ByRef madeCallout As Boolean) As Boolean
-        Dim childCount As Int32
-        childCount = parentAcc.accChildCount()
-        If childCount = 0 Then
-            ' No Children.  Make a callout for this?
-            If MaybeMakeCallout(parentAcc, CHILDID_SELF) Then
-                madeCallout = True
-            Else
-                madeCallout = False
-            End If
-            Return True
-        End If
-
-        ' Has children.  Remember the default action
-        Dim parentDefAction As String
-
         Try
-            parentDefAction = parentAcc.accDefaultAction(CHILDID_SELF)
-        Catch ex As Exception
-            parentDefAction = ""
-        End Try
+            Thread.Yield()
 
-        Dim childHasCallout As Boolean = False
+            Dim childCount As Int32
+            childCount = parentAcc.accChildCount()
+            If childCount = 0 Then
+                ' No Children.  Make a callout for this?
+                If MaybeMakeCallout(parentAcc, CHILDID_SELF) Then
+                    madeCallout = True
+                Else
+                    madeCallout = False
+                End If
+                Return True
+            End If
 
-        ' Call process on each child
-        ' Get children
-        Dim returnedCount As Int32
-        Dim children(childCount) As Object
-        Dim retVal As UInteger
-        retVal = AccessibleChildren(parentAcc, 0, childCount, children, returnedCount)
-        If retVal <> S_OK And retVal <> S_FALSE Then
-            frmMain.ShowPrompt("An error occurred while obtaining accessibility children.", 5000)
-            Application.DoEvents()
-            Return False
-        End If
-        childCount = returnedCount
-        Dim child As IAccessible
-        Dim childID As Int32
-        Dim innerMadeCallout As Boolean
-        For i = 0 To childCount - 1
-            If TypeOf children(i) Is IAccessible Then
-                ' An actual accessible object and not a "simple element"
-                child = children(i)
-                ProcessAccessibleChildren(child, innerMadeCallout)
-                If innerMadeCallout Then
-                    childHasCallout = True
-                End If
-            ElseIf TypeOf children(i) Is Int32 Then
-                ' Simple element.  It's accessiblilty properties come from the parent
-                ' Make callout?
-                childID = children(i)
-                If MaybeMakeCallout(parentAcc, childID) Then
-                    childHasCallout = True
-                End If
-            Else
-                frmMain.ShowPrompt("Unknown child type: " & children(i).GetType().ToString(), 5000)
+            ' Has children.  Remember the default action
+            Dim parentDefAction As String
+
+            Try
+                parentDefAction = parentAcc.accDefaultAction(CHILDID_SELF)
+            Catch ex As Exception
+                parentDefAction = ""
+            End Try
+
+            Dim childHasCallout As Boolean = False
+
+            ' Call process on each child
+            ' Get children
+            Dim returnedCount As Int32
+            Dim children(childCount) As Object
+            Dim retVal As UInteger
+            retVal = AccessibleChildren(parentAcc, 0, childCount, children, returnedCount)
+            If retVal <> S_OK And retVal <> S_FALSE Then
+                frmMain.ShowPrompt("An error occurred while obtaining accessibility children.", 5000)
                 Application.DoEvents()
                 Return False
             End If
-        Next
+            childCount = returnedCount
+            Dim child As IAccessible
+            Dim childID As Int32
+            Dim innerMadeCallout As Boolean
+            For i = 0 To childCount - 1
+                If TypeOf children(i) Is IAccessible Then
+                    ' An actual accessible object and not a "simple element"
+                    child = children(i)
+                    ProcessAccessibleChildren(child, innerMadeCallout)
+                    If innerMadeCallout Then
+                        childHasCallout = True
+                    End If
+                ElseIf TypeOf children(i) Is Int32 Then
+                    ' Simple element.  It's accessiblilty properties come from the parent
+                    ' Make callout?
+                    childID = children(i)
+                    If MaybeMakeCallout(parentAcc, childID) Then
+                        childHasCallout = True
+                    End If
+                Else
+                    frmMain.ShowPrompt("Unknown child type: " & children(i).GetType().ToString(), 5000)
+                    Application.DoEvents()
+                    Return False
+                End If
+            Next
 
-        madeCallout = False
-        If childHasCallout Then
-            madeCallout = True
-        Else
-            ' Does this parent object have a default action?
-            If parentDefAction <> "" Then
-                ' Need to make a callout for this parent
-                If MaybeMakeCallout(parentAcc, CHILDID_SELF) Then
-                    madeCallout = True
+            madeCallout = False
+            If childHasCallout Then
+                madeCallout = True
+            Else
+                ' Does this parent object have a default action?
+                If parentDefAction <> "" Then
+                    ' Need to make a callout for this parent
+                    If MaybeMakeCallout(parentAcc, CHILDID_SELF) Then
+                        madeCallout = True
+                    End If
                 End If
             End If
-        End If
-        Return True
+            Return True
+        Catch ex As Exception
+            Return False
+        End Try
     End Function
 
     ' Returns true if a callout was made, false if a callout was not made

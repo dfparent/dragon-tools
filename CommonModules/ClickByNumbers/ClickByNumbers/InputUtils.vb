@@ -135,9 +135,11 @@ Module InputUtils
 
         Cursor.Position = clickPoint
 
+        ' Probably involved in a drag and we need to allow the drag to happen before releasing the mouse
+        Thread.Sleep(100)
+
         Dim theInput(0) As INPUT
         theInput(0).type = INPUT_MOUSE
-        'theInput(0).mi.dwFlags = MOUSEEVENTF_LEFTUP + MOUSEEVENTF_ABSOLUTE
         theInput(0).mi.dwFlags = MOUSEEVENTF_LEFTUP
         'theInput(0).mi.dx = clickPoint.X
         'theInput(0).mi.dy = clickPoint.Y

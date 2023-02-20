@@ -214,4 +214,7 @@
     </BootstrapperPackage>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>xcopy /Y "$(TargetDir)*" "$(SolutionDir)\.."</PostBuildEvent>
+  </PropertyGroup>
 </Project>

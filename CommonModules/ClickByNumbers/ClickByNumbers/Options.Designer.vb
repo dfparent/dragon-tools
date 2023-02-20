@@ -37,6 +37,7 @@ Partial Class frmOptions
         Me.cmdSave = New System.Windows.Forms.Button()
         Me.Label2 = New System.Windows.Forms.Label()
         Me.updnOpacity = New System.Windows.Forms.NumericUpDown()
+        Me.chkPrefetchFlags = New System.Windows.Forms.CheckBox()
         Me.GroupBox1.SuspendLayout()
         CType(Me.updnOpacity, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
@@ -177,6 +178,16 @@ Partial Class frmOptions
         Me.updnOpacity.Size = New System.Drawing.Size(43, 20)
         Me.updnOpacity.TabIndex = 26
         '
+        'chkPrefetchFlags
+        '
+        Me.chkPrefetchFlags.AutoSize = True
+        Me.chkPrefetchFlags.Location = New System.Drawing.Point(131, 87)
+        Me.chkPrefetchFlags.Name = "chkPrefetchFlags"
+        Me.chkPrefetchFlags.Size = New System.Drawing.Size(94, 17)
+        Me.chkPrefetchFlags.TabIndex = 27
+        Me.chkPrefetchFlags.Text = "&Prefetch Flags"
+        Me.chkPrefetchFlags.UseVisualStyleBackColor = True
+        '
         'frmOptions
         '
         Me.AcceptButton = Me.cmdSave
@@ -184,6 +195,7 @@ Partial Class frmOptions
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.CancelButton = Me.btnClose
         Me.ClientSize = New System.Drawing.Size(355, 342)
+        Me.Controls.Add(Me.chkPrefetchFlags)
         Me.Controls.Add(Me.updnOpacity)
         Me.Controls.Add(Me.Label2)
         Me.Controls.Add(Me.cmdSave)
@@ -225,4 +237,5 @@ Partial Class frmOptions
     Friend WithEvents cmdSave As Button
     Friend WithEvents Label2 As Label
     Friend WithEvents updnOpacity As NumericUpDown
+    Friend WithEvents chkPrefetchFlags As CheckBox
 End Class

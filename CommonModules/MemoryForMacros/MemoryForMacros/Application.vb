@@ -218,7 +218,8 @@ Public Class Application
             Using fileReader As New System.IO.StreamReader(fileName)
 
                 Dim fields As New List(Of String)()
-                Dim separators() As String = {KEY_VALUE_SEPARATOR.Name, VALUE_SEPARATOR.Name}
+                'Dim separators() As String = {KEY_VALUE_SEPARATOR.Name, VALUE_SEPARATOR.Name}
+                Dim separators() As String = {VALUE_SEPARATOR.Name}
                 Dim theKey As String
                 Dim line As String
                 Dim dict As Dictionary
@@ -269,15 +270,25 @@ Public Class Application
                         '   <key>=<value 1>,<value 2>,...
 
                         fields.Clear()
-                        fields.AddRange(line.Split(separators, System.StringSplitOptions.RemoveEmptyEntries))
 
-                        If fields.Count < 2 Then
-                            Throw New FormatException("MemoryForMacros:  The following line is formatted incorrectly:  " & line)
+                        'Split at first equal sign
+                        Dim equalSignIndex As Integer
+                        equalSignIndex = line.IndexOf(KEY_VALUE_SEPARATOR.Name)
+                        If equalSignIndex < 0 Then
+                            Throw New FormatException("MemoryForMacros:  The following line is formatted incorrectly (no equal sign):  " & line)
                             Continue Do
                         End If
 
-                        theKey = fields(0)
-                        fields.RemoveAt(0)
+                        theKey = line.Substring(0, equalSignIndex)
+
+                        ' Get values
+                        fields.AddRange(line.Substring(equalSignIndex + 1).Split(separators, System.StringSplitOptions.RemoveEmptyEntries))
+
+
+                        If fields.Count < 1 Then
+                            Throw New FormatException("MemoryForMacros:  The following line is formatted incorrectly (no values):  " & line)
+                            Continue Do
+                        End If
 
                         ' Replace NEW_LINEs
                         For i As Integer = 0 To fields.Count - 1

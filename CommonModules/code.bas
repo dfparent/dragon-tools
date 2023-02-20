@@ -25,6 +25,7 @@ Public Sub DoCodeBlock(ListVar1 As String, Optional injectSelection As Boolean =
     Dim selectedText As String
 
     If CheckWindowText(titles) Then
+        ' VB in non-dev studio
         If injectSelection Then
             SendKeys("^x")
             selectedText = GetClipboard()
@@ -212,7 +213,17 @@ Public Sub DoCodeBlock(ListVar1 As String, Optional injectSelection As Boolean =
             SendKeys("lock")
             Wait(0.1)
             SendKeys("{Tab 2}")
-        Else
+        ElseIf ListVar1 = "invoke" Then
+            If injectSelection Then
+                SendKeys("^x")
+            End If
+            SendKeys("Invoke{(}{(}Action)delegate {{}{enter}")
+            Wait(0.1)
+			SendKeys("{down};{up}")
+			if injectSelection then
+				SendKeys("^v")
+			end if
+		Else
             MsgBox("Code block '" & ListVar1 & "' not yet implemented.")
         End If
     End If
@@ -361,10 +372,13 @@ End Sub
 Public Sub DoLogicalOperator(theOperator As String, Optional dictation As String = "")
     Dim lang As Language
     lang = GetCodingLanguage()
-
+	dim addSemicolon as boolean
+	addSemicolon = false
+	
     Select Case theOperator
         Case "equal", "equals", "equal to"
             SendKeys " = "
+			addSemicolon = true
         Case "not equal", "not equals", "not equal to"
             Select Case lang
                 Case Language.VB
@@ -382,18 +396,36 @@ Public Sub DoLogicalOperator(theOperator As String, Optional dictation As String
             SendKeys " < "
         Case "less than or equal to"
             SendKeys " <= "
+		case "lambda equals"
+			SendKeys(" => ")
     End Select
 
     If LCase(dictation) = "true" Or LCase(dictation) = "false" Then
         SendKeys(dictation)
         SendKeys("{Tab}")
-    ElseIf lcase(dictation) = "empty string" Then
+    ElseIf lcase(dictation) = "empty string" Or lcase(dictation) = "string" Then
         SendKeys("{""}{""}")
-    ElseIf lcase(dictation) = "no" Then
-        SendKeys("null{Escape}")
+        SendKeys("{left}")
+    ElseIf lcase(dictation) = "no" Or lcase(dictation) = "null" Then
+        SendKeys("null{Tab}")
     ElseIf dictation <> "" Then
         SendKeys(formatCapsNoSpaces(dictation, False))
         SendKeys("^{Space}")
+    End If
+
+    If lang = Language.CSHARP And addSemicolon And dictation <> "" Then
+        SendKeys(";")
+    End If
+End Sub
+
+Public Sub DoBuiltInValue(ListVar1 As String)
+    If ListVar1 = "string" Then
+        SendKeys("{""}{""}{left}")
+    ElseIf ListVar1 = "empty string" Then
+        SendKeys("{""}{""}")
+    Else
+        SendKeys(ListVar1)
+        SendKeys(";")
     End If
 End Sub
 
@@ -595,8 +627,12 @@ Public Sub DoTripleQuote()
 End Sub
 
 Public Sub DoCaseString(theString As String)
-    SendKeys "case """ & theString & """~{tab}"
+    SendKeys "case """ & theString & """:~"
 End Sub
+
+Public Sub DoCaseNumber(theNumber as String)
+	SendKeys("case " & theNumber & ":~")
+end sub
 
 Public Sub DoConvert(ListVar1 As String)
     Select Case ListVar1
@@ -727,6 +763,11 @@ Public Sub DoGrowShrinkCurrent()
     SendKeys "^m^m"
 End Sub
 
+Public Sub DoFindDevStudio(ListVar1 As String)
+    SendKeys("%i")
+    Wait(0.1)
+    SlowTypeString(formatNoCapsNoSpaces(ListVar1))
+End Sub
 Public Sub DoGoTo(ListVar1 As String, ListVar2 As String)
     Dim titles(0) As String
     titles(0) = "Microsoft Visual Studio"

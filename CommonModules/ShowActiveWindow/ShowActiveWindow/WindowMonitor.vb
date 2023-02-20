@@ -76,6 +76,10 @@ Module WindowMonitor
 
     Private handleForeground As IntPtr
 
+    Public Function GetHandleForeground() As IntPtr
+        Return handleForeground
+    End Function
+
     Public Sub InitializeSystemMonitor()
         UninitializeSystemMonitor()
         handleSystemEventHookFore = SetWinEventHook(EVENT_SYSTEM_FOREGROUND, EVENT_SYSTEM_FOREGROUND, IntPtr.Zero, objSysDelegate, 0, 0, WINEVENT_OUTOFCONTEXT Or WINEVENT_SKIPOWNPROCESS)
@@ -113,20 +117,7 @@ Module WindowMonitor
 
         Select Case eventType
             Case EVENT_SYSTEM_FOREGROUND
-                handleForeground = hwnd
-
-                ' Listen to window move events
-                If handleObjectEventHookState <> IntPtr.Zero Then
-                    UnhookWinEvent(handleObjectEventHookState)
-                    handleObjectEventHookState = IntPtr.Zero
-                End If
-
-                ' Get process ID
-                Dim processID As Integer
-                GetWindowThreadProcessId(hwnd, processID)
-                handleObjectEventHookState = SetWinEventHook(EVENT_OBJECT_LOCATIONCHANGE, EVENT_OBJECT_LOCATIONCHANGE, IntPtr.Zero, objSysDelegate, processID, 0, WINEVENT_OUTOFCONTEXT Or WINEVENT_SKIPOWNPROCESS)
-
-                RepositionMainForm(hwnd)
+                ClingToWindow(hwnd)
 
             Case EVENT_SYSTEM_MOVESIZESTART
                 frmMain.Hide()
@@ -164,6 +155,28 @@ Module WindowMonitor
     End Structure
 
 
+    Public Sub ClingToWindow(hwnd As IntPtr)
+        If hwnd = frmMain.Handle Then
+            Exit Sub
+        End If
+
+        handleForeground = hwnd
+
+        ' Listen to window move events
+        If handleObjectEventHookState <> IntPtr.Zero Then
+            UnhookWinEvent(handleObjectEventHookState)
+            handleObjectEventHookState = IntPtr.Zero
+        End If
+
+        ' Get process ID
+        Dim processID As Integer
+        GetWindowThreadProcessId(hwnd, processID)
+        handleObjectEventHookState = SetWinEventHook(EVENT_OBJECT_LOCATIONCHANGE, EVENT_OBJECT_LOCATIONCHANGE, IntPtr.Zero, objSysDelegate, processID, 0, WINEVENT_OUTOFCONTEXT Or WINEVENT_SKIPOWNPROCESS)
+
+        RepositionMainForm(hwnd)
+
+    End Sub
+
     <DllImport("user32.dll")>
     Private Function GetWindowRect(ByVal hWnd As IntPtr, ByRef lpRect As RECT) As Boolean
     End Function
@@ -185,6 +198,10 @@ Module WindowMonitor
         frmMain.Size = New Size(aRect.Right - aRect.Left - maximizedOffset * 2, aRect.Bottom - aRect.Top - maximizedOffset * 2)
         frmMain.Location = New Point(aRect.Left + maximizedOffset, aRect.Top + maximizedOffset)
         frmMain.Invalidate()
+
+        ' Set a timer and recheck position.  Sometimes events are missed.
+        frmMain.InitializeTimer()
+
     End Sub
 
 

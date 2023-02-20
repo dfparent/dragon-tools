@@ -21,6 +21,12 @@ Dim registryCommandName = "CommandName"
 dim registryCommandValues = "CommandValues"
 Dim savedClipboardData As Object ' Only saves during a single macro run
 
+Public Enum CaseType
+    noCaps
+    allCaps
+    initialCaps
+End Enum
+
 Public Sub SaveValue(name As String, value as string)
     SaveSetting(registryAppName, registryCommandValues, name, value)
 End Sub
@@ -203,19 +209,23 @@ Public Function formatCapsNoSpaces(text As String, Optional capitalizeFirst As B
     Return out
 End Function
 
-' allCaps = true: This is some Text" -> THIS_IS_SOME_TEXT
-' allCaps = false: This is some Text" -> this_is_some_text
-Public Function formatUnderscores(text As String, Optional allCaps As Boolean = False) As String
+' CaseType.allCaps = true: This is some Text" -> THIS_IS_SOME_TEXT
+' CaseType.noCaps = true: This is some Text" -> this_is_some_text
+' CaseType.initialCaps = true: This is some Text" -> This_Is_Some_Text
+Public Function formatUnderscores(text As String, Optional capsType As CaseType = CaseType.noCaps) As String
     Dim words() As String
     words = Split(text)
     Dim out As String
     Dim i As Long
     For i = 0 To UBound(words)
-        If allCaps Then
-            words(i) = Ucase$(words(i))
-        Else
-            words(i) = LCase$(words(i))
-        End If
+        Select Case capsType
+            Case CaseType.allCaps
+                words(i) = Ucase$(words(i))
+            Case CaseType.noCaps
+                words(i) = LCase$(words(i))
+            Case CaseType.initialCaps
+                words(i) = UCase$(Left$(words(i), 1)) & LCase(Mid$(words(i), 2))
+        End Select
         If i > 0 Then
             out = out & "_"
         End If
@@ -234,19 +244,64 @@ End Function
 ' Cleans up some characters which otherwise might not get printed,
 ' but might affect other key strokes because of the special meeting in the Sendkeys command.
 Public Function CleanupDictation(dictation As String) As String
-    Dim text As String
-    text = dictation
-
-    text = Replace(text, "(", "{(}")
-    text = Replace(text, """", "{""}")
-    text = Replace(text, "~", "{~}")
-    text = Replace(text, "%", "{%}")
-    text = Replace(text, vbcrlf, "~")
+    Dim text As System.Text.StringBuilder
+    text = New System.Text.StringBuilder()
 
     ' Special code word for "quotes" which can't be used in dictation In macros because of a bug in KnowBrainer
-    ' Instead of saying "open quote" or "close quote" Just say "quote"And this will replace the Word with the character
+    ' Instead of saying "open quote" or "close quote" Just say "quote" and this will replace the Word with the character
+    Dim parts() As String
+    ' This retains delimiters in the resulting array
+    parts = SplitString(dictation, New String() {" quote ", " quote", "quote ", "quote"})
+    'Msgbox(ArrayToString(parts, 0, -1, "*"))
 
-    CleanupDictation = text
+    Dim index As Integer
+    Dim quoteCount As Integer
+    quoteCount = 0
+    Dim leadingSpace As Boolean
+    Dim trailingSpace As Boolean
+    For index = 0 To parts.Length - 1
+        Select Case parts(index)
+            Case " quote "
+                leadingSpace = True
+                trailingSpace = True
+            Case " quote"
+                leadingSpace = True
+                trailingSpace = False
+            Case "quote "
+                leadingSpace = False
+                trailingSpace = True
+            Case "quote"
+                leadingSpace = False
+                trailingSpace = False
+            Case Else
+                text.Append(parts(index))
+                Continue For
+        End Select
+
+        If quoteCount = 0 Then
+            If leadingSpace Then
+                text.Append(" """)
+            Else
+                text.Append("""")
+            End If
+            quoteCount = 1
+        Else
+            If trailingSpace Then
+                text.Append(""" ")
+            Else
+                text.Append("""")
+            End If
+            quoteCount = 0
+        End If
+    Next
+
+    text.Replace("(", "{(}")
+    text.Replace("""", "{""}")
+    text.Replace("~", "{~}")
+    text.Replace("%", "{%}")
+    text.Replace(vbcrlf, "~")
+
+    CleanupDictation = text.ToString()
 
 End Function
 
@@ -362,6 +417,7 @@ Public Function FindArrayElement(theValue, theArray) As Integer
 End Function
 
 ' Allows you to split a string and retain the delimiters
+' Searches for delimiters in the order provided in the array.
 Public Function SplitString(source As String, delimiters() As String, Optional options As System.StringSplitOptions = System.StringSplitOptions.RemoveEmptyEntries, Optional retainDelimiters As Boolean = True) As String()
     If source = "" Then
         Return Nothing
@@ -371,22 +427,54 @@ Public Function SplitString(source As String, delimiters() As String, Optional o
         Return source.Split(delimiters, options)
     End If
 
-    Dim outArray As New List(Of String)
-    Dim startSplit As Integer = 0
-    Dim delimiterString As String
-    delimiterString = ArrayToString(delimiters, 0, -1, "")
-    Dim i As Integer
-    For i = 0 To source.Length - 1
-        'msgbox(source.Substring(i, 1))
-        If delimiterString.Contains(source.Substring(i, 1)) Then
-            outArray.Add(source.Substring(startSplit, i - startSplit))
-            outArray.Add(source.Substring(i, 1))
-            startSplit = i + 1
-        End If
-    Next
+    'msgbox("*" & ArrayToString(delimiters, 0, -1, "*") & "*")
 
-    If startSplit < source.Length Then
-        outArray.Add(source.Substring(startSplit))
+    Dim outArray As New List(Of String)
+    'Dim startSplit As Integer = 0
+
+    'Dim delimiterString As String
+    'delimiterString = ArrayToString(delimiters, 0, -1, "")
+    Dim index As Integer
+    index = 0
+    Dim foundIndex As Integer
+    Dim nextFoundIndex As Integer
+    Dim delimiterLength As Integer
+    Dim inner As Integer
+    While index < source.Length
+        foundIndex = -1
+        nextFoundIndex = -1
+
+        ' Find next delimiter match
+        For inner = 0 To delimiters.Length - 1
+            nextFoundIndex = source.IndexOf(delimiters(inner), index)
+            If nextFoundIndex >= 0 And (nextFoundIndex < foundIndex Or foundIndex < 0) Then
+                foundIndex = nextFoundIndex
+                delimiterLength = delimiters(inner).Length
+            End If
+        Next
+
+        If foundIndex >= 0 Then
+            If foundIndex - index > 0 Then
+                outArray.Add(source.Substring(index, foundIndex - index))
+            End If
+            outArray.Add(source.Substring(foundIndex, delimiterLength))
+            index = foundIndex + delimiterLength
+        Else
+            Exit While
+        End If
+    End While
+
+    'For i = 0 To source.Length - 1
+    ' 'msgbox(source.Substring(i, 1))
+    ' If delimiterString.Contains(source.Substring(i, 1)) Then
+    ' outArray.Add(source.Substring(startSplit, i - startSplit))
+    'outArray.Add(source.Substring(i, 1))
+    ' startSplit = i + 1
+    ' End If
+    ' Next
+
+    If index < source.Length Then
+        outArray.Add(source.Substring(index))
     End If
 
     Return outArray.ToArray()
@@ -423,26 +511,28 @@ Public Function DigitizeNumbers(dictation As String) As String
 End Function
 
 ' Examines dictation and converts spelled out numbers to digits and phoenetic letters to letters
-' If first 2 words are "all upper" then the remaining text is returned in all uppercase
+' If first 2 words are "all upper" or "all big" then the remaining text is returned in all uppercase
+' The word "enter" will result in a press of the enter key, not the word "enter".
 ' Does not print out words, but keystrokes, so no added spaces
 ' Any actual words thrown in are assumed to be spelled out and are printed without spaces
 ' Due to limitation with KnowBrainer, to capitalize letters, use "upper" rather than "cap". :(
-'
+' 
 Public Function DictationToKeystrokes(dictation As String, Optional allcaps As Boolean = False) As String
     'msgbox(dictation & vbcrlf & "All caps: " & CStr(allcaps))
     Dim words() As String
     ' Split on all punctuation and retain delimiters
     ' Do not split on - or you will split hyphenated words like x-ray
-    Dim separators() As String = {"\", "|", "!", """", "'", "#", "*", ",", ".", "..", "...", "/", ":", ";", "<", "=", ">", "?", "@", " ", "_", "(", ")", "+", "[", "]", "{", "}", "~", "$", "%", "&", "^"}
+    Dim separators() As String = {"\", "|", "!", """", "'", "#", "*", ",", ".", "..", "...", "/", ":", ";", "<", "=", ">", "?", "@", " ", "_", "-", "(", ")", "+", "[", "]", "{", "}", "~", "$", "%", "&", "^"}
     words = SplitString(dictation, separators)
     Dim out As String
     Dim fixedWord As String
     Dim capitalizeNext As Boolean = False
 
     ' With dictation: "type all upper some text", the dictation is "all upper some text"
+    ' Also accepts "all big"
     ' After split this is an array with UBound = 6 (Includes space delimiters)
     If UBound(words) >= 2 Then
-        If LCase(words(0)) = "all" And words(1) = " " And LCase(words(2)) = "upper" Then
+        If LCase(words(0)) = "all" And words(1) = " " And (LCase(words(2)) = "upper" Or LCase(words(2)) = "big") Then
             allcaps = True
             ' Do not return the words "all upper"
             words(0) = " "
@@ -452,12 +542,12 @@ Public Function DictationToKeystrokes(dictation As String, Optional allcaps As B
     End If
 
     For Each word As String In words
-        ' Skip space delimiter
+        ' Skip space delimiter 
         If word = " " Then
             Continue For
         End If
 
-        If LCase(word) = "upper" Then
+        If LCase(word) = "upper" Or LCase(word) = "big" Then
             capitalizeNext = True
             Continue For
         End If
@@ -471,10 +561,14 @@ Public Function DictationToKeystrokes(dictation As String, Optional allcaps As B
                 ' Is it punctuation?
                 fixedWord = PunctuationNameToCharacter(word)
                 If fixedWord = word Then
-                    If capitalizeNext Then
-                        fixedWord = UCase$(Left$(word, 1)) & LCase(Mid$(word, 2))
+                    If LCase(word) = "enter" Then
+                        fixedWord = "~"
                     Else
-                        fixedWord = LCase(word)
+                        If capitalizeNext Then
+                            fixedWord = UCase$(Left$(word, 1)) & LCase(Mid$(word, 2))
+                        Else
+                            fixedWord = LCase(word)
+                        End If
                     End If
                 End If
             End If
@@ -604,7 +698,7 @@ Public Function PhoneticToLetter(dictation As String, Optional capitalize As Boo
     'msgbox text
     Select Case text
         Case "alpha", "alfa", "bravo", "be", "bee", "charlie", "delta", "echo", "foxtrot", "golf", "hotel", "india", "juliet", "jay",
-             "kilo", "lima", "mike", "november", "oscar", "papa", "pop", "québec", "quebec", "romeo", "sierra",
+             "kilo", "lima", "mike", "november", "oscar", "oh", "papa", "poppa", "pop", "popper", "pop-up", "québec", "quebec", "romeo", "sierra",
              "tango", "tee", "uniform", "victor", "whiskey", "x-ray", "xray", "yankee", "zulu"
             PhoneticToLetter = Left(text, 1)
         Case "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"
@@ -615,8 +709,6 @@ Public Function PhoneticToLetter(dictation As String, Optional capitalize As Boo
             PhoneticToLetter = "i"
         Case "and", "in"
             PhoneticToLetter = "n"
-        Case "popper"
-            PhoneticToLetter = "p"
         Case "are", "our"
             PhoneticToLetter = "r"
         Case "you"
@@ -634,7 +726,7 @@ Public Function PhoneticToLetter(dictation As String, Optional capitalize As Boo
 End Function
 
 ' Provides the zero-based sequence number within the alphabet for a particular letter. 
-' For example, A = 0, B = 1, etc...
+' For example, A = 0, B = 1, etc...Text's
 ' Returns -1 if the passed in string is not a letter.
 Public Function LetterToNumber(letter As String) As Integer
     LetterToNumber = -1
@@ -758,9 +850,35 @@ End Function
 Public Sub RepeatKeyStrokes(keys As String, count As Integer, Optional delay As Double = 0.1)
     Dim i As Integer
     For i = 1 To count
-        SendKeys keys
-        Wait delay
+        SendKeys(keys)
+        Wait(delay)
     Next i
+End Sub
+
+Public Sub RepeatKeyStrokesFast(key As String, count As Integer)
+    ' If you send too many keys, you get an error.
+    ' Need to break the next command up into multiple commands
+
+    ' Add starting {
+    If Not key.StartsWith("{") Then
+        key = key & "{"
+    End If
+
+    ' Remove trailing }
+    If key.EndsWith("}") Then
+        key = key.Substring(0, key.Length - 1)
+    End If
+
+    While count > 0
+        If count >= 10 Then
+            SendKeys(key & " 10}")
+            count = count - 10
+        Else
+            SendKeys(key & " " & CStr(count) & "}")
+            count = 0
+        End If
+    End While
+
 End Sub
 
 Public Sub lowercaseSelection()
@@ -775,13 +893,39 @@ Public Sub lowercaseSelection()
     SendKeys("^v")
 End Sub
 
+
+Public Sub uppercaseSelection()
+
+    SendKeys "^c"
+
+    Dim fullText As String
+    fullText = GetClipboard()
+    fullText = UCase(fullText)
+    PutClipboard(fullText)
+
+    SendKeys("^v")
+End Sub
+
+Public Sub capitalizeSelection()
+
+    SendKeys "^c"
+
+    Dim fullText As String
+    fullText = GetClipboard()
+    fullText = CapitalizeString(fullText)
+    PutClipboard(fullText)
+
+    SendKeys("^v")
+End Sub
+
 ' Just delete the line know the Peculiarities of each particular editor
 Public Sub lineDelete(Optional count As Integer = 1)
     Dim windowTitle As String
     windowTitle = GetWindowTitleText
-
-    If windowTitle = "Microsoft Visual Studio" Then
+    If windowTitle.Contains("Microsoft Visual Studio") Then
         SendKeys("{End}{Home 2}+{Down " & CStr(count) & "}{Delete}")
+    ElseIf windowTitle.Contains("Equation Editor") Then
+        SendKeys("{Home}+{End}{Delete}")
     Else
         SendKeys("{home}+{Down " & CStr(count) & "}{Delete}")
     End If
@@ -812,26 +956,36 @@ Public Sub LineFix(common_error As String)
     lineReplace(findText & " with " & replaceText)
 End Sub
 
-' Single text string.  The "find" and replace parts should be in the same utterance, separated by the word "with"
-Public Sub lineReplace(dictation As String)
-
-    ' Parse dictation
+' The find text must be separated from the replace text by the keyword "with" in "dictation".
+' The parsed find text and replace text are returned in the ByRef variables.
+' The function returns false if the "with" trigger word is not found.
+Public Function ParseReplaceDictation(dictation As String, ByRef findText As String, ByRef replaceText As String) As Boolean
+    ' Parse dictationIn
     Dim lowerListVar As String
     lowerListVar = LCase$(dictation)
     Dim withIndex As Integer
     withIndex = Instr(lowerListVar, " with ")
     If withIndex = 0 Then
         TTSPlayString("To do a replace, use the 'with' trigger word. As in 'line replace this with that'.")
-        Exit Sub
+        Return False
     End If
 
     ' Find the find text and replace text
-    Dim findText As String
-    Dim replaceText As String
     findText = Mid(lowerListVar, 1, withIndex - 1)
     findText = PunctuationNameToCharacter(findText)
     replaceText = Mid(dictation, withIndex + 6)
     replaceText = PunctuationNameToCharacter(replaceText)
+
+    Return True
+End Function
+
+Public Sub lineReplace(dictation As String)
+
+    Dim findText As String
+    Dim replaceText As String
+    If Not ParseReplaceDictation(dictation, findText, replaceText) Then
+        Exit Sub
+    End If
 
     ' Get working text
     'dim saveClipboard as String
@@ -859,10 +1013,15 @@ Public Sub lineReplace(dictation As String)
     Dim out As String
     out = fullText
     Dim lastOut As String
+    Dim startIndex As Integer
+    startIndex = 1
+    Dim lenReplaceText As Integer
+    lenReplaceText = Len(replaceText)
     Do
         lastOut = out
-        out = Mid(out, 1, index - 1) & replaceText & Mid(out, index + Len(findText))
-        index = InStr(index + 1, LCase(out), LCase(findText))
+        out = Mid(out, startIndex, index - 1) & replaceText & Mid(out, index + Len(findText))
+        startIndex = index + lenReplaceText
+        index = InStr(startIndex, LCase(out), LCase(findText))
     Loop Until index = 0 Or lastOut = out
 
     ' Strip line returns
@@ -885,7 +1044,7 @@ Public Sub lineReplace(dictation As String)
 
 End Sub
 
-Public Sub LineInsertRemove(ListVar1 As String)
+Public Sub LineInsertRemove(ListVar1 As String, Optional ordinal As Integer = 1)
     ' Say "line insert cows before donkeys" to insert "cows" before "donkeys" in the current line.
     ' You can also specify "after" instead of "before".
     ' Say "line insert before blah" to move insertion point only.
@@ -931,8 +1090,8 @@ Public Sub LineInsertRemove(ListVar1 As String)
     insertWhere = insertWhere.TrimStart()
 
     ' Get working text
-    Dim saveClipboard As String
-    saveClipboard = GetClipboard()
+    'Dim saveClipboard As String
+    'SaveClipboard = GetClipboard()
 
     SendKeys("{Home}+{End}^c")
 
@@ -941,12 +1100,20 @@ Public Sub LineInsertRemove(ListVar1 As String)
 
     ' Get insertion point
     Dim indexWhere As Integer
-    indexWhere = InStr(LCase(fullText), insertWhere)
-    If indexWhere = 0 Then
-        SendKeys("{Right}")
-        Exit Sub
-    End If
+    Dim i As Integer
+    Dim startIndex = 1
 
+    ' If there are multiple occurrences of "insertWhere", go to the requested one
+    For i = 1 To ordinal
+        indexWhere = InStr(startIndex, LCase(fullText), insertWhere)
+        If indexWhere = 0 Then
+            SendKeys("{Right}")
+            Exit Sub
+        End If
+        startIndex = indexWhere + 1
+    Next i
+
+    ' Adjustments for insert after
     If Not bBefore Then
         indexWhere = indexWhere + len(insertWhere)
 
@@ -960,31 +1127,79 @@ Public Sub LineInsertRemove(ListVar1 As String)
         insertWhat = vbcrlf
     End If
 
-    Dim out As String
-    out = Mid(fullText, 1, indexWhere - 1) & insertWhat & Mid(fullText, indexWhere)
-
-    PutClipboard(out)
-    SendKeys("^v")
-    Wait(0.1)
+    ' Only when actually inserting text
+    If Len(insertWhat) > 0 Then
+        Dim out As String
+        out = Mid(fullText, 1, indexWhere - 1) & insertWhat & Mid(fullText, indexWhere)
+        PutClipboard(out)
+        SendKeys("^v")
+        Wait(0.1)
+    End If
 
     If Not doNewLine Then
         Dim windowTitle As String
         windowTitle = GetWindowTitleText
-        If windowTitle.Contains("TextEditor") Then
-            If out.EndsWith(System.Environment.NewLine) Then
-                SendKeys("{Up}")
-            Else
-                SendKeys("{Home}")
-            End If
+        'If windowTitle.Contains("TextEditor") Then
+        'If out.EndsWith(System.Environment.NewLine) Then
+        'SendKeys("{Up}")
+        'Else
+        '   SendKeys("{Home}")
+        'End If
+        'Else
+        '   SendKeys("{Home}")
+        'End If
+
+        ' Select from start or end?
+        Dim moveKey As String
+        If indexWhere < Len(fullText) / 2 Then
+            LineMacrosPutBackKeys(windowTitle, True)
+            RepeatKeyStrokesFast("{Right}", indexWhere - 1 + Len(insertWhat))
         Else
-            SendKeys("{Home}")
+            LineMacrosPutBackKeys(windowTitle, False)
+            RepeatKeyStrokesFast("{Left}", Len(fullText) - indexWhere - Len(insertWhat) + 1)
         End If
 
         'msgbox(CStr(indexWhere - 1 + Len(insertWhat)))
-        SendKeys("{Right " & CStr(indexWhere - 1 + Len(insertWhat)) & "}")
+        'SendKeys("{Right " & CStr(indexWhere - 1 + Len(insertWhat)) & "}")
+
     End If
 
-    PutClipboard(saveClipboard)
+    'PutClipboard(saveClipboard)
+End Sub
+
+Public Sub SelectLines(lineCount As Integer, Optional forward As Boolean = True)
+
+    If forward Then
+        GoToStartOfLineForApp()
+        SendKeys("+{down " & CStr(lineCount) & "}")
+    Else
+        SendKeys("{end}")
+        SendKeys("+{up " & CStr(lineCount - 1) & "}")
+        GoToStartOfLineForApp(True)
+    End If
+End Sub
+
+' Get the cursor to the start of the line With custom Keystrokes for some apps
+Public Sub GoToStartOfLineForApp(Optional useShift As Boolean = False, Optional useControl As Boolean = False, Optional useAlt As Boolean = False)
+    Dim title As String
+    title = GetWindowTitleText()
+
+    Dim controlChar As String
+    If useAlt Then
+        controlChar = controlChar & "%"
+    End If
+    If useControl Then
+        controlChar = controlChar & "^"
+    End If
+    If useShift Then
+        controlChar = controlChar & "+"
+    End If
+
+    If title.Contains("Notepad++") Then
+        SendKeys(controlChar & "{home 2}")
+    Else
+        SendKeys(controlChar & "{home}")
+    End If
 End Sub
 
 ' If dictation includes the word " through ", then this will find all text starting with the words before " through " 
@@ -999,9 +1214,24 @@ Public Sub LineSelect(ListVar1 As String, Optional ordinal As Integer = 1)
     Dim fullText As String
     fullText = GetClipboard()
 
+    'MsgBox(fullText)
+
     fullText = fullText.Replace(vbcrlf, "")
     fullText = fullText.Replace(vbcr, "")
     fullText = fullText.Replace(vblf, "")
+
+    Dim windowTitle As String
+    windowTitle = GetWindowTitleText
+
+    ' If this is Word and the text is on a line formatted with numbering or bullets,
+    ' Word will include the numbering at the start which we do not want because it screws up our counts later on
+    ' Get rid of the numbers
+    If windowTitle.Contains("Word") Then
+        If System.Text.RegularExpressions.Regex.IsMatch(fullText, "^[^A-Z].*\t", System.Text.RegularExpressions.RegexOptions.IgnoreCase) Then
+            ' Get rid of starting crap
+            fullText = fullText.Substring(fullText.IndexOf(vbTab) + 1)
+        End If
+    End If
 
     ' Get selection point
     Dim index As Integer
@@ -1046,10 +1276,7 @@ Public Sub LineSelect(ListVar1 As String, Optional ordinal As Integer = 1)
         Next
     End If
 
-    Dim windowTitle As String
-    windowTitle = GetWindowTitleText
-
-	' Select from start or end?
+    ' Select from start or end?
     Dim moveKey As String
     If index <Len(fullText) / 2 Then
         'SendKeys("{end}{Home}")
@@ -1085,16 +1312,26 @@ Private Sub LineMacrosPutBackKeys(windowTitle As String, goToStart As Boolean)
             SendKeys("{left}")
         ElseIf windowTitle.Contains("Microsoft Visual Studio") Then
             SendKeys("{left}")
+        ElseIf windowTitle.Contains("Equation Editor") Then
+            SendKeys("{left}")
+        ElseIf windowTitle.Contains("Message") Or windowTitle.Contains("Word") Then
+            Sendkeys("{left}")
         Else
             SendKeys("{left}{Home}")
         End If
     Else
         ' Go to end
         If windowTitle.Contains("OneNote") Or
-           windowTitle.Contains("TextEditor") Then
-            SendKeys("{end}")
+           windowTitle.Contains("TextEditor") Or
+           windowTitle.Contains("Equation Editor") Then
+            SendKeys("{right}")
         ElseIf windowTitle.Contains("Microsoft Visual Studio") Then
             SendKeys("{Right}")
+        ElseIf windowTitle.Contains("Microsoft Teams") Then
+            SendKeys("{end}")
+        ElseIf windowTitle.Contains(".doc") Or
+               windowTitle.Contains(" - Message") Then
+            SendKeys("{end}")
         Else
             SendKeys("{right}{End}")
         End If
@@ -1195,9 +1432,87 @@ Public Sub LineSelectInside(ListVar1 As String, Optional count As Integer = 1)
     PutClipboard(saveClipboard)
 End Sub
 
+Public Sub LineMove(direction As String, count As Integer)
+
+    Dim dir As String
+    dir = LCase(direction)
+
+    If dir <> "up" And dir <> "down" Then
+        Beep
+        Exit Sub
+    End If
+
+    If count <= 0 Then
+        Beep
+        Exit Sub
+    End If
+
+    GoToStartOfLineForApp()
+
+    SendKeys("+{end}^x{del}")
+
+    Dim line As String
+    line = GetClipboard()
+
+    If dir = "down" Then
+        SendKeys("{" & dir & " " & CStr(count - 1) & "}")
+        SendKeys("{end}")
+        ' Pressing enter in some apps has undesireable consequences, so rebuild the string instead.
+        PutClipboard(vbcrlf & line)
+        SendKeys("^v")
+    Else
+        SendKeys("{" & dir & " " & CStr(count) & "}")
+        SendKeys("{home}")
+        ' Pressing enter in some apps has undesireable consequences, so rebuild the string instead.
+        PutClipboard(line & vbcrlf)
+        SendKeys("^v")
+    End If
+
+
+
+
+End Sub
+
+Public Sub SelectionMove(direction As String, count As Integer)
+
+    SendKeys("^x")
+
+    ' How many lines?
+    Dim text As String
+    text = GetClipboard()
+
+    Dim lines() As String
+    lines = text.Split(New String() {vbcrlf}, System.StringSplitOptions.None)
+
+    ' Last line is extra
+    Dim lineCount As String
+    lineCount = CStr(lines.Length - 1)
+
+    Dim dir As String
+    dir = LCase(direction)
+
+    If dir <> "up" And dir <> "down" Then
+        Beep
+        Exit Sub
+    End If
+
+    If count <= 0 Then
+        Beep
+        Exit Sub
+    End If
+
+    SendKeys("{" & dir & " " & CStr(count) & "}")
+    SendKeys("^v")
+
+    ' Go back to start and select again
+    SendKeys("{up " & lineCount & "}")
+    SendKeys("+{down " & lineCount & "}")
+
+End Sub
+
 ' Sometimes dictation list items can be segmented by "\" such as
 '   A\cap alpha
-' where the text after the backslash is what you say and the text before the backslash is what you type
+
 ' This function returns the first token (what you type) given the entire dictation list item
 Public Function ExtractDictationListToken(dictationList As String) As String
     Dim index As Integer

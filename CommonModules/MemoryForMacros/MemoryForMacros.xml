@@ -1,0 +1,587 @@
+﻿<?xml version="1.0"?>
+<doc>
+<assembly>
+<name>
+MemoryForMacros
+</name>
+</assembly>
+<members>
+<member name="T:MemoryForMacros.My.Resources.Resources">
+<summary>
+  A strongly-typed resource class, for looking up localized strings, etc.
+</summary>
+</member>
+<member name="P:MemoryForMacros.My.Resources.Resources.ResourceManager">
+<summary>
+  Returns the cached ResourceManager instance used by this class.
+</summary>
+</member>
+<member name="P:MemoryForMacros.My.Resources.Resources.Culture">
+<summary>
+  Overrides the current thread's CurrentUICulture property for all
+  resource lookups using this strongly typed resource class.
+</summary>
+</member>
+<member name="T:MemoryForMacros.Application">
+ <summary>
+ Provides top level access to all MemoryForMacros functionality.  
+ To use MemoryForMacros, create an instance of <c>Application</c>.
+ </summary>
+</member>
+<member name="P:MemoryForMacros.Application.KeepAlive">
+ <summary>
+ Used to keep MemoryForMacros running in between macro runs.
+ </summary>
+ <seealso cref="M:MemoryForMacros.Application.Unload"/>
+ <value>True or False</value>>
+ <remarks>
+ Normally, the EXE will self terminate after the last reference to Application is released.  
+ When KeepAlive is TRUE, the EXE will remain active even after the last reference is released.
+ It will remain in memory indefinitely.  To allow MemoryForMacros to shutdown, set Keep Alive to False
+ and release all references.  
+ </remarks>
+</member>
+<member name="M:MemoryForMacros.Application.GetValueDictionary">
+ <summary>
+ Returns a dictionary that can be used by macros to store individual values.  
+ </summary>
+ <returns><see cref="T:MemoryForMacros.Dictionary"/></returns>
+ <remarks>
+ Returns a special dictionary that can be used to store individual values.  This dictionary is not loaded from a file, nor saved to a file.
+ It is simply used to store any value in between macro runs, such as state, IDs, status, etc.
+ </remarks>
+</member>
+<member name="M:MemoryForMacros.Application.GetDictionary(System.String)">
+ <summary>
+ Returns the <c>Dictionary</c> object keyed to the string provided in the <c>name</c> parameter.
+ </summary>
+ <param name="name">A unique string identifying the desired <c>Dictionary</c>.  Each Dictionary has a unique "name".  
+ You can name the <c>Dictionary</c> according to its contents, e.g., "people", "paths", "files", etc.  The <c>name</c> value is the
+ value provided when the dictionary was loaded or added.
+ </param>
+ <seealso cref="M:MemoryForMacros.Application.LoadDictionaries(System.String,System.Boolean)"/>
+ <seealso cref="M:MemoryForMacros.Application.AddDictionary(System.String)"/>
+ <returns>A <see cref="T:MemoryForMacros.Dictionary"/> object, or Null/Nothing is there is no dictionary keyed to the given name.</returns>
+</member>
+<member name="M:MemoryForMacros.Application.AddDictionary(System.String)">
+ <summary>
+ Add a new dictionary and key it to the string provided in the <c>name</c> the parameter.
+ </summary>
+ <param name="name">
+ The unique name identifying the new Dictionary.  The value provided in <c>name</c> must be unique among all dictionaries.
+ </param>
+ <returns>
+ The new <see cref="T:MemoryForMacros.Dictionary"/> object.  If a dictionary already exists with the given <c>name</c> the existing <see cref="T:MemoryForMacros.Dictionary"/> is returned.
+ </returns>
+</member>
+<member name="M:MemoryForMacros.Application.IsDictionaryLoaded(System.String)">
+ <summary>
+ Indicates whether a dictionary with the given name is currently loaded in MemoryForMacros.
+ </summary>
+ <param name="dictionaryName">The name of the <see cref="T:MemoryForMacros.Dictionary"/> being checked.</param>
+ <returns>
+ True if the indicated Dictionary is currently loaded.  False if the indicated dictionary is not currently loaded.
+ </returns>
+ <remarks>
+ This method tests to see if the given Dictionary is currently loaded in memory.  It does not check to see if the Dictionary has been persisted to disk.
+ One possible response to a "<see langword="False"/>" return value is to load the desired Dictionary from a file.
+ </remarks>
+ <seealso cref="M:MemoryForMacros.Application.LoadDictionaries(System.String,System.Boolean)"/>
+ 
+</member>
+<member name="M:MemoryForMacros.Application.LoadDictionaries(System.String,System.Boolean)">
+ <summary>
+ Reads the given file and loads the Dictionary definitions contained within the file.
+ </summary>
+ <param name="fileName">The fully qualified path of the file containing Dictionary definitions.</param>
+ <param name="append">Indicates whether loaded dictionary entries should replace currently loaded dictionaries, or be added to currently loaded Dictionaries.
+ If any dictionary being loaded has the same name as an already loaded dictionary,  
+ the newly loaded entries will be ADDED to the existing Dictionary if this parameter is "<see langword="True"/> 
+ and will REPLACE the existing Dictionary if this parameter is "False".
+ </param>Have files
+ <returns>
+ An array of Strings containing the names of the dictionaries that were found in <c>fileName</c>.
+ </returns>
+ <exception cref="T:System.ArgumentException">
+ Thrown if the file provided in <c>fileName</c> does not exist.
+ </exception>
+ <exception cref="T:System.FormatException">
+ Thrown if the provided file contains invalidly formatted content.
+ </exception>
+ <exception cref="T:System.ApplicationException">
+ Thrown if any other errors occur while reading the file.
+ </exception>
+ <remarks>
+ In the loaded files, Dictionaries are identified By name with [...], E.g., [people] identifies a dictionary named "people".
+ Entries for the dictionary will follow and consist of a name/value pair, separated by "=".  The values can themselves be a comma separated list of values.  
+ You can comment an entire line by starting it with a ";".
+ 
+ Here is an example of a Dictionary file:
+ <para>
+ ; The "words" dictionary
+ [words]
+ cat=An animal with four legs and pointy ear.
+ dog=An animal with four legs and lots of drool.
+ </para>
+ <para>
+ ; This is a dictionary called "people"
+ [people]
+ dp=Douglas Parent
+ mj=Michael Jackson,Mihailia Jackson
+ </para>
+ The format of the key and the format of the value can vary, depending on the contents of the Dictionary,  as long as they follow the rules listed above.
+ See generated comments in a saved dictionary file for more details.
+ </remarks>
+</member>
+<member name="M:MemoryForMacros.Application.ResolveDictionaries">
+ <summary>
+ Scans all dictionaries for references and replaces the references with the referred values if possible
+ </summary>
+ <remarks>
+ Dictionary entries can contain references to other dictionary entries.  References use the format "${&lt;dictionary name>:&lt;entry key>}".  
+ For example, given the following dictionary definitions:
+ <para>
+ [paths]
+ my path=C:\Mine
+ your_path=C:\Yours
+ my docs=${my path}\Documents
+ </para>
+ <para>
+ [files]
+ my document=${paths:my docs}\Document1.docx
+ </para>
+ The value "my docs" will resolve to "C:\Mine\Documents".
+ The value "my document" will resolve to "C:\Mine\Documents\Document1.docx".
+ As you can see the "dictionary name" part of the reference is optional.  If omitted, the referenced entry must appear in the current dictionary.
+ </remarks>
+</member>
+<member name="M:MemoryForMacros.Application.SaveDictionaries(System.String,System.String[])">
+ <summary>
+ Save the dictionaries with the given names to the given file. 
+ </summary>
+ <param name="fileName">The fully qualified path to the file in which the dictionaries will be saved.</param>
+ <param name="dictionaryNames">
+ An array of string values containing the names of the dictionaries to save.  
+ If a provided name is not the name of a loaded dictionary, an exception will be thrown.</param>
+ <exception cref="T:System.ApplicationException">If any errors occur while attempting to save the dictionaries, exception will be thrown.</exception>
+ <remarks>
+ Saved values are the raw values with reference tokens, not the dereferenced values. If the given file exists, a backup copy will be created and 
+ the original file's contents will be overwritten by the newly saved definitions.  NOTE: if the existing file currently has a comment section at the beginning of the file, 
+ the comments will be retained in the newly saved file.  All comments after the initial comment section at the top of the file will be deleted.
+ </remarks>
+</member>
+<member name="M:MemoryForMacros.Application.GetDelayedCommandManager">
+ <summary>
+ Returns an object that allows you to run delayed commands.  This gets around a problem in Knowbrainer that prevents some commands from running completely.
+ </summary>
+ <param name="delay">The amount of time to delay in milliseconds.</param>
+ <param name="command">
+ The Dragon command to execute.  The command will execute as though it had been spoken.</param>
+</member>
+<member name="M:MemoryForMacros.Application.Unload">
+ <summary>
+ Shuts down MemoryForMacros immediately, regardless of whether any clients are still using the service.
+ </summary>
+ <remarks>
+ Works similarly to setting KeepAlive to false, except that it will cause the process to shut down even if there are active clients.
+ To unload the process more politely, set KeepAlive to false and release any references to the Application object in all clients.
+ </remarks>
+</member>
+<member name="T:MemoryForMacros.ApplicationClassFactory">
+ <summary>
+ Class factory for the class SimpleObject.
+ </summary>
+</member>
+<member name="T:MemoryForMacros.ReferenceCountedObject">
+ <summary>
+ Reference counted object base.
+ </summary>
+ <remarks></remarks>
+</member>
+<member name="M:MemoryForMacros.DelayedCommandManager.ClearCommands">
+ <summary>
+ Stops command execution and deletes all commands from the queue.
+ </summary>
+</member>
+<member name="M:MemoryForMacros.DelayedCommandManager.StartCommands">
+ <summary>
+ Starts executing the commands in the queue.  You must first call AddCommand to add commands to the queue.
+ </summary>
+</member>
+<member name="M:MemoryForMacros.DelayedCommandManager.StopCommands">
+ <summary>
+ Stops command execution.  You can later restart execution using StartCommands.
+ </summary>
+</member>
+<member name="M:MemoryForMacros.Dictionary.Count">
+ <summary>
+ Returns the number of entries in the dictionary.
+ </summary>
+ <returns>Integer</returns>
+</member>
+<member name="M:MemoryForMacros.Dictionary.Clear">
+ <summary>
+ Deletes all entries in the Dictionary.
+ </summary>
+</member>
+<member name="M:MemoryForMacros.Dictionary.ContainsKey(System.String)">
+ <summary>
+ Checks to see if there is an entry in the dictionary corresponding to the given "key".
+ </summary>
+ <param name="key">A unique string identifying a single dictionary value.</param>
+ <returns>True or False</returns>
+ <exception cref="T:System.ArgumentNullException"></exception>
+</member>
+<member name="M:MemoryForMacros.Dictionary.Add(System.String,System.String[])">
+ <summary>
+ Adds a new entry to the dictionary with the given "key" and "value".
+ </summary>
+ <param name="Key">A unique string identifying the given value.</param>
+ <param name="Value">An array of strings.</param>
+ <exception cref="T:System.ArgumentException"></exception>
+ <exception cref="T:System.ArgumentNullException"></exception>
+</member>
+<member name="M:MemoryForMacros.Dictionary.Remove(System.String)">
+ <summary>
+ Removes the entry identified with the given "key".
+ </summary>
+ <param name="key">A unique string identifying the value to remove.</param>
+ <remarks>
+ If evaluate exist in the dictionary associated with the given "key", the key and value will be removed from the dictionary.
+ If there is no entry corresponding to the given "key", this method will do nothing.
+ </remarks>
+ <exception cref="T:System.ArgumentNullException"></exception>
+</member>
+<member name="M:MemoryForMacros.Dictionary.Keys">
+ <summary>
+ Returns an array of strings containing the keys of the dictionary.
+ </summary>
+ <returns>An array of strings.</returns>
+ <remarks>This method returns only the keys.  It does not return any of the entry values.  To access a collection of the values, use the Dictionary enumeration.</remarks>
+</member>
+<member name="P:MemoryForMacros.Dictionary.Item(System.String)">
+ <summary>
+ Provides access to a single value in the Dictionary.
+ </summary>
+ <param name="key">The key associated with the value which is being retrieved or stored.</param>
+ <value>An array of strings.</value>
+ <remarks>
+ This property provides access to a single entry in the Dictionary.  
+ When reading a value, it will return the array of strings associated with the given key.
+ When writing it will save the given array of strings in the dictionary and key it to the provided key.
+ You cannot use this method to Add dictionary entries.  If you provide an invalid key, an exception will be thrown.
+ </remarks>
+ <exception cref="T:System.Collections.Generic.KeyNotFoundException"></exception>
+ <exception cref="T:System.ArgumentNullException"></exception>
+</member>
+<member name="M:MemoryForMacros.Dictionary.GetEnumerator">
+ <summary>
+ An iterator that can be used to access all of the entries in the dictionary.
+ </summary>
+ <returns>IEnumerable</returns>
+ <remarks>You can use this enumerator by accessing the Dictionary in a "for each" block.</remarks>
+</member>
+<member name="M:MemoryForMacros.COMHelper.RegasmRegisterLocalServer(System.Type)">
+ <summary>
+ Register the component as a local server.
+ </summary>
+ <param name="t"></param>
+</member>
+<member name="M:MemoryForMacros.COMHelper.RegasmUnregisterLocalServer(System.Type)">
+ <summary>
+ Unregister the component.
+ </summary>
+ <param name="t"></param>
+</member>
+<member name="M:MemoryForMacros.COMNative.CoInitializeEx(System.IntPtr,System.UInt32)">
+ <summary>
+ CoInitializeEx() can be used to set the apartment model of individual 
+ threads.
+ </summary>
+ <param name="pvReserved">Must be NULL</param>
+ <param name="dwCoInit">
+ The concurrency model and initialization options for the thread
+ </param>
+ <returns></returns>
+</member>
+<member name="M:MemoryForMacros.COMNative.CoUninitialize">
+ <summary>
+ CoUninitialize() is used to uninitialize a COM thread.
+ </summary>
+ <remarks></remarks>
+</member>
+<member name="M:MemoryForMacros.COMNative.CoRegisterClassObject(System.Guid@,MemoryForMacros.IClassFactory,MemoryForMacros.CLSCTX,MemoryForMacros.REGCLS,System.UInt32@)">
+ <summary>
+ Registers an EXE class object with OLE so other applications can 
+ connect to it. EXE object applications should call 
+ CoRegisterClassObject on startup. It can also be used to register 
+ internal objects for use by the same EXE or other code (such as DLLs)
+ that the EXE uses.
+ </summary>
+ <param name="rclsid">CLSID to be registered</param>
+ <param name="pUnk">
+ Pointer to the IUnknown interface on the class object whose 
+ availability is being published.
+ </param>
+ <param name="dwClsContext">
+ Context in which the executable code is to be run.
+ </param>
+ <param name="flags">
+ How connections are made to the class object.
+ </param>
+ <param name="lpdwRegister">
+ Pointer to a value that identifies the class object registered; 
+ </param>
+ <returns></returns>
+ <remarks>
+ PInvoking CoRegisterClassObject to register COM objects is not 
+ supported.
+ </remarks>
+</member>
+<member name="M:MemoryForMacros.COMNative.CoRevokeClassObject(System.UInt32)">
+ <summary>
+ Informs OLE that a class object, previously registered with the 
+ CoRegisterClassObject function, is no longer available for use.
+ </summary>
+ <param name="dwRegister">
+ Token previously returned from the CoRegisterClassObject function
+ </param>
+ <returns></returns>
+</member>
+<member name="M:MemoryForMacros.COMNative.CoResumeClassObjects">
+ <summary>
+ Called by a server that can register multiple class objects to inform 
+ the SCM about all registered classes, and permits activation requests 
+ for those class objects.
+ </summary>
+ <returns></returns>
+ <remarks>
+ Servers that can register multiple class objects call 
+ CoResumeClassObjects once, after having first called 
+ CoRegisterClassObject, specifying REGCLS_LOCAL_SERVER | 
+ REGCLS_SUSPENDED for each CLSID the server supports. This function 
+ causes OLE to inform the SCM about all the registered classes, and 
+ begins letting activation requests into the server process.
+ 
+ This reduces the overall registration time, and thus the server 
+ application startup time, by making a single call to the SCM, no 
+ matter how many CLSIDs are registered for the server. Another 
+ advantage is that if the server has multiple apartments with 
+ different CLSIDs registered in different apartments, or is a free-
+ threaded server, no activation requests will come in until the server 
+ calls CoResumeClassObjects. This gives the server a chance to 
+ register all of its CLSIDs and get properly set up before having to 
+ deal with activation requests, and possibly shutdown requests. 
+ </remarks>
+</member>
+<member name="F:MemoryForMacros.COMNative.IID_IClassFactory">
+ <summary>
+ Interface Id of IClassFactory
+ </summary>
+ <remarks></remarks>
+</member>
+<member name="F:MemoryForMacros.COMNative.IID_IDispatch">
+ <summary>
+ Interface Id of IDispatch
+ </summary>
+ <remarks></remarks>
+</member>
+<member name="F:MemoryForMacros.COMNative.IID_IUnknown">
+ <summary>
+ Interface Id of IUnknown
+ </summary>
+ <remarks></remarks>
+</member>
+<member name="F:MemoryForMacros.COMNative.CLASS_E_NOAGGREGATION">
+ <summary>
+ Class does not support aggregation (or class object is remote)
+ </summary>
+ <remarks></remarks>
+</member>
+<member name="F:MemoryForMacros.COMNative.E_NOINTERFACE">
+ <summary>
+ No such interface supported
+ </summary>
+ <remarks></remarks>
+</member>
+<member name="T:MemoryForMacros.IClassFactory">
+ <summary>
+ You must implement this interface for every class that you register in 
+ the system registry and to which you assign a CLSID, so objects of that
+ class can be created.
+ http://msdn.microsoft.com/en-us/library/ms694364.aspx
+ </summary>
+</member>
+<member name="M:MemoryForMacros.IClassFactory.CreateInstance(System.IntPtr,System.Guid@,System.IntPtr@)">
+ <summary>
+ Creates an uninitialized object.
+ </summary>
+ <param name="pUnkOuter"></param>
+ <param name="riid">
+ Reference to the identifier of the interface to be used to 
+ communicate with the newly created object. If pUnkOuter is NULL, this
+ parameter is frequently the IID of the initializing interface.
+ </param>
+ <param name="ppvObject">
+ Address of pointer variable that receives the interface pointer 
+ requested in riid. 
+ </param>
+ <returns>S_OK means success.</returns>
+</member>
+<member name="M:MemoryForMacros.IClassFactory.LockServer(System.Boolean)">
+ <summary>
+ Locks object application open in memory.
+ </summary>
+ <param name="fLock">
+ If TRUE, increments the lock count; 
+ if FALSE, decrements the lock count.
+ </param>
+ <returns>S_OK means success.</returns>
+</member>
+<member name="T:MemoryForMacros.CLSCTX">
+ <summary>
+ Values from the CLSCTX enumeration are used in activation calls to 
+ indicate the execution contexts in which an object is to be run. These
+ values are also used in calls to CoRegisterClassObject to indicate the
+ set of execution contexts in which a class object is to be made available
+ for requests to construct instances.
+ </summary>
+</member>
+<member name="T:MemoryForMacros.REGCLS">
+ <summary>
+ The REGCLS enumeration defines values used in CoRegisterClassObject to 
+ control the type of connections to a class object.
+ </summary>
+ <remarks></remarks>
+</member>
+<member name="M:MemoryForMacros.ExeCOMServer.GarbageCollect(System.Object)">
+ <summary>
+ The method is call every 5 seconds to GC the managed heap after 
+ the COM server is started.
+ </summary>
+ <param name="stateInfo"></param>
+</member>
+<member name="M:MemoryForMacros.ExeCOMServer.PreMessageLoop">
+ <summary>
+ PreMessageLoop is responsible for registering the COM class 
+ factories for the COM classes to be exposed from the server, and 
+ initializing the key member variables of the COM server (e.g. 
+ _nMainThreadID and _nLockCnt).
+ </summary>
+</member>
+<member name="M:MemoryForMacros.ExeCOMServer.RunMessageLoop">
+ <summary>
+ RunMessageLoop runs the standard message loop. The message loop 
+ quits when it receives the WM_QUIT message.
+ </summary>
+</member>
+<member name="M:MemoryForMacros.ExeCOMServer.PostMessageLoop">
+ <summary>
+ PostMessageLoop is called to revoke the registration of the COM 
+ classes exposed from the server, and perform the cleanups.
+ </summary>
+</member>
+<member name="M:MemoryForMacros.ExeCOMServer.Run">
+ <summary>
+ Run the COM server. If the server is running, the function 
+ returns directly.
+ </summary>
+ <remarks>The method is thread-safe.</remarks>
+</member>
+<member name="M:MemoryForMacros.ExeCOMServer.Lock">
+ <summary>
+ Increase the lock count
+ </summary>
+ <returns>The new lock count after the increment</returns>
+ <remarks>The method is thread-safe.</remarks>
+</member>
+<member name="M:MemoryForMacros.ExeCOMServer.Unlock">
+ <summary>
+ Decrease the lock count. When the lock count drops to zero, post 
+ the WM_QUIT message to the message loop in the main thread to 
+ shut down the COM server.
+ </summary>
+ <returns>The new lock count after the increment</returns>
+</member>
+<member name="M:MemoryForMacros.ExeCOMServer.GetLockCount">
+ <summary>
+ Get the current lock count.
+ </summary>
+ <returns></returns>
+</member>
+<member name="M:MemoryForMacros.NativeMethod.GetCurrentThreadId">
+ <summary>
+ Get current thread ID.
+ </summary>
+ <returns></returns>
+</member>
+<member name="M:MemoryForMacros.NativeMethod.GetCurrentProcessId">
+ <summary>
+ Get current process ID.
+ </summary>
+ <returns></returns>
+</member>
+<member name="M:MemoryForMacros.NativeMethod.GetMessage(MemoryForMacros.MSG@,System.IntPtr,System.UInt32,System.UInt32)">
+ <summary>
+ The GetMessage function retrieves a message from the calling thread's 
+ message queue. The function dispatches incoming sent messages until a 
+ posted message is available for retrieval. 
+ </summary>
+ <param name="lpMsg">
+ Pointer to an MSG structure that receives message information from 
+ the thread's message queue.
+ </param>
+ <param name="hWnd">
+ Handle to the window whose messages are to be retrieved.
+ </param>
+ <param name="wMsgFilterMin">
+ Specifies the integer value of the lowest message value to be 
+ retrieved. 
+ </param>
+ <param name="wMsgFilterMax">
+ Specifies the integer value of the highest message value to be 
+ retrieved.
+ </param>
+ <returns></returns>
+</member>
+<member name="M:MemoryForMacros.NativeMethod.TranslateMessage(MemoryForMacros.MSG@)">
+ <summary>
+ The TranslateMessage function translates virtual-key messages into 
+ character messages. The character messages are posted to the calling 
+ thread's message queue, to be read the next time the thread calls the 
+ GetMessage or PeekMessage function.
+ </summary>
+ <param name="lpMsg"></param>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="M:MemoryForMacros.NativeMethod.DispatchMessage(MemoryForMacros.MSG@)">
+ <summary>
+ The DispatchMessage function dispatches a message to a window 
+ procedure. It is typically used to dispatch a message retrieved by 
+ the GetMessage function.
+ </summary>
+ <param name="lpMsg"></param>
+ <returns></returns>
+</member>
+<member name="M:MemoryForMacros.NativeMethod.PostThreadMessage(System.UInt32,System.UInt32,System.UIntPtr,System.IntPtr)">
+ <summary>
+ The PostThreadMessage function posts a message to the message queue 
+ of the specified thread. It returns without waiting for the thread to 
+ process the message.
+ </summary>
+ <param name="idThread">
+ Identifier of the thread to which the message is to be posted.
+ </param>
+ <param name="Msg">Specifies the type of message to be posted.</param>
+ <param name="wParam">
+ Specifies additional message-specific information.
+ </param>
+ <param name="lParam">
+ Specifies additional message-specific information.
+ </param>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+</members>
+</doc>

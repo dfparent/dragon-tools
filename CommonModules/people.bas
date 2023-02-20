@@ -5,23 +5,83 @@
 '#Language "WWB.NET"
 Option Explicit On
 
+Private people As Object
 Private fileName As String = ""
 
 ' Search can be initials or first name
 Public Function getPerson(search As String) As String
+
+    ' On Error GoTo ErrorHandle
+    people = GetPeople()
+
+    ' Search by initials.  Did the user speak initials?
+    Dim testName As String
+    testName = getPersonByInitials(search)
+    If testName <> "" Then
+        Return testName
+    End If
+
+    ' Try searching for the name as spoken
+    Dim pair As Object
+    Dim aName As String
+    Dim names As New System.Collections.Generic.List(Of String)
+
+    Dim nameParts() As String
+    nameParts = search.Split()
+    Dim firstNameLength As Integer
+    firstNameLength = nameParts(0).Length
+
+    Dim aNameParts() As String
+
+    For Each pair In people
+        For Each aName In pair.Value
+            ' Search for name as is
+            If aName = search Then
+                ' Dictation was correct.  No op
+                Return search
+            End If
+
+            aNameParts = aName.Split()
+
+            ' Does first name match?
+            If aNameParts(0) = nameParts(0) Then
+                names.Add(aName)
+            ElseIf aNameParts.Length >= 2 And nameParts.Length >= 2 Then
+                ' Do initials match?
+                If aNameParts(0).Chars(0) = nameParts(0).Chars(0) And aNameParts(1).Chars(0) = nameParts(1).Chars(0) Then
+                    names.Add(aName)
+                End If
+            End If
+        Next
+    Next
+
+    If names.Count = 0 Then
+        'MsgBox("There is no person with initials or name matching """ & search & """.  Try again.  You can say a person's initials, first name or full name.")
+        Beep
+        Return search
+    End If
+
+    If names.Count = 1 Then
+        Return names(0)
+        Exit Function
+    End If
+
+    ' User needs to choose
     Dim name As String
-    name = getPersonByInitials(search)
-    If name <> "" Then
+    Dim namesArray() As String
+    namesArray = names.ToArray()
+    If Not ShowPersonDialog(search, namesArray, name) Then
+        ' user cancelled
+        Return ""
+    Else
         Return name
     End If
 
-    name = getPersonByFirstName(search)
-    If name = "" Then
-        MsgBox("There is no person with initials or first name matching """ & search & """.")
-        Return ""
-    End If
+    Exit Function
 
-    Return name
+ErrorHandle:
+    Msgbox("Error: " & err.description)
+    Return ""
 
 End Function
 
@@ -40,7 +100,6 @@ End Function
 ' Returns Either a string if a single person, or an array if multiple
 Private Function getPersonByInitials(ByVal initials As String) As String
     On Error GoTo ErrorHandler
-    Dim people As Object
     people = GetPeople()
     initials = DictationToKeystrokes(initials)
     'msgbox(initials)
@@ -68,54 +127,9 @@ ErrorHandler:
     Return ""
 End Function
 
-Private Function getPersonByFirstName(ByVal first As String) As String
-    On Error GoTo ErrorHandler
-    Dim people As Object
-    people = GetPeople()
-    Dim pair As Object
-    Dim aName As String
-    Dim names As New System.Collections.Generic.List(Of String)
-    Dim theLength As Integer
-    theLength = Len(first)
-    For Each pair In people
-        For Each aName In pair.Value
-            If Left(aName, theLength) = first Then
-                names.Add(aName)
-            End If
-        Next
-    Next
-
-    If names.Count = 0 Then
-        'MsgBox("There is no person with first name '" & first & "'.")
-        getPersonByFirstName = ""
-        Exit Function
-    End If
-
-    If names.Count = 1 Then
-        getPersonByFirstName = names(0)
-        Exit Function
-    End If
-
-    ' User needs to choose
-    Dim name As String
-    If ShowPersonDialog(first, names.ToArray(), name) = 0 Then
-        ' user cancelled
-        getPersonByFirstName = ""
-    Else
-        getPersonByFirstName = name
-    End If
-
-    Exit Function
-
-ErrorHandler:
-    Msgbox("Error: " & err.description)
-    Return ""
-End Function
-
 Public Sub ManagePeople()
     On Error GoTo ErrorHandler
 
-    Dim people As Object
     people = GetPeople()
 
     Dim newPeople() As String

@@ -67,11 +67,11 @@ When you start Mouse Grid with any command line parameters, it will run in norma
 	d: double click the mouse (ctrl+d to control double click, shift+d to shift double click)<br>
     t: right click the mouse (ctrl+t to control right click, shift+t to shift right click)<br>
     m: move the mouse. Grid will close after the move.<br>
-	f: move the mouse in preparation for a drag action.  Grid remains open after move. 
-    g: drag the mouse from its current location to currently selected cell in the grid (ctrl+g to control drag, shift+g to shift drag)
-    y: toggle the sticky setting.  If sticky, the grid will remain displayed after issuing a click.  If not sticky, the grid will close after issuing a click.
-	x: close the application.
-    F1: Show help
+	f: move the mouse in preparation for a drag action.  Grid remains open after move. <br>
+    g: drag the mouse from its current location to currently selected cell in the grid (ctrl+g to control drag, shift+g to shift drag)<br>
+    y: toggle the sticky setting.  If sticky, the grid will remain displayed after issuing a click.  If not sticky, the grid will close after issuing a click.<br>
+	x: close the application.<br>
+    F1: Show help<br>
     <br>
     &lt;up arrow&gt;: increase row height in position mode<br>
     &lt;down arrowgt;: decrease row height in position mode<br>

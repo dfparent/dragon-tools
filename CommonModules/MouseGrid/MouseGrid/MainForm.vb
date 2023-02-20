@@ -107,6 +107,10 @@ Public Class frmMain
         pt.X = clientArea.X
         pt.Y = clientArea.Y
 
+        ' Compensate for size of menu which overlaps picture box.  Probably should figure out how to lay this out better.
+        ' You would think menu would move client area down, but it doesn't.
+        pt.Y = pt.Y + mnuMain.Height
+
         ' Convert Location 2 screen coordinates
         If Not ClientToScreen(Me.Handle, pt) Then
             Throw New Exception("Unable to convert grid location to screen coordinates.")

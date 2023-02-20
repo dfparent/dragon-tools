@@ -1,25 +1,34 @@
 'option explicit
 
 
-Public Sub PickColor(color As String)
+Public Sub PickColor(color As String, Optional selectorHasAutomaticOption As Boolean = False)
     SendKeys("{Home}")
+
+    If selectorHasAutomaticOption Then
+        SendKeys("{down}")
+    End If
 
     Select Case color
         Case "Black"
             SendKeys("{Right}~")
             Exit Sub
         Case "Grey"
-            SendKeys("{Right 2}~")
+            SendKeys("{Down 4}~")
             Exit Sub
         Case "White"
             SendKeys("{Enter}")
             Exit Sub
         Case "None"
-            SendKeys("{Down 8}~")
+            If selectorHasAutomaticOption Then
+                SendKeys("{up}~")
+            Else
+                SendKeys("{Down 8}~")
+            End If
+
             Exit Sub
     End Select
 
-    SendKeys("{Home}{Down 6}")
+    SendKeys("{Down 6}")
 
     Select Case color
         Case "Green"

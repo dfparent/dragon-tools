@@ -9,14 +9,6 @@
 ''' that have an appreciable amount of code in them in external files which KnowBrainer WON'T lose.
 ''' 
 
-Public Enum ModifierKey
-    None = 0
-    Control = 1
-    Shift = 2
-    Alternate = 4
-    Windows = 8
-End Enum
-
 ' Command string format:
 '   <type of command>:<command content>:delay;
 ' e.g. Command:app next:0.1;
@@ -33,16 +25,16 @@ Public Sub DoSaveCommands()
     Dim commands As New System.Text.StringBuilder()
 
     Dim delay As String
-    delay = InputBox("How much of a delay between commands?", "Record Commands", "0.1")
+    delay = InputBox("How much of a delay between commands?", "Record Commands", "0.5")
     If delay = "" Then
-        delay = "0.1"
+        delay = "0.5"
     End If
 
     Do While (more)
         Dim newCommand As String
         '        If PromptForCommandDialog(newCommand) = False Then
         newCommand = InputBox("Enter your commands. Usage:" & vbcrlf &
-                              "For keystrokes, use ""SendKeys:"" with Dragon notation: (i.e. SendKeys:{ctrl+v} or {ctrl+v}).  " & vbcrlf &
+                              "For keystrokes, use ""SendKeys:""" & vbcrlf &
                               "For special keystrokes, use ""SendSystemKeys:"" ." & vbcrlf &
                               "For spoken commands, use ""Command:"" (i.e. Command:Minimize Window).  ", "Record Commands")
         If newCommand = "" Then
@@ -51,6 +43,7 @@ Public Sub DoSaveCommands()
             If commands.Length > 0 Then
                 commands.Append(";")
             End If
+            newCommand = NormalizeCommand(newCommand)
             commands.Append(newCommand)
             commands.Append(":")
             commands.Append(delay)
@@ -64,12 +57,80 @@ Public Sub DoSaveCommands()
 
 End Sub
 
+' Replace ^, + and % key notation into {ctrl+, {shift+ and {alt+
+Private Function NormalizeCommand(command As String) As String
+    Dim hasShift As Boolean
+    Dim hasControl As Boolean
+    Dim hasAlternate As Boolean
+    Dim index As Integer
+
+    Dim newCommand As System.Text.StringBuilder
+    newCommand = New System.Text.StringBuilder()
+    Dim ignore As Boolean
+    Dim aChar As String
+
+    For index = 0 To command.Length - 1
+        aChar = command(index)
+
+        Select Case aChar
+            Case "{"
+                ' Don't want to change + in this context
+                ignore = True
+                newCommand.Append("{")
+            Case "}"
+                ignore = False
+                newCommand.Append("}")
+            Case "+"
+                If Not ignore Then
+                    hasShift = True
+                Else
+                    newCommand.Append("+")
+                End If
+            Case "^"
+                If Not ignore Then
+                    hasControl = True
+                Else
+                    newCommand.Append("^")
+                End If
+            Case "%"
+                If Not ignore Then
+                    hasAlternate = True
+                Else
+                    newCommand.Append("%")
+                End If
+            Case Else
+                ' Non-control char
+                If hasShift Or hasControl Or hasAlternate Then
+                    newCommand.Append("{")
+                End If
+                If hasShift Then
+                    newCommand.Append("shift+")
+                End If
+                If hasControl Then
+                    newCommand.Append("ctrl+")
+                End If
+                If hasAlternate Then
+                    newCommand.Append("alt+")
+                End If
+                newCommand.Append(aChar)
+                If hasShift Or hasControl Or hasAlternate Then
+                    newCommand.Append("}")
+                End If
+                hasShift = False
+                hasControl = False
+                hasAlternate = False
+        End Select
+    Next
+
+    Return newCommand.ToString()
+End Function
+
 ' Delay is in seconds
 Public Sub DoRepeatCommonCommand(theCommand As String, optional delay as string = "")
     Dim waitTime As Double
 	
 	if delay = "" then
-		delay = InputBox("Say 'Stop Commands' to stop." & vbcrlf & "How much of a delay between commands (in seconds)?", "Repeat common command", "0.1")
+		delay = InputBox("Say 'Stop Commands' to stop." & vbcrlf & "How much of a delay between commands (in seconds)?", "Repeat common command", "0.5")
 		If delay = "" Then
 			Exit Sub
 		End If
@@ -81,6 +142,8 @@ Public Sub DoRepeatCommonCommand(theCommand As String, optional delay as string 
     AddDelayedCommand("{" & theCommand & "}", DelayedCommandType.UseSendKeys, waitTime * 1000, -1)
 
     RunDelayedCommands()
+	
+	TTSPlayString("Repeating " & theCommand)
 
 End Sub
 
@@ -167,6 +230,7 @@ End Sub
 
 Public Sub DoStopCommands()
     KillDelayedCommands()
+	TTSPlayString("Commands stopped.")
 End Sub
 
 ' Allows user to edit the current saved play commands
@@ -180,12 +244,12 @@ Public Sub DoEditPlayCommands()
     End If
 
     Dim newCommand As String
-    newCommand = InputBox("Please edit the command.  Commands are separated by "";"".  Use Dragon SendKeys notation (e.g. use {ctrl+c}, not ^c).", "Record Commands", theCommand)
+    newCommand = InputBox("Please edit the command.  Commands are separated by "";"".", "Record Commands", theCommand)
     If newCommand = "" Or newCommand = theCommand Then
         Exit Sub
     End If
 
-
+    newCommand = NormalizeCommand(newCommand)
     SaveCommand(newCommand)
 
 End Sub
@@ -281,79 +345,98 @@ Public Sub DoMacroVbaJump(ListVar1 As String)
 
 End Sub
 
+Public Enum ModifierKey
+    None = 0
+    Control = 1
+    Shift = 2
+    Alternate = 4
+    Windows = 8
+End Enum
+
 ' Prints text for performing a "SendKeys" on a special key
+' Useful when writing macros
 ' Key can be a dictation string like "PgDn\Page Down"
-' For modifiers, pass in a string containing the modifier symbols, i.e. %^ or ^+.  Use "w" for the windows key.
-Public Sub DoMacroCodeKeys(dictationKey As String, Optional count As Integer = 1, Optional modifiers As String = "", Optional includeSendKeys As Boolean = False)
+' For modifiers, OR together a commbination of ModifierKey values. i.e. MoidifierKey.Control + ModifierKey.Shift
+Public Sub DoMacroCodeKeys(dictationKey As String, Optional count As Integer = 1, Optional modifiers As Integer = 0, Optional includeSendKeys As Boolean = False)
     If includeSendKeys Then
         SendKeys("SendKeys{(}""""{)}")
         SendKeys("{left 2}")
     End If
 
-    If modifiers.Contains("%") Then SendKeys("{%}")
-    If modifiers.Contains("^") Then SendKeys("{^}")
-    If modifiers.Contains("+") Then SendKeys("{+}")
-    If modifiers.Contains("w") Then SendKeys("{{}WindowsHold}")
+    If modifiers And ModifierKey.Alternate Then SendKeys("{%}")
+    If modifiers And ModifierKey.Control Then SendKeys("{^}")
+    If modifiers And ModifierKey.Shift Then SendKeys("{+}")
+    If modifiers And ModifierKey.Windows Then SendKeys("{{}WindowsHold}")
 
-    SendKeys("{{}" & Split(dictationKey, "\")(0))
+    Dim rawKeys As String
+    rawKeys = Split(dictationKey, "\")(0)
+
+    If Len(rawKeys) > 1 Then
+        SendKeys("{{}")
+    End If
+    SendKeys(rawKeys)
 
     If count > 1 Then
         SendKeys(" " & CStr(count))
     End If
 
-    SendKeys("}")
+    If len(rawKeys) > 1 Then
+        SendKeys("}")
+    End If
+End Sub
+
+' Presses the special key combination
+' Key can be a dictation string like "PgDn\Page Down"
+' For modifiers, OR together a commbination of ModifierKey values. i.e. MoidifierKey.Control + ModifierKey.Shift
+Public Sub DoMacroPressKeys(dictationKey As String, Optional count As Integer = 1, Optional modifiers As Integer = 0)
+    
+	dim sendKeyStr as string
+	
+    If modifiers And ModifierKey.Alternate Then sendKeyStr = sendKeyStr & "%"
+    If modifiers And ModifierKey.Control Then sendKeyStr = sendKeyStr & "^"
+    If modifiers And ModifierKey.Shift Then sendKeyStr = sendKeyStr & "+"
+    If modifiers And ModifierKey.Windows Then sendKeyStr = sendKeyStr & "{WindowsHold}"
+
+    sendKeyStr = sendKeyStr & "{" & Split(dictationKey, "\")(0)
+
+    If count > 1 Then
+        sendKeyStr = sendKeyStr & " " & CStr(count)
+    End If
+
+	sendKeyStr = sendKeyStr & "}"
+	
+    SendKeys(sendKeyStr)
 
 End Sub
 
-'Public Sub DoMacroCodeKeys(dictationKey As String, Optional count As Integer = 1, Optional modifiers As Long = 0, Optional includeSendKeys As Boolean = False)
-'    If includeSendKeys Then
-'        SendKeys("SendKeys{(}""""{)}")
-'        SendKeys("{left 2}")
-'    End If
-
-'    If modifiers And ModifierKey.Alternate Then SendKeys("{%}")
-'    If modifiers And ModifierKey.Control Then SendKeys("{^}")
-'    If modifiers And ModifierKey.Shift Then SendKeys("{+}")
-'    If modifiers And ModifierKey.Windows Then SendKeys("{{}WindowsHold}")
-
-'    'Dim modifier As ModifierKey
-'    'For Each modifier In modifiers
-'    '    'msgbox CStr(modifier)
-'    '    Select Case modifier
-'    '        Case ModifierKey.Alternate
-'    '            SendKeys("{%}")
-'    '        Case ModifierKey.Control
-'    '            SendKeys("{^}")
-'    '        Case ModifierKey.Shift
-'    '            SendKeys("{+}")
-'    '        Case ModifierKey.Windows
-'    '            SendKeys("{{}WindowsHold}")
-'    '    End Select
-'    'Next
-
-'    SendKeys("{{}" & Split(dictationKey, "\")(0))
-
-'    If count > 1 Then
-'        SendKeys(" " & CStr(count))
-'    End If
-
-'    SendKeys("}")
-
-'End Sub
-
-Public Sub DoMacroTrimLastChar(theChar As String)
+Public Sub DoMacroTrimChar(theChar As String, trimBack As Boolean)
     ' Get working text
     'Dim saveClipboard As String
     'saveClipboard = GetClipboard
 
-    SendKeys("+{Home}^c")
+    If trimBack Then
+        SendKeys("+{Home}^c")
+    Else
+        SendKeys("+{end}^c")
+    End If
 
     Dim fullText As String
     fullText = GetClipboard()
 
+    If theChar = "space" Then
+        theChar = " "
+    ElseIf theChar = "backslash" Then
+        theChar = "\"
+    End If
+
     ' Get insertion point
     Dim index As Integer
-    index = InStrRev(fullText, theChar)
+    If trimBack Then
+        index = InStrRev(fullText, theChar)
+    Else
+        index = InStr(fullText, theChar)
+    End If
+
     If index = 0 Then
         Beep()
         SendKeys("{Right}")
@@ -435,12 +518,15 @@ Public Sub DoCalculate(ListVar1 As String)
     firstNumStr = Mid(dictation, 1, index - 1)
     firstNumStr = Replace(firstNumStr, " ", "")
     If firstNumStr = "" Then
+        ' Perform a calculation with the existing number in the clipboard
         firstnum = CDbl(Clipboard)
         If err.Number <> 0 Then
             msgbox("Not a number: " & Clipboard)
             Exit Sub
         End If
     Else
+        ' Both numbers are in spoken phrase
+        firstNumStr = DictationToKeystrokes(firstNumStr)
         firstnum = CDbl(firstNumStr)
         If err.Number <> 0 Then
             msgbox("Not a number: " & firstNumStr)
@@ -450,6 +536,7 @@ Public Sub DoCalculate(ListVar1 As String)
 
     Dim secondNumStr As String
     secondNumStr = Mid(dictation, index + 1, Len(dictation) - index + 1)
+    secondNumStr = DictationToKeystrokes(secondNumStr)
     secondnum = CDbl(secondNumStr)
     If err.Number <> 0 Then
         msgbox("Not a number: " & secondNumStr)
@@ -577,6 +664,11 @@ Public Sub DoMoveCursor(dir1 As String, count1 As Integer, Optional dir2 As Stri
                     SendKeys("{Up 50}")
                 Case "Down"
                     SendKeys("{Down 50}")
+                Case "Tab"
+                    SendKeys("{Tab 50}")
+                Case "Shift Tab"
+                    SendKeys("+{Tab 50}")
+
             End Select
             theCount = theCount - 50
         End While
@@ -590,6 +682,10 @@ Public Sub DoMoveCursor(dir1 As String, count1 As Integer, Optional dir2 As Stri
                 SendKeys("{Up " + CStr(theCount) + "}")
             Case "Down"
                 SendKeys("{Down " + CStr(theCount) + "}")
+            Case "Tab"
+                SendKeys("{Tab " + CStr(theCount) + "}")
+            Case "Shift Tab"
+                SendKeys("+{Tab " + CStr(theCount) + "}")
         End Select
     Next i
 End Sub
@@ -607,5 +703,37 @@ Public Sub DoMultipleCommands(dictation As String)
         EmulateRecognition(commands(i))
         Wait(0.1)
     Next
+
+End Sub
+
+' Replaced by "line replace" macro
+Public Sub DoSwap(ListVar1 As String)
+    ' if the dictation does not contain the word "with", then bail
+    Dim index As Integer
+    index = InStr(ListVar1, " with ")
+    If index = 0 Then
+        Beep()
+        Exit Sub
+    End If
+
+    ' if the dictation contains the word "with", then find the text before "with" and replace it with the text after "with"
+    Dim replace1, replace2 As String
+    replace1 = Mid(ListVar1, 1, index - 1)
+    replace2 = Mid(ListVar1, index + 6)
+
+    Dim saveClipboard As String
+    saveClipboard = Clipboard
+
+    SendKeys("{Home}+{End}^c")
+
+    Wait(0.1)
+
+    Dim fullText As String
+    fullText = Clipboard
+    Dim newText As String
+    newText = Replace(fullText, replace1, replace2)
+    SendKeys(newText)
+
+    Clipboard(saveClipboard)
 
 End Sub

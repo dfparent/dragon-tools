@@ -13,7 +13,11 @@
 	To double click on an element: type in the callout number and then alt+<enter>.
 	To right click on an element: type in the callout number and then ctrl+shift+<enter>.
 	To pick up an element (mouse down): type in the callout number and then <down arrow>.
-	To drop an element (mouse up): type in the column number and then <up arrow>.
+	To drop an element (mouse up): type in the callout number and then <up arrow>.
+    To start a drag operation: type in the starting callout number and then <g>.
+    To complete a drag operation (drop): type in the destination callout number and then <p>.
+    To ctrl+drag: type in the destination callout number and then ctrl+<p>.
+    To shift+drag: type in the destination callout number and then shift+<p>.
 	To cancel callout entry:  type <esc>.
 	To refresh the callouts: type F5.
 	To show or hide the callouts: type F4.

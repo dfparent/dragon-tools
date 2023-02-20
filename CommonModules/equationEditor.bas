@@ -27,11 +27,11 @@ Public Sub OpenFile(dictation As String)
 
 		if words(1) = "avoid" then
 			words(1) = "void"
-		end if
-        SendKeys(ArrayToString(words, 1))
+		end If
+        SendKeys(DictationToKeystrokes(ArrayToString(words, 1)))
 
     Else
-        SendKeys(dictation)
+        SendKeys(DictationToKeystrokes(dictation))
     End If
 
     SendKeys("~")

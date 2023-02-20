@@ -37,7 +37,7 @@ Public Function goToApp(appName As String, Optional count As String = "1", Optio
         Exit Function
     End If
 
-    PressWindowsKey(number, count, openNew)
+	PressWindowsKey(number, count, openNew)
 
     ' When running ClickByNumbers, we don't get new flags
     ' Do a flag refresh

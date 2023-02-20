@@ -2,6 +2,9 @@
 '#Uses "autoIt.bas"
 '#Uses "paths.bas"
 
+Private Const WINDOWS_HIGHLIGHT_PROCESS_NAME = "ShowActiveWindow"
+Private Const FLAGS_UTILITY_PROCESS_NAME = "ClickByNumbers"
+
 Public Sub DoStartupCommands()
 
     ' Disable Word Add in
@@ -27,18 +30,24 @@ Public Sub DoStartupCommands()
         
     End If
 
-    If MsgBox("Start Window Highlight?", vbYesNo, "Startup Commands") = vbYes Then
-        AppBringUp(getFile("show active window"))
-        Wait(1.0)
+    ' Window highlight
+    Dim processes() As System.Diagnostics.Process
+
+    processes = System.Diagnostics.Process.GetProcessesByName(WINDOWS_HIGHLIGHT_PROCESS_NAME)
+    If processes.Length <= 0 Then
+        If MsgBox("Start Window Highlight?", vbYesNo, "Startup Commands") = vbYes Then
+            AppBringUp(getFile("show active window"))
+            Wait(1.0)
+        End If
     End If
 
-    If MsgBox("Start Show Flags utility?", vbYesNo, "Startup Commands") = vbYes Then
-        AppBringUp(getFile("flags"))
-        Wait(1.0)
-    End If
-
-    If MsgBox("Start Time Tracker?", vbYesNo, "Startup Commands") = vbYes Then
-        AppBringUp(getFile("time tracker"))
+    ' Flags utility
+    processes = System.Diagnostics.Process.GetProcessesByName(FLAGS_UTILITY_PROCESS_NAME)
+    If processes.Length <= 0 Then
+        If MsgBox("Start Show Flags utility?", vbYesNo, "Startup Commands") = vbYes Then
+            AppBringUp(getFile("flags"))
+            Wait(1.0)
+        End If
     End If
 
     ' Setup global commands
@@ -46,6 +55,11 @@ Public Sub DoStartupCommands()
     If MsgBox("Run Global Hot Keys?", vbYesNo, "Startup Commands") = vbYes Then
         runAutoIt("SetGlobalHotKeys.au3")
     End If
+
+    If MsgBox("Start Time Tracker?", vbYesNo, "Startup Commands") = vbYes Then
+        AppBringUp(getFile("time tracker"))
+    End If
+
 
 
 End Sub

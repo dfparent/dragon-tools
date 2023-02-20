@@ -25,7 +25,6 @@ Partial Class frmMain
         Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmMain))
         Me.ToolTip1 = New System.Windows.Forms.ToolTip(Me.components)
-        Me.lblPrompt = New System.Windows.Forms.Label()
         Me.timPrompt = New System.Windows.Forms.Timer(Me.components)
         Me.timSplash = New System.Windows.Forms.Timer(Me.components)
         Me.txtOutput = New System.Windows.Forms.TextBox()
@@ -33,24 +32,9 @@ Partial Class frmMain
         Me.trayIconMenuStrip = New System.Windows.Forms.ContextMenuStrip(Me.components)
         Me.ExitTrayIconMenuStripItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.timAnimation = New System.Windows.Forms.Timer(Me.components)
+        Me.lblPrompt = New System.Windows.Forms.Label()
         Me.trayIconMenuStrip.SuspendLayout()
         Me.SuspendLayout()
-        '
-        'lblPrompt
-        '
-        Me.lblPrompt.AutoSize = True
-        Me.lblPrompt.BackColor = System.Drawing.SystemColors.ActiveCaption
-        Me.lblPrompt.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.lblPrompt.FlatStyle = System.Windows.Forms.FlatStyle.Popup
-        Me.lblPrompt.Font = New System.Drawing.Font("Calibri", 14.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblPrompt.ForeColor = System.Drawing.SystemColors.ControlText
-        Me.lblPrompt.Location = New System.Drawing.Point(297, 180)
-        Me.lblPrompt.Name = "lblPrompt"
-        Me.lblPrompt.Size = New System.Drawing.Size(162, 25)
-        Me.lblPrompt.TabIndex = 0
-        Me.lblPrompt.Text = "Loading numbers..."
-        Me.lblPrompt.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
-        Me.lblPrompt.Visible = False
         '
         'timPrompt
         '
@@ -82,16 +66,33 @@ Partial Class frmMain
         Me.trayIconMenuStrip.ImageScalingSize = New System.Drawing.Size(32, 32)
         Me.trayIconMenuStrip.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ExitTrayIconMenuStripItem})
         Me.trayIconMenuStrip.Name = "trayIconMenuStrip"
-        Me.trayIconMenuStrip.Size = New System.Drawing.Size(93, 26)
+        Me.trayIconMenuStrip.Size = New System.Drawing.Size(94, 26)
         '
         'ExitTrayIconMenuStripItem
         '
         Me.ExitTrayIconMenuStripItem.Name = "ExitTrayIconMenuStripItem"
-        Me.ExitTrayIconMenuStripItem.Size = New System.Drawing.Size(92, 22)
+        Me.ExitTrayIconMenuStripItem.Size = New System.Drawing.Size(93, 22)
         Me.ExitTrayIconMenuStripItem.Text = "E&xit"
         '
         'timAnimation
         '
+        Me.timAnimation.Interval = 50
+        '
+        'lblPrompt
+        '
+        Me.lblPrompt.AutoSize = True
+        Me.lblPrompt.BackColor = System.Drawing.SystemColors.ActiveCaption
+        Me.lblPrompt.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.lblPrompt.FlatStyle = System.Windows.Forms.FlatStyle.Popup
+        Me.lblPrompt.Font = New System.Drawing.Font("Calibri", 14.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblPrompt.ForeColor = System.Drawing.SystemColors.ControlText
+        Me.lblPrompt.Location = New System.Drawing.Point(379, 213)
+        Me.lblPrompt.Name = "lblPrompt"
+        Me.lblPrompt.Size = New System.Drawing.Size(117, 25)
+        Me.lblPrompt.TabIndex = 2
+        Me.lblPrompt.Text = "Prompt Label"
+        Me.lblPrompt.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
+        Me.lblPrompt.Visible = False
         '
         'frmMain
         '
@@ -99,8 +100,8 @@ Partial Class frmMain
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.Color.LightGray
         Me.ClientSize = New System.Drawing.Size(800, 450)
-        Me.Controls.Add(Me.txtOutput)
         Me.Controls.Add(Me.lblPrompt)
+        Me.Controls.Add(Me.txtOutput)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.Name = "frmMain"
@@ -117,7 +118,6 @@ Partial Class frmMain
     End Sub
 
     Friend WithEvents ToolTip1 As ToolTip
-    Friend WithEvents lblPrompt As Label
     Friend WithEvents timPrompt As Timer
     Friend WithEvents timSplash As Timer
     Friend WithEvents txtOutput As TextBox
@@ -125,4 +125,5 @@ Partial Class frmMain
     Friend WithEvents trayIconMenuStrip As ContextMenuStrip
     Friend WithEvents ExitTrayIconMenuStripItem As ToolStripMenuItem
     Friend WithEvents timAnimation As Timer
+    Friend WithEvents lblPrompt As Label
 End Class

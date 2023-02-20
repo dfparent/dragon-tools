@@ -1,22 +1,16 @@
-﻿'Imports System.Runtime.InteropServices
+﻿Public Class frmMain
 
-Public Class frmMain
-
-    '<DllImport("user32.dll", CharSet:=CharSet.Auto, SetLastError:=True)>
-    'Private Shared Function GetForegroundWindow() As IntPtr
-    'End Function
 
     Dim borderWidth As Single = 2  ' Even numbers work best
     Dim borderColor As Color = Color.Red
+    Dim firstRefreshInterval As Integer = 1000  ' Refresh highlight after 1 second to compensate for some missed window switch events
+    Dim secondRefreshInterval As Integer = 5000  ' Refresh highlight after 10 seconds to compensate for Some splash screens that 
+    ' Go away but don't generate a window switch event
 
     Private Sub frmMain_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         InitializeSystemMonitor()
         RegisterHotkeys()
-
-        'SendKeys.Send("%{tab}")
-        'Dim handle As IntPtr
-        'Handle = GetForegroundWindow()
-        'WindowMonitor.RepositionMainForm(handle)
+        timRefresh.Interval = firstRefreshInterval
     End Sub
 
     Private Sub frmMain_FormClosed(sender As Object, e As FormClosedEventArgs) Handles Me.FormClosed
@@ -48,4 +42,36 @@ Public Class frmMain
         MyBase.WndProc(m)
     End Sub
 
+    Private Declare Function GetForegroundWindow Lib "user32" () As Int32
+
+    Public Sub InitializeTimer()
+        timRefresh.Interval = firstRefreshInterval
+        timRefresh.Start()
+    End Sub
+
+    Private Sub timRefresh_Tick(sender As Object, e As EventArgs) Handles timRefresh.Tick
+        Dim hwnd As IntPtr
+        hwnd = GetForegroundWindow()
+        If hwnd <> GetHandleForeground() Then
+            ClingToWindow(hwnd)
+            timRefresh.Interval = firstRefreshInterval
+        Else
+            If timRefresh.Interval = firstRefreshInterval Then
+                ' Set timer again but for longer interval
+                timRefresh.Interval = secondRefreshInterval
+            Else
+                timRefresh.Stop()
+            End If
+        End If
+    End Sub
+
+    ' Trap "Alt+F4" which closes the app and prompt user if that is what he wants to do.
+    ' Used to have this in the "form closeing" event, but then the system is prompted during shutdown and it halts shut down
+    Private Sub frmMain_KeyDown(sender As Object, e As KeyEventArgs) Handles Me.KeyDown
+        If e.Alt And e.KeyCode = Keys.F4 Then
+            If MsgBox("Do you want to close the Show Active Window app?", MsgBoxStyle.YesNo, MsgBoxStyle.Question) = MsgBoxResult.No Then
+                e.Handled = True
+            End If
+        End If
+    End Sub
 End Class

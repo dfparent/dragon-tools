@@ -93,6 +93,77 @@ Public Sub ShowPartialClientGrid(section As ClientSection)
 
 End Sub
 
+Public Sub ShowScreenGrid()
+    Dim screenRect As RECT
+    GetActiveScreenRect(screenRect)
+    ShowGridByValues(screenRect.Left, screenRect.Top, screenRect.Right - screenRect.Left, screenRect.Bottom - screenRect.Top, 20, 20)
+End Sub
+
+Public Sub ShowPartialScreenGrid(section As ClientSection)
+    Dim screenRect As RECT
+    GetActiveScreenRect(screenRect)
+
+    Dim x As Integer
+    Dim y As Integer
+    Dim w As Integer
+    Dim h As Integer
+
+    Select Case section
+        Case ClientSection.Top
+            x = screenRect.Left
+            y = screenRect.Top
+            w = screenRect.Right - screenRect.Left
+            h = (screenRect.Bottom - screenRect.Top) / 4
+
+        Case ClientSection.Left
+            x = screenRect.Left
+            y = screenRect.Top
+            w = (screenRect.Right - screenRect.Left) / 4
+            h = screenRect.Bottom - screenRect.Top
+        Case ClientSection.Right
+            x = screenRect.Right - ((screenRect.Right - screenRect.Left) / 4)
+            y = screenRect.Top
+            w = (screenRect.Right - screenRect.Left) / 4
+            h = screenRect.Bottom - screenRect.Top
+        Case ClientSection.Bottom
+            x = screenRect.Left
+            y = screenRect.Bottom - ((screenRect.Bottom - screenRect.Top) / 4)
+            w = screenRect.Right - screenRect.Left
+            h = (screenRect.Bottom - screenRect.Top) / 4
+        Case ClientSection.Center
+            w = (screenRect.Right - screenRect.Left) / 2
+            h = (screenRect.Bottom - screenRect.Top) / 2
+            x = screenRect.Left + w / 2
+            y = screenRect.Top + h / 2
+
+    End Select
+
+    ShowGridByValues(x, y, w, h, 20, 20)
+
+End Sub
+
+Public Sub ShowMouseCenteredGrid()
+    Dim thePoint As POINTAPI
+    GetCursorPos(thePoint)
+
+    Dim gridWidth As Integer
+    Dim gridHeight As Integer
+    Dim rowHeight As Integer
+    Dim columnWidth As Integer
+    Dim gridX As Integer
+    Dim gridY As Integer
+
+    gridWidth = 300
+    gridHeight = 300
+    rowHeight = 15
+    columnWidth = 15
+
+    gridX = thePoint.x - (gridWidth / 2)
+    gridY = thePoint.y - (gridHeight / 2)
+
+    ShowGridByValues(gridX, gridY, gridWidth, gridHeight, rowHeight, columnWidth)
+End Sub
+
 Public Sub SetGrid()
 	dim command as String
     command = getFile("mouse grid")
@@ -125,17 +196,19 @@ public Sub ClickGrid(action as GridAction, rowNum as string, colNum as string, o
 	if not IsNumeric(rowNum) then	
 		msgbox "Row number is not a number: " & rowNum
 		exit sub
-	end if
-	
-	SendKeys "r" & rowNum
-
-    SendKeys "{Enter}"
-    Wait 0.1
+	end If
 
     If Not IsNumeric(colNum) Then
         msgbox "Column number is not a number: " & colNum
             Exit Sub
     End If
+
+    SendKeys "r" & rowNum
+
+    SendKeys "{Enter}"
+    Wait 0.1
+
+
 
     SendKeys "c" & colNum
 
