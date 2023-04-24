@@ -4,6 +4,8 @@
 
 ; The following menu dictionary is here as a marker so we can check to see whether the menus have been loaded.
 ; It also provides some common menu definitions
+
+; These are common menu defs
 [menus]
 file=f
 edit=e

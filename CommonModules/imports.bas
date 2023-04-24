@@ -97,5 +97,7 @@ Public Declare Function ClientToScreen Lib "user32.dll" (ByVal hWnd As System.In
 'Public Shared Function ClientToScreen(ByVal hWnd As Long, ByRef lpPoint As POINTAPI) As Boolean
 'End Function
 
-
+'Public Delegate Function EnumWindowsDelegateCallBack(ByVal hwnd As Integer, ByVal lParam As Integer) As Boolean
+'Public Declare Function EnumWindows Lib "user32" (ByVal x As EnumWindowsDelegateCallBack, ByVal y As Integer) As Integer
+'Public Declare Function GetClassName Lib "user32" (ByVal hWnd As System.IntPtr, ByVal lpClassName As System.Text.StringBuilderQuestion, ByVal nMaxCount As Integer) As Integer
 

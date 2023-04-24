@@ -1,5 +1,6 @@
 '#Language "WWB.NET"
 '#Uses "utilities.bas"
+'#Uses "window.bas"
 '#Uses "cache.bas"
 
 'option explicit
@@ -9,7 +10,7 @@ Private Const ZOOM_INCREMENT = 10
 
 Public Sub Zoom(inOut As String, Optional count As Integer = 1)
     SendKeys("^y")
-    Wait(0.1)
+    WaitForWindow("Zoom To")
     SendKeys("^c")
     Dim zoomValue As String
     zoomValue = GetClipboard()
@@ -41,7 +42,7 @@ End Sub
 
 Public Sub SetBookmark()
     SendKeys("%vng")
-    Wait 0.1
+    WaitForWindow("Go To Page")
     SendKeys("^c")
 
     Dim pageNum As String
@@ -74,7 +75,7 @@ Public Sub GoToPreviousBookmark()
     bookmarks = GetCacheValue(ADOBE_BOOKMARK_VALUE)
 
     SendKeys("%vng")
-    Wait(0.1)
+    WaitForWindow("Go To Page")
     SendKeys(bookmarks(UBound(bookmarks)))
     SendKeys("~")
 

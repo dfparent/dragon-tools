@@ -14,15 +14,25 @@ Public Sub ShowCategories()
 
 End Sub
 
-Public Sub SelectFolder(ListVar1 As String)
+Public Sub SelectFolder(ListVar1 As String, Optional subFolderToken As String = ",")
     'SendKeys "^+i"
     'Wait 0.1
 
     SendKeys("^y")
     Wait(0.3)
 
+    If Not WaitForWindow("Go to Folder", 0.5) Then
+        ' Some folders do not Work with ^y for some stupid reason.
+        ' For these cases, we need to First go to the inbox and then use ^y
+        SendKeys("^+i")
+        Wait(0.1)
+        SendKeys("^y")
+        Wait(0.3)
+    End If
+
+
     Dim folders() As String
-    folders = Split(ListVar1, ",")
+    folders = Split(ListVar1, subFolderToken)
     SendKeys("{Home}{Down}{Left}{Right}")
     Wait(0.1)
     Dim aFolder As String
@@ -36,13 +46,16 @@ Public Sub SelectFolder(ListVar1 As String)
     SendKeys("{Enter}")
 End Sub
 
-Public Sub MoveToFolder(Listvar1 As String)
+Public Sub MoveToFolder(Listvar1 As String, Optional subFolderToken As String = ",")
     'SendKeys("%hmvo")
     SendKeys("^+v")
-    Wait(0.5)
+    If Not WaitForWindow("Move Items", 0.5) Then
+        Beep
+        Exit Sub
+    End If
 
     Dim folders() As String
-    folders = Split(Listvar1, ",")
+    folders = Split(Listvar1, subFolderToken)
     SendKeys("{Home}{Left}{Right}")
     Wait(0.1)
     Dim aFolder As String

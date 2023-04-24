@@ -209,10 +209,11 @@ Public Function formatCapsNoSpaces(text As String, Optional capitalizeFirst As B
     Return out
 End Function
 
+' Assuming delimiter = "_":
 ' CaseType.allCaps = true: This is some Text" -> THIS_IS_SOME_TEXT
 ' CaseType.noCaps = true: This is some Text" -> this_is_some_text
 ' CaseType.initialCaps = true: This is some Text" -> This_Is_Some_Text
-Public Function formatUnderscores(text As String, Optional capsType As CaseType = CaseType.noCaps) As String
+Private Function formatDelimited(text As String, delimiter As String, Optional capsType As CaseType = CaseType.noCaps) As String
     Dim words() As String
     words = Split(text)
     Dim out As String
@@ -227,18 +228,20 @@ Public Function formatUnderscores(text As String, Optional capsType As CaseType 
                 words(i) = UCase$(Left$(words(i), 1)) & LCase(Mid$(words(i), 2))
         End Select
         If i > 0 Then
-            out = out & "_"
+            out = out & delimiter
         End If
         out = out & words(i)
     Next
     Return out
 End Function
 
+Public Function formatUnderscores(text As String, Optional capsType As CaseType = CaseType.noCaps) As String
+    Return formatDelimited(text, "_", capsType)
+End Function
+
 ' This is some Text" -> this-is-some-text
-Public Function formatHyphens(text As String)
-    text = Replace(text, " ", "-")
-    text = LCase(text)
-    Return text
+Public Function formatHyphens(text As String, Optional capsType As CaseType = CaseType.noCaps)
+    Return formatDelimited(text, "-", capsType)
 End Function
 
 ' Cleans up some characters which otherwise might not get printed,
@@ -832,6 +835,31 @@ Public Function PunctuationNameToCharacter(dictation As String) As String
     PunctuationNameToCharacter = out
 End Function
 
+Public Function OrdinalToCardinal(ordinal As String) As Integer
+    Select Case ordinal
+        Case "first"
+            Return 1
+        Case "second"
+            Return 2
+        Case "third"
+            Return 3
+        Case "fourth"
+            Return 4
+        Case "fifth"
+            Return 5
+        Case "sixth"
+            Return 6
+        Case "seventh"
+            Return 7
+        Case "eighth"
+            Return 8
+        Case "ninth"
+            Return 9
+        Case "tenth"
+            Return 10
+    End Select
+End Function
+
 Public Sub SaveCommand(command As String)
     SaveSetting(registryAppName, registrySaveCommand, registryCommandName, command)
 End Sub
@@ -967,7 +995,7 @@ Public Function ParseReplaceDictation(dictation As String, ByRef findText As Str
     withIndex = Instr(lowerListVar, " with ")
     If withIndex = 0 Then
         TTSPlayString("To do a replace, use the 'with' trigger word. As in 'line replace this with that'.")
-        Return False
+            Return False
     End If
 
     ' Find the find text and replace text

@@ -18,7 +18,7 @@ Private urls As Object
 Private commonUrlsFileName As String = DATA_PATH & "\urls.txt"
 Private urlsFileName As String = DATA_PATH & "\urls-" & System.Environment.MachineName & ".txt"
 
-Private menus As Object
+Private commonMenus As Object
 Private menusFilename As String = DATA_PATH & "\menus.txt"
 
 Private touches As Object
@@ -102,8 +102,8 @@ Private Function LoadCache() As Boolean
             memoryApp.LoadDictionaries(menusFilename)
         End If
 
-        menus = memoryApp.GetDictionary(menusDictName)
-        If menus.Count = 0 Then
+        commonMenus = memoryApp.GetDictionary(menusDictName)
+        If commonMenus.Count = 0 Then
             MsgBox("Failed to load Menus from " & menusFilename)
         End If
 
@@ -158,6 +158,26 @@ Public Sub UnloadCache()
     End If
 
     memoryApp = Nothing
+End Sub
+
+'==============================
+' Switch App
+'==============================
+
+Public Sub SwitchToApp(appTitleText As String)
+    On Error GoTo ErrorHandler
+
+    If Not LoadCache() Then
+        Exit Sub
+    End If
+
+    If Not memoryApp.SwitchToApp(appTitleText) Then
+        Beep
+    End If
+
+ErrorHandler:
+    MsgBox("Error in SwitchToApp: " & err.description)
+
 End Sub
 
 '==============================
@@ -231,10 +251,12 @@ End Function
 Public Function GetCacheValueSingle(key As String) As String
     Dim values() As String
     values = GetCacheValue(key)
-    GetCacheValueSingle = Nothing
+	if values is nothing then
+		return ""
+	end if
 
     If UBound(values) > 0 Then
-        GetCacheValueSingle = values(0)
+        return values(0)
     End If
 End Function
 
@@ -396,7 +418,7 @@ Public Function GetCommonMenus() As Object
         Exit Function
     End If
 
-    GetCommonMenus = menus
+    GetCommonMenus = commonMenus
     Exit Function
 
 ErrorHandler:
@@ -420,8 +442,8 @@ Public Function GetMenus(processName As String) As Object
         GetMenus = memoryApp.GetDictionary(dictionaryName)
     Else
         ' Common menus
-        Msgbox("No menus for process " & processName)
-        GetMenus = menus
+        'Msgbox("No menus for process " & processName)
+        GetMenus = commonMenus
     End If
 
     Exit Function

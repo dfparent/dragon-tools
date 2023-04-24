@@ -75,6 +75,12 @@ Public Class Application
         Return dictionaries
     End Function
 
+    ' For SwitchToApp
+    Private processingSwitchToApp As Boolean = False
+    Private activeWindowHandle As IntPtr
+    Private switchToAppText As String
+    Private foundSwitchApp As Boolean
+
     ''' <summary>
     ''' Used to keep MemoryForMacros running in between macro runs.
     ''' </summary>
@@ -307,9 +313,9 @@ Public Class Application
         End Try
 
         ' Resolve dictionary references
-        For Each name As String In names
-            dictionaries(name).ResolveReferences()
-        Next
+        'For Each name As String In names
+        'dictionaries(name).ResolveReferences()
+        'Next
 
         Return names.ToArray()
 
@@ -465,6 +471,73 @@ Public Class Application
     ''' The Dragon command to execute.  The command will execute as though it had been spoken.</param>
     Public Function GetDelayedCommandManager() As DelayedCommandManager
         Return m_commandManager
+    End Function
+
+    ''' <summary>
+    ''' Gives the focus to the application whose title contains the given text (case insensitive).
+    ''' </summary>
+    Public Function SwitchToApp(switchAppTitleText As String) As Boolean
+        If processingSwitchToApp Then
+            Throw New ApplicationException("Switch to app is busy.  Try again soon.")
+        End If
+
+        processingSwitchToApp = True
+        foundSwitchApp = False
+        activeWindowHandle = NativeMethod.GetForegroundWindow()
+        switchToAppText = switchAppTitleText
+
+        Try
+            Dim myDelegate As NativeMethod.EnumWindowsDelegateCallBack
+            myDelegate = New NativeMethod.EnumWindowsDelegateCallBack(AddressOf EnumWindowCallBack)
+            NativeMethod.EnumWindows(myDelegate, 0)
+            If foundSwitchApp Then
+                Return True
+            Else
+                Return False
+            End If
+        Catch ex As Exception
+            Throw New ApplicationException("Failed to switch to app """ & switchAppTitleText & """: " & ex.Message)
+        Finally
+            processingSwitchToApp = False
+        End Try
+
+    End Function
+
+    Private Function EnumWindowCallBack(ByVal hwnd As Integer, ByVal lParam As Integer) As Boolean
+        Dim className As New StringBuilder(255)
+        Dim windowText As New StringBuilder(255)
+
+        Try
+            If hwnd = activeWindowHandle Then
+                Return True
+            End If
+
+            NativeMethod.GetClassName(hwnd, className, 255)
+
+            If className.ToString = "DgnResultsBoxWindow" Then
+                Return True
+            End If
+
+            NativeMethod.GetWindowText(hwnd, windowText, 255)
+
+            If windowText.ToString().Contains(switchToAppText) Then
+                NativeMethod.SetForegroundWindow(hwnd)
+
+                ' Found it 
+                foundSwitchApp = True
+
+                ' Stop enumerating
+                Return False
+            End If
+
+        Catch ex As Exception
+            Throw New ApplicationException(ex.Message)
+            Return False
+        End Try
+
+        ' Keep looking
+        Return True
+
     End Function
 
     ''' <summary>

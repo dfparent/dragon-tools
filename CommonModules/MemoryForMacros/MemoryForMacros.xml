@@ -178,6 +178,11 @@ MemoryForMacros
  <param name="command">
  The Dragon command to execute.  The command will execute as though it had been spoken.</param>
 </member>
+<member name="M:MemoryForMacros.Application.SwitchToApp(System.String)">
+ <summary>
+ Gives the focus to the application whose title contains the given text (case insensitive).
+ </summary>
+</member>
 <member name="M:MemoryForMacros.Application.Unload">
  <summary>
  Shuts down MemoryForMacros immediately, regardless of whether any clients are still using the service.

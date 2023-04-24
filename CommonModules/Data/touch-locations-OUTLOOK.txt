@@ -10,4 +10,5 @@ do date calendar=282,246,0
 start date calendar=281,217,0
 email list=589,241,0
 reading pain=1369,322,0
+print=237,160,0
 

@@ -1,4 +1,5 @@
 '#Uses "utilities.bas"
+'#Uses "keyboard.bas"
 '#Uses "cache.bas"
 '#Language "WWB.NET"
 Option Explicit On
@@ -9,10 +10,12 @@ Public sub ClickMenu(menuName as string)
     menus = GetMenus(GetForegroundProcessName())
 
     If menus.ContainsKey(menuName) Then
-        SendKeys("%{" & menus(menuName)(0) & "}")
+        ShowKeyTips()
+        SendKeys("{" & menus(menuName)(0) & "}")
     Else
         ' Guess at the menu mnemonic by using the first character
-        SendKeys("%" + menuName.Substring(0, 1))
+        ShowKeyTips()
+        SendKeys(menuName.Substring(0, 1))
     End if 
 end sub
 

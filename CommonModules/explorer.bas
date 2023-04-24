@@ -92,13 +92,13 @@ Public Sub doDialogFolder(dictation As String)
 
     If thePath = "" Then
         ' Not a pre known path
-        TTSPlayString("Let me find the " & dictation & " folder.")
-        doDialogLeftSide()
-        SendKeys("{home}")
-        SendKeys(pathName)
-        Wait(0.1)
-        SendKeys("{Enter}")
-        Wait(0.1)
+        'TTSPlayString("Let me find the " & dictation & " folder.")
+        'doDialogLeftSide()
+        'SendKeys("{home}")
+        'SendKeys(pathName)
+        'Wait(0.1)
+        'SendKeys("{Enter}")
+        'Wait(0.1)
         'SendKeys("{tab}%n")
     Else
         ' Pre known

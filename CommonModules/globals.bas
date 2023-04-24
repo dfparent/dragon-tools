@@ -737,3 +737,34 @@ Public Sub DoSwap(ListVar1 As String)
     Clipboard(saveClipboard)
 
 End Sub
+
+' If letter is "space", substitute the space char
+Public Sub DoAck(letter1 As String, letter2 As String,
+                 Optional letter3 As String = "",
+                 Optional letter4 As String = "",
+                 Optional letter5 As String = "",
+                 Optional letter6 As String = "",
+                 Optional letter7 As String = "")
+
+    Dim letters(6) As String
+    If letter1 <> "" Then letters(0) = UCase(Split(letter1, "\")(0))
+    If letter2 <> "" Then letters(1) = UCase(Split(letter2, "\")(0))
+    If letter3 <> "" Then letters(2) = UCase(Split(letter3, "\")(0))
+    If letter4 <> "" Then letters(3) = UCase(Split(letter4, "\")(0))
+    If letter5 <> "" Then letters(4) = UCase(Split(letter5, "\")(0))
+    If letter6 <> "" Then letters(5) = UCase(Split(letter6, "\")(0))
+    If letter7 <> "" Then letters(6) = UCase(Split(letter7, "\")(0))
+
+    Dim i As Integer
+    Dim out As String
+    For i = 0 To 6
+        If letters(i) <> "" Then
+            If letters(i) = "SPACE" Then
+                out = out & " "
+            Else
+                out = out & letters(i)
+            End If
+        End If
+    Next i
+    SendKeys(out)
+End Sub

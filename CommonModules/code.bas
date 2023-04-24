@@ -94,11 +94,18 @@ Public Sub DoCodeBlock(ListVar1 As String, Optional injectSelection As Boolean =
             SendKeys("if")
             Wait(0.1)
             SendKeys("{tab 2}")
-        ElseIf ListVar1 = "select" Or ListVar1 = "switch" Then
+        ElseIf ListVar1 = "switch" Then
             If injectSelection Then
                 SendKeys("^k^s")
             End If
             SendKeys("switch")
+            Wait(0.1)
+            SendKeys("{Tab 2}")
+        ElseIf ListVar1 = "select" Then
+            If injectSelection Then
+                SendKeys("^k^s")
+            End If
+            SendKeys("select")
             Wait(0.1)
             SendKeys("{Tab 2}")
         ElseIf ListVar1 = "for" Then

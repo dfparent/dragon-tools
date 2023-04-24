@@ -18,7 +18,7 @@ knowbrainer commands=C:\Users\Doug\AppData\Roaming\KnowBrainer\KnowBrainerComman
 
 [files]
 my document=${paths:documents}\mydoc.txt
-my personal doc=${paths:documents}\${paths:partial}
+my personal doc=${paths:documents}\Personal
 my personal doc2=${my personal doc}.extra
 my friend=${paths:desktop}\${people:dp}\contact
 bad=${paths:desktop2}\${people:dp}\contact

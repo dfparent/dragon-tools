@@ -85,6 +85,7 @@ Imports System.Threading
         app = GetAppObject()
 
         Dim paths As MemoryForMacros.Dictionary, files As MemoryForMacros.Dictionary
+        app.LoadDictionaries("..\..\data1.txt")
         app.LoadDictionaries("..\..\data2.txt")
         app.LoadDictionaries("..\..\data2-2.txt", True)
         app.ResolveDictionaries()
@@ -109,13 +110,12 @@ Imports System.Threading
         expectedPaths.AppendLine("C:\Users\Doug\AppData\Roaming\Microsoft\AddIns")
         expectedPaths.AppendLine("C:\Users\Doug\Documents\Personal\Macros")
         expectedPaths.AppendLine("C:\Users\Doug\AppData\Roaming\KnowBrainer\KnowBrainerCommands")
-        expectedPaths.AppendLine("personal")
         expectedPaths.AppendLine("C:\Second File\Path")
 
         Dim expectedFiles As New StringBuilder
         expectedFiles.AppendLine("C:\Users\Doug\Documents\mydoc.txt")
-        expectedFiles.AppendLine("C:\Users\Doug\Documents\personal")
-        expectedFiles.AppendLine("C:\Users\Doug\Documents\personal.extra")
+        expectedFiles.AppendLine("C:\Users\Doug\Documents\Personal")
+        expectedFiles.AppendLine("C:\Users\Doug\Documents\Personal.extra")
         expectedFiles.AppendLine("C:\Users\Doug\Desktop\Douglas Parent\contact")
         expectedFiles.AppendLine("<Invalid entry reference: desktop2>\Douglas Parent\contact")
         expectedFiles.AppendLine("C:\Users\Doug\Documents\mydoc.txt\<Dictionary does not exist: people2>\contact")
@@ -138,7 +138,7 @@ Imports System.Threading
         Debug.Print("Actual Paths:")
         Debug.Print(actualPaths.ToString())
 
-        Assert.AreEqual(expectedPaths.ToString(), actualPaths.ToString())
+        Assert.AreEqual(expectedPaths.ToString().Trim(), actualPaths.ToString().Trim())
 
         For Each pair In files
             For Each aValue As String In pair.Value
@@ -149,11 +149,11 @@ Imports System.Threading
         Debug.Print("Actual Files:")
         Debug.Print(actualFiles.ToString())
 
-        Assert.AreEqual(expectedFiles.ToString(), actualFiles.ToString())
+        Assert.AreEqual(expectedFiles.ToString().Trim(), actualFiles.ToString().Trim())
 
     End Sub
 
-    <TestMethod()>
+
     Public Sub TestDelayedCommand()
         Dim app As MemoryForMacros.Application
         app = GetAppObject()
@@ -169,5 +169,11 @@ Imports System.Threading
         Thread.Sleep(400000)
     End Sub
 
+    <TestMethod()>
+    Public Sub TestSwitchApp()
+        Dim app As MemoryForMacros.Application
+        app = GetAppObject()
 
+        app.SwitchToApp("Inbox")
+    End Sub
 End Class

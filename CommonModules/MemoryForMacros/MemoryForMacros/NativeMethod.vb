@@ -17,6 +17,7 @@
 #Region "Imports directives"
 
 Imports System.Runtime.InteropServices
+Imports System.Text
 
 #End Region
 
@@ -122,6 +123,28 @@ Friend Class NativeMethod
 
 
     Friend Const WM_QUIT As Integer = &H12
+
+    Friend Delegate Function EnumWindowsDelegateCallBack(ByVal hwnd As Integer, ByVal lParam As Integer) As Boolean
+
+    <DllImport("user32.dll")>
+    Friend Shared Function EnumWindows(ByVal x As EnumWindowsDelegateCallBack, ByVal y As Integer) As Integer
+    End Function
+
+    <DllImport("user32.dll")>
+    Friend Shared Function GetClassName(ByVal hWnd As System.IntPtr, ByVal lpClassName As StringBuilder, ByVal nMaxCount As Integer) As Integer
+    End Function
+
+    <DllImport("user32.dll")>
+    Public Shared Function GetWindowText(ByVal hWnd As Integer, ByVal prmstrString As StringBuilder, ByVal nMaxCount As Integer) As Integer
+    End Function
+
+    <DllImport("user32.dll")>
+    Friend Shared Function GetForegroundWindow() As IntPtr
+    End Function
+
+    <DllImport("user32.dll")>
+    Public Shared Function SetForegroundWindow(ByVal hwnd As Long) As Long
+    End Function
 
 End Class
 

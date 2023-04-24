@@ -4,6 +4,8 @@
 '#Uses "keyboard.bas"
 '#Uses "KeyboardConstants.bas"
 '#Uses "cache.bas"
+'#Uses "enums.bas"
+
 Option Explicit On
 Option Strict On
 
@@ -33,17 +35,6 @@ Public Const WHEEL_CTS_HOME_LOCATION_X_KEY = "WheelClickToScrollHomeLocationX"
 Public Const WHEEL_CTS_HOME_LOCATION_Y_KEY = "WheelClickToScrollHomeLocationY"
 Public Const WHEEL_CTS_SCROLL_DELTA = 40
 
-Public Enum WheelScrollDirection
-    N
-    NE
-    E
-    SE
-    S
-    SW
-    W
-    NW
-End Enum
-
 Public Enum MouseButton
     Left
     Right
@@ -54,6 +45,66 @@ Public enum MouseButtonPosition
 	Down
 	Up
 end Enum
+
+' This much match the mouse_command command list
+Public Enum MouseCommand
+    MoveTo
+    Move
+    Click
+    LeftClick
+    ShiftClick
+    ControlClick
+    DoubleClick
+    Rightclick
+    PickUp
+    Drag
+    Mousedown
+    PutDown
+    Drop
+    MouseUp
+    MiddleMouseDown
+    MiddleMouseUp
+    Invalid
+End Enum
+
+Public Function GetMouseCommandEnum(theCommand As String) As MouseCommand
+    Select Case theCommand
+        Case "move To"
+            Return MouseCommand.MoveTo
+        Case "move"
+            Return MouseCommand.Move
+        Case "click"
+            Return MouseCommand.Click
+        Case "left click"
+            Return MouseCommand.LeftClick
+        Case "shift click"
+            Return MouseCommand.ShiftClick
+        Case "control click"
+            Return MouseCommand.ControlClick
+        Case "Double-click"
+            Return MouseCommand.DoubleClick
+        Case "right-click"
+            Return MouseCommand.Rightclick
+        Case "pick up"
+            Return MouseCommand.PickUp
+        Case "drag"
+            Return MouseCommand.Drag
+        Case "mouse down"
+            Return MouseCommand.Mousedown
+        Case "put down"
+            Return MouseCommand.PutDown
+        Case "drop"
+            Return MouseCommand.Drop
+        Case "mouse up"
+            Return MouseCommand.MouseUp
+        Case "middle mouse down"
+            Return MouseCommand.MiddleMouseDown
+        Case "middle mouse up"
+            Return MouseCommand.MiddleMouseUp
+        Case Else
+            Return MouseCommand.Invalid
+    End Select
+End Function
 
 Public Enum WindowCorner
     NW = 0
@@ -86,7 +137,7 @@ Public Sub PositionMouseOnActiveWindow(region As WindowRegion)
     If Not bRet Then
         Beep
         'msgbox("Can't get window rectangle.")
-        Exit Sub
+Exit Sub
     End If
 
     Select Case region
@@ -323,7 +374,7 @@ Public Enum ScrollMode
 End Enum
 
 ' Enables the wheel click / move the mouse to scroll feature
-Public Sub WheelClickToScroll(mode As ScrollMode, Optional scrollDirection As WheelScrollDirection = WheelScrollDirection.S, Optional scrollSpeedDelta As Integer = 0)
+Public Sub WheelClickToScroll(mode As ScrollMode, Optional scrollDirection As CompassDirection = CompassDirection.S, Optional scrollSpeedDelta As Integer = 0)
 
     Dim scrollDelta As Integer
 
@@ -349,14 +400,14 @@ Public Sub WheelClickToScroll(mode As ScrollMode, Optional scrollDirection As Wh
         scrollDirection = GetCacheValueSingle(WHEEL_CTS_DIRECTION_KEY)
         If scrollSpeedDelta < 0 Then
             ' Slowing down, so move mouse in opposte direction
-            If scrollDirection = WheelScrollDirection.N Then
-                scrollDirection = WheelScrollDirection.S
-            ElseIf scrollDirection = WheelScrollDirection.S Then
-                scrollDirection = WheelScrollDirection.N
-            ElseIf scrollDirection = WheelScrollDirection.E Then
-                scrollDirection = WheelScrollDirection.W
-            ElseIf scrollDirection = WheelScrollDirection.W Then
-                scrollDirection = WheelScrollDirection.E
+            If scrollDirection = CompassDirection.N Then
+                scrollDirection = CompassDirection.S
+            ElseIf scrollDirection = CompassDirection.S Then
+                scrollDirection = CompassDirection.N
+            ElseIf scrollDirection = CompassDirection.E Then
+                scrollDirection = CompassDirection.W
+            ElseIf scrollDirection = CompassDirection.W Then
+                scrollDirection = CompassDirection.E
             End If
         End If
 
@@ -390,23 +441,23 @@ Public Sub WheelClickToScroll(mode As ScrollMode, Optional scrollDirection As Wh
 
 
     Select Case scrollDirection
-        Case WheelScrollDirection.N
+        Case CompassDirection.N
             newY = y - scrollDelta
-        Case WheelScrollDirection.NE
+        Case CompassDirection.NE
 
-        Case WheelScrollDirection.E
+        Case CompassDirection.E
             newX = x + scrollDelta
-        Case WheelScrollDirection.SE
+        Case CompassDirection.SE
 
-        Case WheelScrollDirection.S
+        Case CompassDirection.S
             newY = y + scrollDelta
 
-        Case WheelScrollDirection.SW
+        Case CompassDirection.SW
 
-        Case WheelScrollDirection.W
+        Case CompassDirection.W
             newX = x - scrollDelta
 
-        Case WheelScrollDirection.NW
+        Case CompassDirection.NW
     End Select
 
     'msgbox CStr(newX) & "," & CStr(newY)
@@ -481,6 +532,81 @@ Public Sub ClickMouse(Optional key As KeyModifier = KeyModifier.none, Optional b
 
     SendKeys(command)
 
+End Sub
+
+Public Sub MoveMouseAction(directionString As String, distance As Integer, Optional mouseCommandString As String = "")
+    Dim theCompassDirection As CompassDirection
+    theCompassDirection = GetCompassDirectionEnum(directionString)
+    If theCompassDirection = CompassDirection.Invalid Then
+        MsgBox("Invalid Compass Direction: " & directionString)
+        Exit Sub
+    End If
+
+    ' Move mouse
+    Dim deltaX As Long
+    Dim deltaY As Long
+    deltaX = 0
+    deltaY = 0
+
+    Select Case theCompassDirection
+        Case CompassDirection.N
+            deltaY = deltaY - distance
+        Case CompassDirection.S
+            deltaY = deltaY + distance
+        Case CompassDirection.E
+            deltaX = deltaX + distance
+        Case CompassDirection.W
+            deltaX = deltaX - distance
+        Case CompassDirection.NW
+            deltaX = deltaX - distance
+            deltaY = deltaY - distance
+        Case CompassDirection.NE
+            deltaX = deltaX + distance
+            deltaY = deltaY - distance
+        Case CompassDirection.SW
+            deltaX = deltaX - distance
+            deltaY = deltaY + distance
+        Case CompassDirection.SE
+            deltaX = deltaX + distance
+            deltaY = deltaY + distance
+    End Select
+
+    SetMousePosition(2, deltaX, deltaY)
+
+
+    ' Do Mouse Command
+    If mouseCommandString = "" Then
+        Exit Sub
+    End If
+
+    Dim theCommand As MouseCommand
+    theCommand = GetMouseCommandEnum(mouseCommandString)
+    If theCommand = MouseCommand.Invalid Then
+        MsgBox("Invalid Mouse Command:  " & mouseCommandString)
+        Exit Sub
+    End If
+
+    Select Case theCommand
+        Case MouseCommand.Click, MouseCommand.LeftClick
+            ClickMouse()
+        Case MouseCommand.ControlClick
+            ClickMouse(KeyModifier.control)
+        Case MouseCommand.ShiftClick
+            ClickMouse(KeyModifier.shift)
+        Case MouseCommand.DoubleClick
+            ClickMouse(KeyModifier.none, MouseButton.Left, 2)
+        Case MouseCommand.Rightclick
+            ClickMouse(KeyModifier.none, MouseButton.Right)
+        Case MouseCommand.Drag, MouseCommand.PickUp, MouseCommand.Mousedown
+            PressMouse(MouseButtonPosition.Down)
+        Case MouseCommand.Drop, MouseCommand.PutDown, MouseCommand.MouseUp
+            PressMouse(MouseButtonPosition.Up)
+        Case MouseCommand.MiddleMouseDown
+            PressMouse(MouseButtonPosition.Down, MouseButton.Middle)
+        Case MouseCommand.MiddleMouseUp
+            PressMouse(MouseButtonPosition.Up, MouseButton.Middle)
+        Case MouseCommand.Invalid
+    End Select
 End Sub
 
 'Public Sub ClickMouse(Optional key As KeyModifier = KeyModifier.none, Optional button As MouseButton = MouseButton.Left, Optional clickCount As Integer = 1)

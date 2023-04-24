@@ -7,3 +7,4 @@ path in second file=C:\Second File\Path
 
 [files]
 knowbrainer commands=${paths:knowbrainer commands}\MyKBCommands.xml
+

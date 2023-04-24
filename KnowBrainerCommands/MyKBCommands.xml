@@ -112,24 +112,6 @@ SendKeys "^{End}{Enter}"
 HeardWord "\Cap"
 End Sub]]></content>
     </Command>
-    <Command name="Add Paragraph To Beginning" group="KnowBrainer Global" enabled="true">
-      <description></description>
-      <content type="WinWrap Basic"><![CDATA[Sub Main
-SendKeys "^{Home}{Enter 2}^{Home}"
-End Sub]]></content>
-    </Command>
-    <Command name="Align Center" group="KnowBrainer Global" enabled="true">
-      <description></description>
-      <content type="WinWrap Basic"><![CDATA[Sub Main
-SendKeys "^e"
-End Sub]]></content>
-    </Command>
-    <Command name="Align Right" group="KnowBrainer Global" enabled="true">
-      <description></description>
-      <content type="WinWrap Basic"><![CDATA[Sub Main
-SendKeys "^r"
-End Sub]]></content>
-    </Command>
     <Command name="Alternate Tab" group="KnowBrainer Global" enabled="true">
       <description></description>
       <content type="WinWrap Basic"><![CDATA[Sub Main
@@ -179,94 +161,6 @@ End Sub]]></content>
 SendKeys "^{End}"
 End Sub]]></content>
     </Command>
-    <Command name="Check My Calendar" group="KnowBrainer Global" enabled="true">
-      <description></description>
-      <content type="WinWrap Basic"><![CDATA[Sub Main
-HeardWord "Check","My","Schedule"
-End Sub]]></content>
-    </Command>
-    <Command name="Check My Contacts" group="KnowBrainer Global" enabled="true">
-      <description></description>
-      <content type="WinWrap Basic"><![CDATA[Sub Main
-Wait 0.01
-AppSwapWith "Outlook"
-Wait 2
-HeardWord "Contacts"
-End Sub]]></content>
-    </Command>
-    <Command name="Check My Journal" group="KnowBrainer Global" enabled="true">
-      <description></description>
-      <content type="WinWrap Basic"><![CDATA[Sub Main
-Wait 0.01
-AppSwapWith "Outlook"
-Wait 2
-HeardWord "Journal"
-End Sub]]></content>
-    </Command>
-    <Command name="Check My Notes" group="KnowBrainer Global" enabled="true">
-      <description></description>
-      <content type="WinWrap Basic"><![CDATA[Sub Main
-Wait 0.01
-AppSwapWith "Outlook"
-Wait 2
-HeardWord "Notes"
-End Sub]]></content>
-    </Command>
-    <Command name="Check My Phone Book" group="KnowBrainer Global" enabled="true">
-      <description></description>
-      <content type="WinWrap Basic"><![CDATA[Sub Main
-Wait 0.01
-AppSwapWith "Outlook"
-Wait 2
-HeardWord "Contacts"
-End Sub]]></content>
-    </Command>
-    <Command name="Check My Saved Mail" group="KnowBrainer Global" enabled="true">
-      <description></description>
-      <content type="WinWrap Basic"><![CDATA[Sub Main
-Wait 0.01
-AppSwapWith "Outlook"
-Wait 2
-HeardWord "Saved","Mail"
-End Sub]]></content>
-    </Command>
-    <Command name="Check My Schedule" group="KnowBrainer Global" enabled="true">
-      <description></description>
-      <content type="WinWrap Basic"><![CDATA[Sub Main
-TTSPlayString "opening your schedule"
-Wait 2
-AppSwapWith "Outlook"
-Wait 2
-HeardWord "Calendar"
-End Sub]]></content>
-    </Command>
-    <Command name="Check My Sent Items" group="KnowBrainer Global" enabled="true">
-      <description></description>
-      <content type="WinWrap Basic"><![CDATA[Sub Main
-Wait 0.01
-AppSwapWith "Outlook"
-Wait 2
-HeardWord "Sent","Items"
-End Sub]]></content>
-    </Command>
-    <Command name="Check My Tasks" group="KnowBrainer Global" enabled="true">
-      <description></description>
-      <content type="WinWrap Basic"><![CDATA[Sub Main
-Wait 0.01
-AppSwapWith "Outlook"
-Wait 2
-HeardWord "Tasks"
-End Sub]]></content>
-    </Command>
-    <Command name="Check Outlook Mail" group="KnowBrainer Global" enabled="true">
-      <description></description>
-      <content type="WinWrap Basic"><![CDATA[Sub Main
-Wait 0.01
-AppSwapWith "Outlook"
-Wait 2
-HeardWord "Inbox"
-End Sub]]></content>
-    </Command>
     <Command name="Show Desktop" group="KnowBrainer Global" enabled="true">
       <description></description>
       <content type="WinWrap Basic"><![CDATA[Sub Main
@@ -307,19 +201,6 @@ End Sub]]></content>
       <description></description>
       <content type="WinWrap Basic"><![CDATA[Sub Main
 SendKeys "^p"
-End Sub]]></content>
-    </Command>
-    <Command name="Save And Date" group="KnowBrainer Global" enabled="true">
-      <description></description>
-      <content type="WinWrap Basic"><![CDATA[Sub Main
-SendKeys "^{Home}+{End}^c}"
-Wait 0.5
-SendKeys "%fa"
-Wait 1
-SendKeys "^v "
-HeardWord "Date","Macro"
-Wait 1
-SendKeys "{Enter} "
 End Sub]]></content>
     </Command>
     <Command name="Spacebar" group="KnowBrainer Global" enabled="true">
@@ -440,12 +321,6 @@ End Sub]]></content>
 HeardWord "Call","Long-distance"
 End Sub]]></content>
     </Command>
-    <Command name="Dial Number" group="KnowBrainer Global" enabled="false">
-      <description></description>
-      <content type="WinWrap Basic"><![CDATA[Sub Main
-HeardWord "Call","Number"
-End Sub]]></content>
-    </Command>
     <Command name="End Of Document" group="KnowBrainer Global" enabled="true">
       <description></description>
       <content type="WinWrap Basic"><![CDATA[Sub Main
@@ -464,14 +339,6 @@ End Sub]]></content>
       <description></description>
       <content type="WinWrap Basic"><![CDATA[Sub Main
 SendKeys "%{F4} "+ListVar1+""
-End Sub]]></content>
-    </Command>
-    <Command name="Go To Contacts" group="KnowBrainer Global" enabled="true">
-      <description></description>
-      <content type="WinWrap Basic"><![CDATA[Sub Main
-HeardWord "Start","Outlook"
-Wait 1
-SendKeys "^1"
 End Sub]]></content>
     </Command>
     <Command name="Italics Off" group="KnowBrainer Global" enabled="true">
@@ -508,14 +375,6 @@ End Sub]]></content>
       <description></description>
       <content type="WinWrap Basic"><![CDATA[Sub Main
 HeardWord "spell","that"
-End Sub]]></content>
-    </Command>
-    <Command name="Open Address Book" group="KnowBrainer Global" enabled="true">
-      <description></description>
-      <content type="WinWrap Basic"><![CDATA[Sub Main
-AppBringUp "Outlook"
-Wait 1
-SendKeys "^+b"
 End Sub]]></content>
     </Command>
     <Command name="Open All" group="KnowBrainer Global" enabled="true">
@@ -828,14 +687,6 @@ End Sub]]></content>
       <description></description>
       <content type="WinWrap Basic"><![CDATA[Sub Main
 SendKeys "{Del}"
-Wait 0.5
-SendKeys "^{Down}{Left 2}{End}"
-End Sub]]></content>
-    </Command>
-    <Command name="Backspace Back" group="KnowBrainer Global" enabled="true">
-      <description></description>
-      <content type="WinWrap Basic"><![CDATA[Sub Main
-SendKeys "{Backspace}"
 Wait 0.5
 SendKeys "^{Down}{Left 2}{End}"
 End Sub]]></content>
@@ -1390,14 +1241,6 @@ Wait 0.5
 SendKeys "%{F4}"
 End Sub]]></content>
     </Command>
-    <Command name="Backspace &lt;1to20&gt; Back" group="KnowBrainer Global" enabled="true">
-      <description></description>
-      <content type="WinWrap Basic"><![CDATA[Sub Main
-SendKeys "{Backspace "+ListVar1+"}"
-Wait 0.5
-SendKeys "^{Down}{Left 2}{End}"
-End Sub]]></content>
-    </Command>
     <Command name="Delete &lt;1to20&gt; Back" group="KnowBrainer Global" enabled="true">
       <description></description>
       <content type="WinWrap Basic"><![CDATA[Sub Main
@@ -1441,14 +1284,6 @@ End Sub
       <description></description>
       <content type="WinWrap Basic"><![CDATA[Sub Main
 ClearDesktop
-End Sub
-]]></content>
-    </Command>
-    <Command name="&lt;Direction&gt; Tab &lt;1to20&gt;" group="KnowBrainer Global" enabled="true">
-      <description></description>
-      <content type="WinWrap Basic"><![CDATA[Sub Main
-if ListVar1 = "Left" then SendKeys "+{Tab "+ListVar2+"}"
-if ListVar1 = "Right" then SendKeys "{Tab "+ListVar2+"}"
 End Sub
 ]]></content>
     </Command>
@@ -1804,72 +1639,6 @@ HeardWord "\cap"
 End Sub
 ]]></content>
     </Command>
-    <Command name="Call &lt;phonelist&gt;" group="KnowBrainer Global" enabled="false">
-      <description></description>
-      <content type="WinWrap Basic"><![CDATA[Sub Main
-SetMicrophone 0
-TTSPlayString "dialing"
-ShellExecute "Dialer"
-Wait 2
-if ListVar1 = "KnowBrainer" then SendKeys "16158844558"
-if ListVar1 = "No-brainer" then SendKeys "16158844558"
-Wait 1
-SendKeys "%d"
-Wait 3
-TTSPlayString "pickup receiver"
-Wait 2
-SendKeys "{Enter}"
-Wait 2
-SendKeys "%{F4}"
-Wait 2
-SendKeys "%{F4}"
-End Sub
-]]></content>
-    </Command>
-    <Command name="Call Long Distance" group="KnowBrainer Global" enabled="false">
-      <description></description>
-      <content type="WinWrap Basic"><![CDATA[Sub Main
-SetMicrophone 0
-TTSPlayString "dialing"
-SendKeys "^c"
-ShellExecute "Dialer"
-Wait 2
-SendKeys "1^v"
-Wait 1
-SendKeys "%d"
-Wait 3
-TTSPlayString "pickup receiver"
-Wait 2
-SendKeys "{Enter}"
-Wait 2
-SendKeys "%{F4}"
-Wait 2
-SendKeys "%{F4}"
-End Sub
-]]></content>
-    </Command>
-    <Command name="Call International" group="KnowBrainer" enabled="false">
-      <description></description>
-      <content type="WinWrap Basic"><![CDATA[Sub Main
-SetMicrophone 0
-TTSPlayString "dialing"
-SendKeys "^c"
-ShellExecute "Dialer"
-Wait 2
-SendKeys "011^v"
-Wait 1
-SendKeys "%d"
-Wait 3
-TTSPlayString "pickup receiver"
-Wait 2
-SendKeys "{Enter}"
-Wait 2
-SendKeys "%{F4}"
-Wait 2
-SendKeys "%{F4}"
-End Sub
-]]></content>
-    </Command>
     <Command name="Close &lt;1to20&gt;" group="KnowBrainer Global" enabled="false">
       <description></description>
       <content type="WinWrap Basic"><![CDATA[Sub Main
@@ -2072,179 +1841,6 @@ HeardWord "\cap"
 End Sub
 ]]></content>
     </Command>
-    <Command name="Schedule An Appointment On &lt;MonthList&gt; &lt;DateList&gt; At &lt;TimeList&gt; &lt;AmPm&gt;" group="KnowBrainer Global" enabled="true">
-      <description></description>
-      <content type="WinWrap Basic"><![CDATA[Sub Main
-HeardWord "switch to Outlook"
-Wait 1
-SendKeys "^+a"
-Wait 1
-SendKeys "%t" + ListVar1 + " " + ListVar2 + "{Tab}" + ListVar3 + ListVar4 + "%u"
-TTSPlayString "subject"
-HeardWord "\caps-on"
-End Sub
-]]></content>
-    </Command>
-    <Command name="Schedule Event" group="KnowBrainer Global" enabled="true">
-      <description></description>
-      <content type="WinWrap Basic"><![CDATA[Sub Main
-HeardWord "switch to Outlook"
-Wait 1
-SendKeys "^+a"
-End Sub
-]]></content>
-    </Command>
-    <Command name="Search &lt;folder&gt;" group="KnowBrainer Global" enabled="true">
-      <description></description>
-      <content type="WinWrap Basic"><![CDATA[Sub Main
-HeardWord "switch to Outlook"
-Wait 2
-SendKeys "^y"
-Wait 0.5
-SendKeys "{Home}"
-if ListVar1 = "Deleted Items" then SendKeys "de"
-if ListVar1 = "Drafts" then SendKeys "dr"
-if ListVar1 = "Junk E-mail" then SendKeys "ju"
-if ListVar1 = "Out Box" then SendKeys "ou"
-if ListVar1 = "In Box" then SendKeys "in"
-if ListVar1 = "Sent Items" then SendKeys "se"
-if ListVar1 = "RSS Feeds" then SendKeys "rs"
-if ListVar1 = "Spam" then SendKeys "spa"
-SendKeys "{Enter}"
-Wait 1
-SendKeys "^e"
-End Sub
-]]></content>
-    </Command>
-    <Command name="Search &lt;folders&gt;" group="KnowBrainer Global" enabled="true">
-      <description></description>
-      <content type="WinWrap Basic"><![CDATA[Sub Main
-HeardWord "switch to Outlook"
-Wait 2
-if ListVar1 = "Calendar" then SendKeys "^2"
-if ListVar1 = "Notes" then SendKeys "^5"
-if ListVar1 = "Tasks" then SendKeys "^4"
-if ListVar1 = "Journal" then SendKeys "^8"
-if ListVar1 = "Contacts" then SendKeys "^3"
-if ListVar1 = "Folder List" then SendKeys "^6"
-if ListVar1 = "Shortcuts" then SendKeys "^7"
-if ListVar1 = "Mail" then SendKeys "^1"
-Wait 1
-SendKeys "^e"
-End Sub
-]]></content>
-    </Command>
-    <Command name="Section &lt;1to50&gt;" group="KnowBrainer Global" enabled="true">
-      <description></description>
-      <content type="WinWrap Basic"><![CDATA[Sub Main
-SendKeys "^{Home}"
-Wait .5
-SendKeys "^f"
-Wait .5
-if ListVar1 = "1" then SendKeys "[01]"
-if ListVar1 = "2" then SendKeys "[02]"
-if ListVar1 = "3" then SendKeys "[03]"
-if ListVar1 = "4" then SendKeys "[04]"
-if ListVar1 = "5" then SendKeys "[05]"
-if ListVar1 = "6" then SendKeys "[06]"
-if ListVar1 = "7" then SendKeys "[07]"
-if ListVar1 = "8" then SendKeys "[08]"
-if ListVar1 = "9" then SendKeys "[09]"
-if ListVar1 = "10" then SendKeys "[10]"
-if ListVar1 = "11" then SendKeys "[11]"
-if ListVar1 = "12" then SendKeys "[12]"
-if ListVar1 = "13" then SendKeys "[13]"
-if ListVar1 = "14" then SendKeys "[14]"
-if ListVar1 = "15" then SendKeys "[15]"
-if ListVar1 = "16" then SendKeys "[16]"
-if ListVar1 = "17" then SendKeys "[17]"
-if ListVar1 = "18" then SendKeys "[18]"
-if ListVar1 = "19" then SendKeys "[19]"
-if ListVar1 = "20" then SendKeys "[20]"
-if ListVar1 = "21" then SendKeys "[21]"
-if ListVar1 = "22" then SendKeys "[22]"
-if ListVar1 = "23" then SendKeys "[23]"
-if ListVar1 = "24" then SendKeys "[24]"
-if ListVar1 = "25" then SendKeys "[25]"
-if ListVar1 = "26" then SendKeys "[26]"
-if ListVar1 = "27" then SendKeys "[27]"
-if ListVar1 = "28" then SendKeys "[28]"
-if ListVar1 = "29" then SendKeys "[29]"
-if ListVar1 = "30" then SendKeys "[30]"
-if ListVar1 = "31" then SendKeys "[31]"
-if ListVar1 = "32" then SendKeys "[32]"
-if ListVar1 = "33" then SendKeys "[33]"
-if ListVar1 = "34" then SendKeys "[34]"
-if ListVar1 = "35" then SendKeys "[35]"
-if ListVar1 = "36" then SendKeys "[36]"
-if ListVar1 = "37" then SendKeys "[37]"
-if ListVar1 = "38" then SendKeys "[38]"
-if ListVar1 = "39" then SendKeys "[39]"
-if ListVar1 = "40" then SendKeys "[40]"
-if ListVar1 = "41" then SendKeys "[41]"
-if ListVar1 = "42" then SendKeys "[42]"
-if ListVar1 = "43" then SendKeys "[43]"
-if ListVar1 = "44" then SendKeys "[44]"
-if ListVar1 = "45" then SendKeys "[45]"
-if ListVar1 = "46" then SendKeys "[46]"
-if ListVar1 = "47" then SendKeys "[47]"
-if ListVar1 = "48" then SendKeys "[48]"
-if ListVar1 = "49" then SendKeys "[59]"
-if ListVar1 = "50" then SendKeys "[50]"
-if ListVar1 = "51" then SendKeys "[51]"
-if ListVar1 = "52" then SendKeys "[52]"
-if ListVar1 = "53" then SendKeys "[53]"
-if ListVar1 = "54" then SendKeys "[54]"
-if ListVar1 = "55" then SendKeys "[55]"
-if ListVar1 = "56" then SendKeys "[56]"
-if ListVar1 = "57" then SendKeys "[57]"
-if ListVar1 = "58" then SendKeys "[58]"
-if ListVar1 = "59" then SendKeys "[59]"
-if ListVar1 = "60" then SendKeys "[60]"
-if ListVar1 = "61" then SendKeys "[61]"
-if ListVar1 = "62" then SendKeys "[62]"
-if ListVar1 = "63" then SendKeys "[63]"
-if ListVar1 = "64" then SendKeys "[64]"
-if ListVar1 = "65" then SendKeys "[65]"
-if ListVar1 = "66" then SendKeys "[66]"
-if ListVar1 = "67" then SendKeys "[67]"
-if ListVar1 = "68" then SendKeys "[68]"
-if ListVar1 = "69" then SendKeys "[69]"
-if ListVar1 = "70" then SendKeys "[70]"
-if ListVar1 = "71" then SendKeys "[71]"
-if ListVar1 = "72" then SendKeys "[72]"
-if ListVar1 = "73" then SendKeys "[73]"
-if ListVar1 = "74" then SendKeys "[74]"
-if ListVar1 = "75" then SendKeys "[75]"
-if ListVar1 = "76" then SendKeys "[76]"
-if ListVar1 = "77" then SendKeys "[77]"
-if ListVar1 = "78" then SendKeys "[78]"
-if ListVar1 = "79" then SendKeys "[79]"
-if ListVar1 = "80" then SendKeys "[80]"
-if ListVar1 = "81" then SendKeys "[81]"
-if ListVar1 = "82" then SendKeys "[82]"
-if ListVar1 = "83" then SendKeys "[83]"
-if ListVar1 = "84" then SendKeys "[84]"
-if ListVar1 = "85" then SendKeys "[85]"
-if ListVar1 = "86" then SendKeys "[86]"
-if ListVar1 = "87" then SendKeys "[87]"
-if ListVar1 = "88" then SendKeys "[88]"
-if ListVar1 = "89" then SendKeys "[89]"
-if ListVar1 = "90" then SendKeys "[90]"
-if ListVar1 = "91" then SendKeys "[91]"
-if ListVar1 = "92" then SendKeys "[92]"
-if ListVar1 = "93" then SendKeys "[93]"
-if ListVar1 = "94" then SendKeys "[94]"
-if ListVar1 = "95" then SendKeys "[95]"
-if ListVar1 = "96" then SendKeys "[96]"
-if ListVar1 = "97" then SendKeys "[97]"
-if ListVar1 = "98" then SendKeys "[98]"
-if ListVar1 = "99" then SendKeys "[99]"
-if ListVar1 = "100" then SendKeys "[100]"
-SendKeys "{Enter}{Esc}"
-End Sub
-]]></content>
-    </Command>
     <Command name="Mute Sound" group="KnowBrainer" enabled="true">
       <description></description>
       <content type="WinWrap Basic"><![CDATA[Sub Main
@@ -2383,18 +1979,6 @@ End Sub
 EmulateRecognition"press alt tab"
 SendKeys "{PgDn}"
 EmulateRecognition"press alt tab"
-End Sub
-]]></content>
-    </Command>
-    <Command name="&lt;Direction&gt; Title &lt;1to20&gt;" group="KnowBrainer" enabled="true">
-      <description></description>
-      <content type="WinWrap Basic"><![CDATA[Sub Main
-if ListVar1 = "Left" then SendKeys "+{Tab "+ListVar2+"}"
-if ListVar1 = "Right" then SendKeys "{Tab "+ListVar2+"}"
-if ListVar1 = "Up" then SendKeys "{Up "+ListVar2+"}"
-if ListVar1 = "Down" then SendKeys "{Down "+ListVar2+"}"
-Wait 0.5
-HeardWord "\caps-on"
 End Sub
 ]]></content>
     </Command>
@@ -2784,148 +2368,6 @@ Sub Main
 TTSPlayString "Please wait a moment"
 Dim EngControl As New DgnEngineControl
 EngControl.DlgShow(dgndlgACODlg,0,,0)
-End Sub
-]]></content>
-    </Command>
-    <Command name="Set &lt;FontFace&gt; &lt;FontSize&gt;" group="" enabled="true">
-      <description></description>
-      <content type="WinWrap Basic"><![CDATA[Sub Main
-if ListVar1 = "Times" then param1 = "Times New Roman"
-if ListVar1 = "Courier" then param1 = "Courier New"
-if ListVar1 = "Arial" then param1 = "Arial"
-if ListVar1 = "Comic" then param1 = "Comic Sans MS"
-if ListVar1 = "Impact" then param1 = "Impact"
-if ListVar1 = "Garamond" then param1 = "Garamond"
-if ListVar1 = "Kaufmann" then param1 = "Kaufmann BT"
-if ListVar1 = "Monotype" then param1 = "Monotype Corsiva"
-if ListVar3 = "Plain" then param3 = "Regular"
-if ListVar3 = "Plain text" then param3 = "Regular"
-if ListVar3 = "Underline" then param3 = "%u"
-if ListVar3 = "Italics" then param3 = "Italic"
-if ListVar3 = "Bold" then param3 = "bold"
-SendKeys "%of%f" + param1 + "%s" + ListVar2 + "~{Right}"
-End Sub
-]]></content>
-    </Command>
-    <Command name="Set &lt;FontFace&gt; &lt;FontSize&gt; &lt;FontStyle&gt;" group="" enabled="true">
-      <description></description>
-      <content type="WinWrap Basic"><![CDATA[Sub Main
-if ListVar1 = "Times" then param1 = "Times New Roman"
-if ListVar1 = "Courier" then param1 = "Courier New"
-if ListVar1 = "Arial" then param1 = "Arial"
-if ListVar1 = "Comic" then param1 = "Comic Sans MS"
-if ListVar1 = "Impact" then param1 = "Impact"
-if ListVar1 = "Garamond" then param1 = "Garamond"
-if ListVar1 = "Kaufmann" then param1 = "Kaufmann BT"
-if ListVar1 = "Monotype" then param1 = "Monotype Corsiva"
-if ListVar3 = "Plain" then param3 = "Regular"
-if ListVar3 = "Plain text" then param3 = "Regular"
-if ListVar3 = "Underline" then param3 = "%u"
-if ListVar3 = "Italics" then param3 = "Italic"
-if ListVar3 = "Bold" then param3 = "bold"
-SendKeys "%of%f" + param1 + "%s" + ListVar2 + "%y" + ListVar3 + "~{Right}"
-End Sub
-]]></content>
-    </Command>
-    <Command name="Set &lt;FontFace&gt; &lt;FontStyle&gt;" group="" enabled="true">
-      <description></description>
-      <content type="WinWrap Basic"><![CDATA[Sub Main
-if ListVar1 = "Times" then param1 = "Times New Roman"
-if ListVar1 = "Courier" then param1 = "Courier New"
-if ListVar1 = "Arial" then param1 = "Arial"
-if ListVar1 = "Comic" then param1 = "Comic Sans MS"
-if ListVar1 = "Impact" then param1 = "Impact"
-if ListVar1 = "Garamond" then param1 = "Garamond"
-if ListVar1 = "Kaufmann" then param1 = "Kaufmann BT"
-if ListVar1 = "Monotype" then param1 = "Monotype Corsiva"
-if ListVar3 = "Plain" then param3 = "Regular"
-if ListVar3 = "Plain text" then param3 = "Regular"
-if ListVar3 = "Underline" then param3 = "%u"
-if ListVar3 = "Italics" then param3 = "Italic"
-if ListVar3 = "Bold" then param3 = "bold"
-SendKeys "%of%f" + param1 + "%y" + ListVar2 + "~{Right}"
-End Sub
-]]></content>
-    </Command>
-    <Command name="Set &lt;FontStyle&gt;" group="" enabled="true">
-      <description></description>
-      <content type="WinWrap Basic"><![CDATA[Sub Main
-if ListVar1 = "Plain" then param1 = "Regular"
-if ListVar1 = "Plain text" then param1 = "Regular"
-if ListVar1 = "Underline" then param1 = "%u"
-if ListVar1 = "Italics" then param1 = "Italic"
-if ListVar1 = "Bold" then param1 = "bold"
-SendKeys "%of%y" + param1 + "{Enter}{Right}"
-End Sub
-]]></content>
-    </Command>
-    <Command name="Set All &lt;FontFace&gt; &lt;FontStyle&gt;" group="" enabled="true">
-      <description></description>
-      <content type="WinWrap Basic"><![CDATA[Sub Main
-if ListVar1 = "Times" then param1 = "Times New Roman"
-if ListVar1 = "Courier" then param1 = "Courier New"
-if ListVar1 = "Arial" then param1 = "Arial"
-if ListVar1 = "Comic" then param1 = "Comic Sans MS"
-if ListVar1 = "Impact" then param1 = "Impact"
-if ListVar1 = "Garamond" then param1 = "Garamond"
-if ListVar1 = "Kaufmann" then param1 = "Kaufmann BT"
-if ListVar1 = "Monotype" then param1 = "Monotype Corsiva"
-if ListVar3 = "Plain" then param3 = "Regular"
-if ListVar3 = "Plain text" then param3 = "Regular"
-if ListVar3 = "Underline" then param3 = "%u"
-if ListVar3 = "Italics" then param3 = "Italic"
-if ListVar3 = "Bold" then param3 = "bold"
-SendKeys "^a%of%f" + param1 + "%y" + ListVar2 + "~{Right}"
-End Sub
-]]></content>
-    </Command>
-    <Command name="Set All &lt;FontFace&gt; &lt;FontSize&gt; &lt;FontStyle&gt;" group="" enabled="true">
-      <description></description>
-      <content type="WinWrap Basic"><![CDATA[Sub Main
-if ListVar1 = "Times" then param1 = "Times New Roman"
-if ListVar1 = "Courier" then param1 = "Courier New"
-if ListVar1 = "Arial" then param1 = "Arial"
-if ListVar1 = "Comic" then param1 = "Comic Sans MS"
-if ListVar1 = "Impact" then param1 = "Impact"
-if ListVar1 = "Garamond" then param1 = "Garamond"
-if ListVar1 = "Kaufmann" then param1 = "Kaufmann BT"
-if ListVar1 = "Monotype" then param1 = "Monotype Corsiva"
-if ListVar3 = "Plain" then param3 = "Regular"
-if ListVar3 = "Plain text" then param3 = "Regular"
-if ListVar3 = "Underline" then param3 = "%u"
-if ListVar3 = "Italics" then param3 = "Italic"
-if ListVar3 = "Bold" then param3 = "bold"
-SendKeys "^a%of%f" + param1 + "%s" + ListVar2 + "%y" + ListVar3 + "~{Right}"
-End Sub
-]]></content>
-    </Command>
-    <Command name="Set All &lt;FontSize&gt;" group="" enabled="true">
-      <description></description>
-      <content type="WinWrap Basic"><![CDATA[Sub Main
-SendKeys "^a%of%s"
-SendKeys ListVar1
-SendKeys "{Enter}{Right}"
-End Sub
-]]></content>
-    </Command>
-    <Command name="Set All &lt;FontStyle&gt;" group="" enabled="true">
-      <description></description>
-      <content type="WinWrap Basic"><![CDATA[Sub Main
-if ListVar1 = "Plain" then param1 = "Regular"
-if ListVar1 = "Plain text" then param1 = "Regular"
-if ListVar1 = "Underline" then param1 = "%u"
-if ListVar1 = "Italics" then param1 = "Italic"
-if ListVar1 = "Bold" then param1 = "bold"
-SendKeys "^a%of%y" + param1 + "{Enter}{Right}"
-End Sub
-]]></content>
-    </Command>
-    <Command name="Set Size &lt;FontSize&gt;" group="" enabled="true">
-      <description></description>
-      <content type="WinWrap Basic"><![CDATA[Sub Main
-SendKeys "%of%s"
-SendKeys ListVar1
-SendKeys "{Enter}{Right}"
 End Sub
 ]]></content>
     </Command>
@@ -3397,17 +2839,6 @@ if tA = "space" Then tA = " "
 if tB = "space" Then tB = " "
 if tC = "space" Then tC = " "
 SendKeys t1+t2+t3+t4+t5+t6+t7+t8+t9+tA+tB+tC
-End Sub
-]]></content>
-    </Command>
-    <Command name="Mouse &lt;Direction&gt; &lt;1to5000&gt;" group="" enabled="true">
-      <description>Mouse Up, Down, Left or Right 1 to 1000 pixels</description>
-      <content type="WinWrap Basic"><![CDATA[Sub Main
-offset = Val( ListVar2)
-if ListVar1 = "Up"     then SetMousePosition 2, 0, -offset
-if ListVar1 = "Down"   then SetMousePosition 2, 0, offset
-if ListVar1 = "Left"   then SetMousePosition 2, -offset, 0
-if ListVar1 = "Right"  then SetMousePosition 2, offset, 0
 End Sub
 ]]></content>
     </Command>
@@ -3888,119 +3319,6 @@ SendKeys "+{Enter "+ListVar1+"}"
 End Sub
 ]]></content>
     </Command>
-    <Command name="Align Left" group="" enabled="true">
-      <description></description>
-      <content type="WinWrap Basic"><![CDATA[Sub Main
-SendKeys "^l"
-End Sub
-]]></content>
-    </Command>
-    <Command name="Change &lt;1to50&gt;" group="" enabled="false">
-      <description></description>
-      <content type="WinWrap Basic"><![CDATA[Sub Main
-if ListVar1 = "1" then HeardWord "select","[","zero","one","]"
-if ListVar1 = "2" then HeardWord "select","[","zero","two","]"
-if ListVar1 = "3" then HeardWord "select","[","zero","three","]"
-if ListVar1 = "4" then HeardWord "select","[","zero","four","]"
-if ListVar1 = "5" then HeardWord "select","[","zero","five","]"
-if ListVar1 = "6" then HeardWord "select","[","zero","six","]"
-if ListVar1 = "7" then HeardWord "select","[","zero","seven","]"
-if ListVar1 = "8" then HeardWord "select","[","zero","eight","]"
-if ListVar1 = "9" then HeardWord "select","[","zero","nine","]"
-if ListVar1 = "10" then HeardWord "select","[","ten","]"
-if ListVar1 = "11" then HeardWord "select","[","eleven","]"
-if ListVar1 = "12" then HeardWord "select","[","twelve","]"
-if ListVar1 = "13" then HeardWord "select","[","thirteen","]"
-if ListVar1 = "14" then HeardWord "select","[","fourteen","]"
-if ListVar1 = "15" then HeardWord "select","[","fifteen","]"
-if ListVar1 = "16" then HeardWord "select","[","sixteen","]"
-if ListVar1 = "17" then HeardWord "select","[","seventeen","]"
-if ListVar1 = "18" then HeardWord "select","[","eighteen","]"
-if ListVar1 = "19" then HeardWord "select","[","nineteen","]"
-if ListVar1 = "20" then HeardWord "select","[","twenty","]"
-if ListVar1 = "21" then HeardWord "select","[","twenty","one","]"
-if ListVar1 = "22" then HeardWord "select","[","twenty","two","]"
-if ListVar1 = "23" then HeardWord "select","[","twenty","three","]"
-if ListVar1 = "24" then HeardWord "select","[","twenty","four","]"
-if ListVar1 = "25" then HeardWord "select","[","twenty","five","]"
-if ListVar1 = "26" then HeardWord "select","[","twenty","six","]"
-if ListVar1 = "27" then HeardWord "select","[","twenty","seven","]"
-if ListVar1 = "28" then HeardWord "select","[","twenty","eight","]"
-if ListVar1 = "29" then HeardWord "select","[","twenty","nine","]"
-if ListVar1 = "30" then HeardWord "select","[","thirty","]"
-if ListVar1 = "31" then HeardWord "select","[","thirty","one","]"
-if ListVar1 = "32" then HeardWord "select","[","thirty","two","]"
-if ListVar1 = "33" then HeardWord "select","[","thirty","three","]"
-if ListVar1 = "34" then HeardWord "select","[","thirty","four","]"
-if ListVar1 = "35" then HeardWord "select","[","thirty","five","]"
-if ListVar1 = "36" then HeardWord "select","[","thirty","six","]"
-if ListVar1 = "37" then HeardWord "select","[","thirty","seven","]"
-if ListVar1 = "38" then HeardWord "select","[","thirty","eight","]"
-if ListVar1 = "39" then HeardWord "select","[","thirty","nine","]"
-if ListVar1 = "40" then HeardWord "select","[","forty","]"
-if ListVar1 = "41" then HeardWord "select","[","forty","one","]"
-if ListVar1 = "42" then HeardWord "select","[","forty","two","]"
-if ListVar1 = "43" then HeardWord "select","[","forty","three","]"
-if ListVar1 = "44" then HeardWord "select","[","forty","four","]"
-if ListVar1 = "45" then HeardWord "select","[","forty","five","]"
-if ListVar1 = "46" then HeardWord "select","[","forty","six","]"
-if ListVar1 = "47" then HeardWord "select","[","forty","seven","]"
-if ListVar1 = "48" then HeardWord "select","[","forty","eight","]"
-if ListVar1 = "49" then HeardWord "select","[","forty","nine","]"
-if ListVar1 = "50" then HeardWord "select","[","fifty","]"
-if ListVar1 = "51" then HeardWord "select","[","fifty","one","]"
-if ListVar1 = "52" then HeardWord "select","[","fifty","two","]"
-if ListVar1 = "53" then HeardWord "select","[","fifty","three","]"
-if ListVar1 = "54" then HeardWord "select","[","fifty","four","]"
-if ListVar1 = "55" then HeardWord "select","[","fifty","five","]"
-if ListVar1 = "56" then HeardWord "select","[","fifty","six","]"
-if ListVar1 = "57" then HeardWord "select","[","fifty","seven","]"
-if ListVar1 = "58" then HeardWord "select","[","fifty","eight","]"
-if ListVar1 = "59" then HeardWord "select","[","fifty","nine","]"
-if ListVar1 = "60" then HeardWord "select","[","sixty","]"
-if ListVar1 = "61" then HeardWord "select","[","sixty","one","]"
-if ListVar1 = "62" then HeardWord "select","[","sixty","two","]"
-if ListVar1 = "63" then HeardWord "select","[","sixty","three","]"
-if ListVar1 = "64" then HeardWord "select","[","sixty","four","]"
-if ListVar1 = "65" then HeardWord "select","[","sixty","five","]"
-if ListVar1 = "66" then HeardWord "select","[","sixty","six","]"
-if ListVar1 = "67" then HeardWord "select","[","sixty","seven","]"
-if ListVar1 = "68" then HeardWord "select","[","sixty","eight","]"
-if ListVar1 = "69" then HeardWord "select","[","sixty","nine","]"
-if ListVar1 = "70" then HeardWord "select","[","seventy","]"
-if ListVar1 = "71" then HeardWord "select","[","seventy","one","]"
-if ListVar1 = "72" then HeardWord "select","[","seventy","two","]"
-if ListVar1 = "73" then HeardWord "select","[","seventy","three","]"
-if ListVar1 = "74" then HeardWord "select","[","seventy","four","]"
-if ListVar1 = "75" then HeardWord "select","[","seventy","five","]"
-if ListVar1 = "76" then HeardWord "select","[","seventy","six","]"
-if ListVar1 = "77" then HeardWord "select","[","seventy","seven","]"
-if ListVar1 = "78" then HeardWord "select","[","seventy","eight","]"
-if ListVar1 = "79" then HeardWord "select","[","seventy","nine","]"
-if ListVar1 = "80" then HeardWord "select","[","eighty","]"
-if ListVar1 = "81" then HeardWord "select","[","eighty","one","]"
-if ListVar1 = "82" then HeardWord "select","[","eighty","two","]"
-if ListVar1 = "83" then HeardWord "select","[","eighty","three","]"
-if ListVar1 = "84" then HeardWord "select","[","eighty","four","]"
-if ListVar1 = "85" then HeardWord "select","[","eighty","five","]"
-if ListVar1 = "86" then HeardWord "select","[","eighty","six","]"
-if ListVar1 = "87" then HeardWord "select","[","eighty","seven","]"
-if ListVar1 = "88" then HeardWord "select","[","eighty","eight","]"
-if ListVar1 = "89" then HeardWord "select","[","eighty","nine","]"
-if ListVar1 = "90" then HeardWord "select","[","ninety","]"
-if ListVar1 = "91" then HeardWord "select","[","ninety","one","]"
-if ListVar1 = "92" then HeardWord "select","[","ninety","two","]"
-if ListVar1 = "93" then HeardWord "select","[","ninety","three","]"
-if ListVar1 = "94" then HeardWord "select","[","ninety","four","]"
-if ListVar1 = "95" then HeardWord "select","[","ninety","five","]"
-if ListVar1 = "96" then HeardWord "select","[","ninety","six","]"
-if ListVar1 = "97" then HeardWord "select","[","ninety","seven","]"
-if ListVar1 = "98" then HeardWord "select","[","ninety","eight","]"
-if ListVar1 = "99" then HeardWord "select","[","ninety","nine","]"
-SendKeys "^+{Down}+{Left}{Del}"
-End Sub
-]]></content>
-    </Command>
     <Command name="Copy Paragraph" group="" enabled="true">
       <description></description>
       <content type="WinWrap Basic"><![CDATA[Sub Main
@@ -4190,21 +3508,6 @@ End Sub
       <description></description>
       <content type="WinWrap Basic"><![CDATA[Sub Main
 SendKeys Format(Now+1, "MMMM d, yyyy" )
-End Sub
-]]></content>
-    </Command>
-    <Command name="Gmail To &lt;dictation&gt;" group="" enabled="true">
-      <description></description>
-      <content type="WinWrap Basic"><![CDATA[Sub Main
-ShellExecute "https://mail.google.com/mail/"
-Wait 5
-HeardWord "click","compose"
-Wait 1
-SendKeys ListVar1
-Wait 1
-SendKeys "{Tab}"
-Wait 1
-HeardWord "\caps-on"
 End Sub
 ]]></content>
     </Command>
@@ -4422,13 +3725,6 @@ End Sub
 SendKeys "HeardWord {""}insert before{""},{""}{""}{Left}"
 Wait 0.5
 SendKeys ListVar1
-End Sub
-]]></content>
-    </Command>
-    <Command name="Align Justify" group="" enabled="true">
-      <description></description>
-      <content type="WinWrap Basic"><![CDATA[Sub Main
-SendKeys "^j"
 End Sub
 ]]></content>
     </Command>
@@ -5124,7 +4420,7 @@ SendKeys "" + param1 + ""
 End Sub
 ]]></content>
     </Command>
-    <Command name="Make That &lt;dictation&gt;" group="" enabled="true">
+    <Command name="Make That &lt;dictation&gt;" group="" enabled="false">
       <description></description>
       <content type="WinWrap Basic"><![CDATA[Sub Main
 EmulateRecognition "delete that"
@@ -5174,18 +4470,6 @@ SendKeys "^z"
 Next
 Wait 0.5
 EmulateRecognition "go back"
-End Sub
-]]></content>
-    </Command>
-    <Command name="&lt;Direction&gt; Title" group="" enabled="true">
-      <description></description>
-      <content type="WinWrap Basic"><![CDATA[Sub Main
-if ListVar1 = "Left" then SendKeys "+{Tab}"
-if ListVar1 = "Right" then SendKeys "{Tab}"
-if ListVar1 = "Up" then SendKeys "{Up}"
-if ListVar1 = "Down" then SendKeys "{Down}"
-Wait 0.5
-HeardWord "\caps-on"
 End Sub
 ]]></content>
     </Command>
@@ -5646,103 +4930,6 @@ End Sub
       <description></description>
       <content type="WinWrap Basic"><![CDATA[Sub Main
 SendKeys "Beep"
-End Sub
-]]></content>
-    </Command>
-    <Command name="Change To &lt;dictation&gt;" group="" enabled="false">
-      <description></description>
-      <content type="WinWrap Basic"><![CDATA[Sub Main
-SendKeys ListVar1
-Wait 1
-SendKeys "^{Down}{Left 2}{End}"
-End Sub
-]]></content>
-    </Command>
-    <Command name="Double List Roman &lt;1to20&gt;" group="" enabled="true">
-      <description></description>
-      <content type="WinWrap Basic"><![CDATA[Sub Main
-SendKeys "^{Down}{Left 2}{End}+{Enter}{(}"
-If ListVar1 = "1" Then SendKeys "i"
-If ListVar1 = "2" Then SendKeys "ii"
-If ListVar1 = "3" Then SendKeys "iii"
-If ListVar1 = "4" Then SendKeys "iv"
-If ListVar1 = "5" Then SendKeys "v"
-If ListVar1 = "6" Then SendKeys "vi"
-If ListVar1 = "7" Then SendKeys "vii"
-If ListVar1 = "8" Then SendKeys "viii"
-If ListVar1 = "9" Then SendKeys "ix"
-If ListVar1 = "10" Then SendKeys "x"
-If ListVar1 = "11" Then SendKeys "xi"
-If ListVar1 = "12" Then SendKeys "xii"
-If ListVar1 = "13" Then SendKeys "xiii"
-If ListVar1 = "14" Then SendKeys "xiv"
-If ListVar1 = "15" Then SendKeys "xv"
-If ListVar1 = "16" Then SendKeys "xvi"
-If ListVar1 = "17" Then SendKeys "xvii"
-If ListVar1 = "18" Then SendKeys "xviii"
-If ListVar1 = "19" Then SendKeys "xix"
-If ListVar1 = "20" Then SendKeys "xx"
-SendKeys "{)}"
-Wait 0.5
-HeardWord "\cap"
-End Sub
-]]></content>
-    </Command>
-    <Command name="List Roman &lt;1to20&gt;" group="" enabled="true">
-      <description></description>
-      <content type="WinWrap Basic"><![CDATA[Sub Main
-SendKeys "^{Down}{Left 2}{End}+{Enter}{(}"
-If ListVar1 = "1" Then SendKeys "i"
-If ListVar1 = "2" Then SendKeys "ii"
-If ListVar1 = "3" Then SendKeys "iii"
-If ListVar1 = "4" Then SendKeys "iv"
-If ListVar1 = "5" Then SendKeys "v"
-If ListVar1 = "6" Then SendKeys "vi"
-If ListVar1 = "7" Then SendKeys "vii"
-If ListVar1 = "8" Then SendKeys "viii"
-If ListVar1 = "9" Then SendKeys "ix"
-If ListVar1 = "10" Then SendKeys "x"
-If ListVar1 = "11" Then SendKeys "xi"
-If ListVar1 = "12" Then SendKeys "xii"
-If ListVar1 = "13" Then SendKeys "xiii"
-If ListVar1 = "14" Then SendKeys "xiv"
-If ListVar1 = "15" Then SendKeys "xv"
-If ListVar1 = "16" Then SendKeys "xvi"
-If ListVar1 = "17" Then SendKeys "xvii"
-If ListVar1 = "18" Then SendKeys "xviii"
-If ListVar1 = "19" Then SendKeys "xix"
-If ListVar1 = "20" Then SendKeys "xx"
-SendKeys "{)}"
-Wait 0.5
-HeardWord "\cap"
-End Sub
-]]></content>
-    </Command>
-    <Command name="Legal Roman &lt;1to20&gt;" group="" enabled="true">
-      <description></description>
-      <content type="WinWrap Basic"><![CDATA[Sub Main
-SendKeys "{(}"
-if ListVar1 = "1" then SendKeys "i"
-if ListVar1 = "2" then SendKeys "ii"
-if ListVar1 = "3" then SendKeys "iii"
-if ListVar1 = "4" then SendKeys "iv"
-if ListVar1 = "5" then SendKeys "v"
-if ListVar1 = "6" then SendKeys "vi"
-if ListVar1 = "7" then SendKeys "vii"
-if ListVar1 = "8" then SendKeys "viii"
-if ListVar1 = "9" then SendKeys "ix"
-if ListVar1 = "10" then SendKeys "x"
-If ListVar1 = "11" Then SendKeys "xi"
-If ListVar1 = "12" Then SendKeys "xii"
-If ListVar1 = "13" Then SendKeys "xiii"
-If ListVar1 = "14" Then SendKeys "xiv"
-If ListVar1 = "15" Then SendKeys "xv"
-If ListVar1 = "16" Then SendKeys "xvi"
-If ListVar1 = "17" Then SendKeys "xvii"
-If ListVar1 = "18" Then SendKeys "xviii"
-If ListVar1 = "19" Then SendKeys "xix"
-If ListVar1 = "20" Then SendKeys "xx"
-SendKeys "{)}"
 End Sub
 ]]></content>
     </Command>
@@ -6534,20 +5721,6 @@ EmulateRecognition "click Startup"
 End Sub
 ]]></content>
     </Command>
-    <Command name="Hyphenate &lt;dictation&gt;" group="" enabled="true">
-      <description></description>
-      <content type="WinWrap Basic"><![CDATA['#Reference {5c486340-2f92-11d1-a47c-00a024a3a678}#1.0#0#C:\Program Files (x86)\Nuance\NaturallySpeaking14\Program\dnstk10.dll#Dragon NaturallySpeaking ActiveX Controls#DNSTools
-Sub Main
-Dim engCtrl As New DgnEngineControl
-engCtrl.Register
-engCtrl.RecognitionMimic("select " & ListVar1)
-engCtrl.RecognitionMimic("hyphenate that")
-Wait .5
-engCtrl.RecognitionMimic("go back")
-engCtrl.UnRegister(False)
-End Sub
-]]></content>
-    </Command>
     <Command name="What Did I Say" group="" enabled="true">
       <description></description>
       <content type="WinWrap Basic"><![CDATA[Sub Main
@@ -7334,20 +6507,6 @@ End Sub
 
 ]]></content>
     </Command>
-    <Command name="Add Paragraph Back" group="" enabled="true">
-      <description></description>
-      <content type="WinWrap Basic"><![CDATA[Sub Main
-SendKeys "^{Down}{Left}{End}{Enter 2}{Left 2}"
-End Sub
-]]></content>
-    </Command>
-    <Command name="Add Line Back" group="" enabled="true">
-      <description></description>
-      <content type="WinWrap Basic"><![CDATA[Sub Main
-SendKeys "^{Down}{Left}{End}{Enter}{Left}"
-End Sub
-]]></content>
-    </Command>
     <Command name="Close KnowBrainer and Dragon" group="" enabled="true">
       <description></description>
       <content type="WinWrap Basic"><![CDATA[Sub Main
@@ -8043,98 +7202,6 @@ SendKeys "{Ctrl+c}{Right}"
 Wait 2
 TTSPlayString ""]]></content>
     </Command>
-    <Command name="Add Angle Brackets to &lt;dictation&gt;" group="" enabled="true">
-      <description></description>
-      <content type="WinWrap Basic"><![CDATA[Sub Main
-HeardWord "select", ListVar1
-Wait 0.6
-Dim saveClipboard As String
-SendKeys "^c"
-Wait 0.1
-saveClipboard = "<" & Clipboard & ">"
-saveClipboard = Replace$(saveClipboard, "< ", "<")
-SendKeys saveClipboard
-Wait .3
-EmulateRecognition "go back"
-End Sub
-]]></content>
-    </Command>
-    <Command name="Add Braces to &lt;dictation&gt;" group="" enabled="true">
-      <description></description>
-      <content type="WinWrap Basic"><![CDATA[Sub Main
-HeardWord "select", ListVar1
-Wait 0.6
-Dim saveClipboard As String
-SendKeys"^c"
-Wait 0.1
-saveClipboard = "{{}" & Clipboard & "}"
-saveClipboard = Replace$(saveClipboard, "{{} ", "{{}")
-saveClipboard = Replace$(saveClipboard, " }", "}")
-SendKeys saveClipboard
-Wait .3
-EmulateRecognition "go back"
-End Sub
-]]></content>
-    </Command>
-    <Command name="Add Paren to &lt;dictation&gt;" group="" enabled="true">
-      <description>Donated by Alan Cantor</description>
-      <content type="WinWrap Basic"><![CDATA[Sub Main
-HeardWord "select", ListVar1
-Wait 0.6
-SendKeys "^c"
-Wait 0.1
-SendKeys"{(}"
-SendKeys"^v"
-SendKeys"{)}"
-Wait 0.3
-EmulateRecognition "go back"
-End Sub
-]]></content>
-    </Command>
-    <Command name="Add Parentheses to &lt;dictation&gt;" group="" enabled="true">
-      <description></description>
-      <content type="WinWrap Basic"><![CDATA[Sub Main
-HeardWord "select", ListVar1
-Wait 0.6
-SendKeys "^c"
-Wait 0.1
-SendKeys"{(}"
-SendKeys"^v"
-SendKeys"{)}"
-Wait 0.3
-EmulateRecognition "go back"
-End Sub
-]]></content>
-    </Command>
-    <Command name="Add Quotes to &lt;dictation&gt;" group="" enabled="true">
-      <description>Add Quotes to any phrase - donated by Alan Cantor</description>
-      <content type="WinWrap Basic"><![CDATA[Sub Main
-HeardWord "select", ListVar1
-Wait 0.6
-SendKeys "^c"
-Wait 0.1
-SendKeys "{""}"
-SendKeys "^v"
-SendKeys "{""}"
-Wait 0.3
-EmulateRecognition "go back"
-End Sub
-]]></content>
-    </Command>
-    <Command name="Add Single Quotes to &lt;dictation&gt;" group="" enabled="true">
-      <description>Add Quotes to any phrase - donated by Alan Cantor</description>
-      <content type="WinWrap Basic"><![CDATA[Sub Main
-HeardWord "select", ListVar1
-Wait 0.6
-SendKeys "^c"
-Wait 0.1
-SendKeys "{'}"
-SendKeys "^v"
-SendKeys "{'}"
-EmulateRecognition "go back"
-End Sub
-]]></content>
-    </Command>
     <Command name="Delete To Beginning" group="" enabled="true">
       <description></description>
       <content type="WinWrap Basic"><![CDATA[Sub Main
@@ -8188,7 +7255,7 @@ SendKeys "{Enter}"
 End Sub
 ]]></content>
     </Command>
-    <Command name="Magnify Out" group="" enabled="true">
+    <Command name="Magnify Out" group="" enabled="false">
       <description></description>
       <content type="WinWrap Basic"><![CDATA[Sub Main
 SendKeys "{WindowsHold}{Pad-}"
@@ -8259,7 +7326,7 @@ Next
 End Sub
 ]]></content>
     </Command>
-    <Command name="Magnify In &lt;1to20&gt;" group="" enabled="true">
+    <Command name="Magnify In &lt;1to20&gt;" group="" enabled="false">
       <description></description>
       <content type="WinWrap Basic"><![CDATA[Sub Main
 For i = 1 To Val(ListVar1)
@@ -8269,7 +7336,7 @@ Next
 End Sub
 ]]></content>
     </Command>
-    <Command name="Magnify Out &lt;1to20&gt;" group="" enabled="true">
+    <Command name="Magnify Out &lt;1to20&gt;" group="" enabled="false">
       <description></description>
       <content type="WinWrap Basic"><![CDATA[Sub Main
 For i = 1 To Val(ListVar1)
@@ -8308,121 +7375,6 @@ Wait 3000
 SendKeys "{Alt+s}"
 Wait 500
 SendKeys "{Del}"]]></content>
-    </Command>
-    <Command name="Play iTunes &lt;dictation&gt;" group="" enabled="true">
-      <description>Used to force dictation into any field you can type in and adds a extra space after your dication</description>
-      <content type="WinWrap Basic"><![CDATA[' Declare keyboard events Windows API function
-Declare Function keybd_event Lib "user32.dll" (ByVal vKey As _
-Long, bScan As Long, ByVal Flag As Long, ByVal exInfo As Long) As Long
-' declare virtual key constant for the control key
-Const VK_CTRL = &h11
-
-Sub Main
-HeardWord "switch","to","iTunes"
-Wait 2
-keybd_event(VK_CTRL,0,0,0)
-Wait 0.1
-SendKeys"f"
-Wait 0.1
-keybd_event(VK_CTRL,0,2,0)
-Wait 0.1
-SendKeys ListVar1
-Wait 1
-SendKeys "{Down}"
-Wait 0.4
-SendKeys "~"
-Wait 0.4
-SendKeys "~"
-Wait 0.4
-SendKeys "{Esc}"
-Wait 0.2
-SendKeys "%{Tab}"
-End Sub
-]]></content>
-    </Command>
-    <Command name="Play Next &lt;1to10&gt; Songs" group="" enabled="true">
-      <description></description>
-      <content type="WinWrap Basic"><![CDATA[Sub Main
-HeardWord "switch","to","iTunes"
-Wait 1
-if ListVar1 = "1" then SendKeys "{Right}"
-if ListVar1 = "2" then SendKeys "{Right 2}"
-if ListVar1 = "3" then SendKeys "{Right 3}"
-if ListVar1 = "4" then SendKeys "{Right 4}"
-if ListVar1 = "5" then SendKeys "{Right 5}"
-if ListVar1 = "6" then SendKeys "{Right 6}"
-if ListVar1 = "7" then SendKeys "{Right 7}"
-if ListVar1 = "8" then SendKeys "{Right 8}"
-if ListVar1 = "9" then SendKeys "{Right 9}"
-if ListVar1 = "10" then SendKeys "[Right 10}"
-Wait 1
-SendKeys "%{Tab}"
-End Sub
-]]></content>
-    </Command>
-    <Command name="Play Next Album" group="" enabled="true">
-      <description></description>
-      <content type="WinWrap Basic"><![CDATA[Sub Main
-HeardWord "switch","to","iTunes"
-Wait 1
-SendKeys "^+{Right}"
-Wait 0.2
-SendKeys "%{Tab}"
-End Sub
-]]></content>
-    </Command>
-    <Command name="Play Next Song" group="" enabled="true">
-      <description></description>
-      <content type="WinWrap Basic"><![CDATA[Sub Main
-HeardWord "switch","to","iTunes"
-Wait 1
-SendKeys "^{Right}"
-Wait 0.5
-SendKeys "%{Tab}"
-End Sub
-]]></content>
-    </Command>
-    <Command name="Play Previous &lt;1to10&gt; Songs" group="" enabled="true">
-      <description></description>
-      <content type="WinWrap Basic"><![CDATA[Sub Main
-HeardWord "switch","to","iTunes"
-Wait 1
-if ListVar1 = "1" then SendKeys "^Left 2"
-if ListVar1 = "2" then SendKeys "^Left 3"
-if ListVar1 = "3" then SendKeys "^Left 4"
-if ListVar1 = "4" then SendKeys "^Left 5"
-if ListVar1 = "5" then SendKeys "^Left 6"
-if ListVar1 = "6" then SendKeys "^Left 7"
-if ListVar1 = "7" then SendKeys "^Left 8"
-if ListVar1 = "8" then SendKeys "^Left 9"
-if ListVar1 = "9" then SendKeys "^Left 10"
-if ListVar1 = "10" then SendKeys "^Left 11"
-Wait 1
-SendKeys "%{Tab}"
-End Sub
-]]></content>
-    </Command>
-    <Command name="Play Previous Song" group="" enabled="true">
-      <description></description>
-      <content type="WinWrap Basic"><![CDATA[Sub Main
-HeardWord "switch","to","iTunes"
-Wait 1
-SendKeys "^{Left 2}"
-Wait 0.5
-SendKeys "%{Tab}"
-End Sub
-]]></content>
-    </Command>
-    <Command name="Start Music" group="" enabled="true">
-      <description></description>
-      <content type="WinWrap Basic"><![CDATA[Sub Main
-HeardWord "switch to iTunes"
-Wait 1
-SendKeys "{Space}"
-Wait 1
-SendKeys "%{Tab}"
-End Sub
-]]></content>
     </Command>
     <Command name="Stop Scrolling" group="" enabled="true">
       <description></description>
@@ -8775,14 +7727,6 @@ If ListVar1 = "SPACE Key" Then keybd_event(VK_SPACE,0,0,0)
 End Sub
 ]]></content>
     </Command>
-    <Command name="Add Paragraph" group="" enabled="true">
-      <description></description>
-      <content type="WinWrap Basic"><![CDATA[Sub Main
-SendKeys "^{Down}{Left}{End}+{Enter 2}"
-HeardWord "\cap"
-End Sub
-]]></content>
-    </Command>
     <Command name="Say Back &lt;dictation&gt;" group="" enabled="true">
       <description>Used to force dictation into any field you can type in and adds a extra space after your dication</description>
       <content type="WinWrap Basic"><![CDATA[Sub Main
@@ -8811,33 +7755,6 @@ SendKeys "^{Down}{Left 2}{End}"
 End Sub
 ]]></content>
     </Command>
-    <Command name="&lt;Direction&gt; &lt;1to20&gt; Say &lt;dictation&gt;" group="" enabled="true">
-      <description>Move in any direction 1 to 20 times, force dictation and press the spacebar</description>
-      <content type="WinWrap Basic"><![CDATA[Sub Main
-If ListVar1 = "Previous" Then SendKeys "{Left "+ListVar2+"}"
-If ListVar1 = "Next" Then SendKeys "{Right "+ListVar2+"}"
-If ListVar1 = "Tab" Then SendKeys "{Tab "+ListVar2+"}"
-If ListVar1 = "Shift Tab" Then SendKeys "+{Tab "+ListVar2+"}"
-If ListVar1 = "Back Tab" Then SendKeys "+{Tab "+ListVar2+"}"
-If ListVar1 = "Left" Then SendKeys "{Left "+ListVar2+"}"
-If ListVar1 = "Right" Then SendKeys "{Right "+ListVar2+"}"
-If ListVar1 = "Down" Then SendKeys "{Down "+ListVar2+"}"
-If ListVar1 = "Up" Then SendKeys "{Up "+ListVar2+"}"
-If ListVar1 = "Space" Then SendKeys "{Space}"
-If ListVar1 = "Spacebar" Then SendKeys "{Space}"
-If ListVar1 = "Backspace" Then SendKeys "{Backspace}"
-origClip=Clipboard
-Wait 0.1
-Clipboard ListVar3
-Wait 0.1
-SendKeys "^v"
-Wait 0.1
-SendKeys " "
-Wait 0.5
-SendKeys "^{Down}{Left 2}{End}"
-End Sub
-]]></content>
-    </Command>
     <Command name="&lt;Direction&gt; Insert &lt;dictation&gt;" group="" enabled="true">
       <description>Move in any direction, force dictation and press the spacebar</description>
       <content type="WinWrap Basic"><![CDATA[Sub Main
@@ -8861,83 +7778,6 @@ SendKeys "^v"
 End Sub
 ]]></content>
     </Command>
-    <Command name="&lt;Direction&gt; Insert Back &lt;dictation&gt;" group="" enabled="true">
-      <description>Move in any direction, force dictation and press the spacebar</description>
-      <content type="WinWrap Basic"><![CDATA[Sub Main
-If ListVar1 = "Previous" Then SendKeys "{Left}"
-If ListVar1 = "Next" Then SendKeys "{Right}"
-If ListVar1 = "Tab" Then SendKeys "{Tab}"
-If ListVar1 = "Shift Tab" Then SendKeys "+{Tab}"
-If ListVar1 = "Back Tab" Then SendKeys "+{Tab}"
-If ListVar1 = "Left" Then SendKeys "{Left}"
-If ListVar1 = "Right" Then SendKeys "{Right}"
-If ListVar1 = "Down" Then SendKeys "{Down}"
-If ListVar1 = "Up" Then SendKeys "{Up}"
-If ListVar1 = "Space" Then SendKeys "{Space}"
-If ListVar1 = "Spacebar" Then SendKeys "{Space}"
-If ListVar1 = "Backspace" Then SendKeys "{Backspace}"
-origClip=Clipboard
-Wait 0.1
-Clipboard ListVar2
-Wait 0.1
-SendKeys "^v"
-Wait 0.5
-SendKeys "^{Down}{Left 2}{End}"
-End Sub
-]]></content>
-    </Command>
-    <Command name="&lt;Direction&gt; Say Back &lt;dictation&gt;" group="" enabled="true">
-      <description>Move in any direction, force dictation and press the spacebar</description>
-      <content type="WinWrap Basic"><![CDATA[Sub Main
-If ListVar1 = "Previous" Then SendKeys "{Left}"
-If ListVar1 = "Next" Then SendKeys "{Right}"
-If ListVar1 = "Tab" Then SendKeys "{Tab}"
-If ListVar1 = "Shift Tab" Then SendKeys "+{Tab}"
-If ListVar1 = "Back Tab" Then SendKeys "+{Tab}"
-If ListVar1 = "Left" Then SendKeys "{Left}"
-If ListVar1 = "Right" Then SendKeys "{Right}"
-If ListVar1 = "Down" Then SendKeys "{Down}"
-If ListVar1 = "Up" Then SendKeys "{Up}"
-If ListVar1 = "Space" Then SendKeys "{Space}"
-If ListVar1 = "Spacebar" Then SendKeys "{Space}"
-If ListVar1 = "Backspace" Then SendKeys "{Backspace}"
-origClip=Clipboard
-Wait 0.1
-Clipboard ListVar2
-Wait 0.1
-SendKeys "^v"
-Wait 0.1
-SendKeys " "
-Wait 0.5
-SendKeys "^{Down}{Left 2}{End}"
-End Sub
-]]></content>
-    </Command>
-    <Command name="&lt;Direction&gt; Say &lt;dictation&gt;" group="" enabled="true">
-      <description>Move in any direction, force dictation and press the spacebar</description>
-      <content type="WinWrap Basic"><![CDATA[Sub Main
-If ListVar1 = "Previous" Then SendKeys "{Left}"
-If ListVar1 = "Next" Then SendKeys "{Right}"
-If ListVar1 = "Tab" Then SendKeys "{Tab}"
-If ListVar1 = "Shift Tab" Then SendKeys "+{Tab}"
-If ListVar1 = "Back Tab" Then SendKeys "+{Tab}"
-If ListVar1 = "Left" Then SendKeys "{Left}"
-If ListVar1 = "Right" Then SendKeys "{Right}"
-If ListVar1 = "Down" Then SendKeys "{Down}"
-If ListVar1 = "Up" Then SendKeys "{Up}"
-If ListVar1 = "Space" Then SendKeys "{Space}"
-If ListVar1 = "Spacebar" Then SendKeys "{Space}"
-If ListVar1 = "Backspace" Then SendKeys "{Backspace}"
-origClip=Clipboard
-Wait 0.1
-Clipboard ListVar2
-Wait 0.1
-SendKeys "^v"
-Wait 0.1
-SendKeys " "
-End Sub
-]]></content>
-    </Command>
     <Command name="Go To &lt;dictation&gt;" group="" enabled="false">
       <description>Example: say "Go to KnowBrainer"</description>
       <content type="WinWrap Basic"><![CDATA[Sub Main
@@ -8955,54 +7795,11 @@ SendKeys "~"
 End Sub
 ]]></content>
     </Command>
-    <Command name="Add Line" group="" enabled="true">
-      <description></description>
-      <content type="WinWrap Basic"><![CDATA[Sub Main
-SendKeys "^{Down}{Left}{End}+{Enter}"
-Wait 0.5
-HeardWord "\cap"
-End Sub
-]]></content>
-    </Command>
-    <Command name="Double List Bullet" group="" enabled="true">
-      <description></description>
-      <content type="WinWrap Basic"><![CDATA[Sub Main
-SendKeys "^{Down}{Left 2}{End}"
-Wait 0.5
-SendKeys "+{Enter 2}"
-Wait 0.3
-EmulateRecognition "•"
-Wait 0.1
-HeardWord "\cap"
-End Sub
-]]></content>
-    </Command>
     <Command name="Code SendKeys Control Shift &lt;Keys&gt;" group="" enabled="true">
       <description></description>
       <content type="WinWrap Basic"><![CDATA['#Uses "C:\Users\KnowBrainer\CommonModules\globals.bas"
 Sub Main
 DoMacroCodeKeys(ListVar1, 1, ModifierKey.Control + ModifierKey.Shift, true)
-End Sub
-]]></content>
-    </Command>
-    <Command name="Add Commas to &lt;dictation&gt;" group="" enabled="true">
-      <description></description>
-      <content type="WinWrap Basic"><![CDATA[Sub Main
-HeardWord "select", ListVar1
-Wait .8
-SendKeys "^c"
-Wait .1 
-SendKeys "{Backspace 2}"
-Wait 0.1
-SendKeys ","
-Wait 0.1
-SendKeys "{Space}"
-Wait 0.1
-SendKeys "^v"
-Wait 0.1
-SendKeys ","
-Wait .3
-EmulateRecognition "go back"
 End Sub
 ]]></content>
     </Command>
@@ -9113,25 +7910,6 @@ On Error Resume Next
  Wait 1
  SendKeys "{End}"  'Go back to the end of the document
 End
-End Sub
-]]></content>
-    </Command>
-    <Command name="Add &lt;Punctuation&gt; After &lt;dictation&gt;" group="" enabled="true">
-      <description></description>
-      <content type="WinWrap Basic"><![CDATA[Sub Main
-SendKeys "^h"
-Wait 0.3
-SendKeys ListVar2
-Wait .5
-SendKeys "~"
-Wait 0.2
-SendKeys "{Esc}"
-Wait 0.5
-SendKeys "{Right}"
-Wait 0.2
-SendKeys ListVar1
-Wait 0.5
-SendKeys "^{Down}{Left}{End}"
 End Sub
 ]]></content>
     </Command>
@@ -9339,36 +8117,6 @@ If ListVar1 = "Underline" Then SendKeys "^u"
 If ListVar1 = "Bold" Then SendKeys "^b"
 Wait 1
 SendKeys "^{Down}{Left 2}{End}"
-End Sub
-]]></content>
-    </Command>
-    <Command name="Double List Bullet &lt;dictation&gt;" group="" enabled="true">
-      <description></description>
-      <content type="WinWrap Basic"><![CDATA[Sub Main
-SendKeys "^{Down}{Left 2}{End}"
-Wait 0.5
-SendKeys "+{Enter 2}"
-Wait 0.3
-EmulateRecognition "•"
-Wait 0.3
-SendKeys "{Space}"
-Wait 0.5
-SendKeys ListVar1
-End Sub
-]]></content>
-    </Command>
-    <Command name="List Bullet &lt;dictation&gt;" group="" enabled="true">
-      <description></description>
-      <content type="WinWrap Basic"><![CDATA[Sub Main
-SendKeys "^{Down}{Left 2}{End}"
-Wait 0.5
-SendKeys "+{Enter}"
-Wait 0.3
-EmulateRecognition "•"
-Wait 0.3
-SendKeys "{Space}"
-Wait 0.5
-SendKeys ListVar1
 End Sub
 ]]></content>
     </Command>
@@ -11323,7 +10071,7 @@ AppBringUp "C:\Program Files (x86)\Common Files\Nuance\NaturallySpeaking15\drago
 End Sub
 ]]></content>
     </Command>
-    <Command name="Magnify In" group="" enabled="true">
+    <Command name="Magnify In" group="" enabled="false">
       <description></description>
       <content type="WinWrap Basic"><![CDATA[Sub Main
 SendKeys "{WindowsHold}{Pad+}"
@@ -11478,42 +10226,6 @@ If ListVar1="why" then SendKeys "Y"
 If ListVar1="Z" then SendKeys "Z"
 Wait 0.1
 SendKeys "."
-End Sub
-]]></content>
-    </Command>
-    <Command name="Double List Small &lt;Lett&gt;" group="" enabled="true">
-      <description></description>
-      <content type="WinWrap Basic"><![CDATA[Sub Main
-SendKeys "^{Down}{Left 2}{End}+{Enter 2}{(}"
-If ListVar1="a" then SendKeys "a"
-If ListVar1="be" then SendKeys "b"
-If ListVar1="see" then SendKeys "c"
-If ListVar1="Dee" then SendKeys "d"
-If ListVar1="E" then SendKeys "e"
-If ListVar1="F" then SendKeys "f"
-If ListVar1="gee" then SendKeys "g"
-If ListVar1="H" then SendKeys "h"
-If ListVar1="I" then SendKeys "i"
-If ListVar1="Jay" then SendKeys "j"
-If ListVar1="Kay" then SendKeys "k"
-If ListVar1="L" then SendKeys "l"
-If ListVar1="M" then SendKeys "m"
-If ListVar1="N" then SendKeys "n"
-If ListVar1="oh" then SendKeys "o"
-If ListVar1="pee" then SendKeys "p"
-If ListVar1="cue" then SendKeys "q"
-If ListVar1="are" then SendKeys "r"
-If ListVar1="S" then SendKeys "s"
-If ListVar1="tea" then SendKeys "t"
-If ListVar1="you" then SendKeys "u"
-If ListVar1="V" then SendKeys "v"
-If ListVar1="W" then SendKeys "w"
-If ListVar1="X" then SendKeys "x"
-If ListVar1="why" then SendKeys "y"
-If ListVar1="Z" then SendKeys "z"
-SendKeys "{)}"
-Wait 0.5
-HeardWord "\cap"
 End Sub
 ]]></content>
     </Command>
@@ -13321,15 +12033,6 @@ Sub Main
 End Sub
 ]]></content>
     </Command>
-    <Command name="hyphen case &lt;dictation&gt;" group="" enabled="true">
-      <description></description>
-      <content type="WinWrap Basic"><![CDATA['#Uses "C:\Users\KnowBrainer\CommonModules\utilities.bas"
-
-Sub Main
-    SendKeys formatHyphens(ListVar1)
-End Sub
-]]></content>
-    </Command>
     <Command name="&lt;grow_shrink&gt; Window &lt;height_width&gt; &lt;1to1000&gt;" group="" enabled="true">
       <description></description>
       <content type="WinWrap Basic"><![CDATA['#Uses "C:\Users\KnowBrainer\CommonModules\window.bas"
@@ -13820,15 +12523,6 @@ End Sub
 End Sub
 ]]></content>
     </Command>
-    <Command name="show process name" group="" enabled="true">
-      <description></description>
-      <content type="WinWrap Basic"><![CDATA['#Uses "C:\Users\KnowBrainer\CommonModules\menus.bas"
-
-Sub Main
-    MsgBox GetForegroundProcessName()
-End Sub
-]]></content>
-    </Command>
     <Command name="menu &lt;dictation&gt;" group="" enabled="true">
       <description>Clicks a menu in the currently active window.  You need to define these menus in menus.bas for each process.</description>
       <content type="WinWrap Basic"><![CDATA['#Uses "C:\Users\KnowBrainer\CommonModules\menus.bas"
@@ -13933,111 +12627,6 @@ If ListVar1 = "Down" Then SendKeys "{Down "+ListVar2+"}"
 Wait 0.5
 SendKeys "."
 End If
-End Sub
-]]></content>
-    </Command>
-    <Command name="acronym &lt;ica_complex&gt; &lt;ica_complex&gt;" group="" enabled="true">
-      <description></description>
-      <content type="WinWrap Basic"><![CDATA['#Uses "C:\Users\KnowBrainer\CommonModules\utilities.bas"
-
-
-
-Sub Main
-    'ensureSpace()
-    dim letters(2) as String
-    letters(0) = UCase(Split(ListVar1, "\")(0))
-    letters(1) = UCase(Split(ListVar2, "\")(0))
-    SendKeys letters(0) & letters(1)
-End Sub
-]]></content>
-    </Command>
-    <Command name="acronym &lt;ica_complex&gt; &lt;ica_complex&gt; &lt;ica_complex&gt;" group="" enabled="true">
-      <description></description>
-      <content type="WinWrap Basic"><![CDATA['#Uses "C:\Users\KnowBrainer\CommonModules\utilities.bas"
-
-
-
-Sub Main
-    'ensureSpace()
-    dim letters(3) as String
-    letters(0) = UCase(Split(ListVar1, "\")(0))
-    letters(1) = UCase(Split(ListVar2, "\")(0))
-    letters(2) = UCase(Split(ListVar3, "\")(0))
-    SendKeys letters(0) & letters(1) & letters(2)
-End Sub
-]]></content>
-    </Command>
-    <Command name="acronym &lt;ica_complex&gt; &lt;ica_complex&gt; &lt;ica_complex&gt; &lt;ica_complex&gt;" group="" enabled="true">
-      <description></description>
-      <content type="WinWrap Basic"><![CDATA['#Uses "C:\Users\KnowBrainer\CommonModules\utilities.bas"
-
-
-
-Sub Main
-'    ensureSpace()
-    dim letters(4) as String
-    letters(0) = UCase(Split(ListVar1, "\")(0))
-    letters(1) = UCase(Split(ListVar2, "\")(0))
-    letters(2) = UCase(Split(ListVar3, "\")(0))
-    letters(3) = UCase(Split(ListVar4, "\")(0))
-    SendKeys letters(0) & letters(1) & letters(2) & letters(3)
-End Sub
-]]></content>
-    </Command>
-    <Command name="acronym &lt;ica_complex&gt; &lt;ica_complex&gt; &lt;ica_complex&gt; &lt;ica_complex&gt; &lt;ica_complex&gt;" group="" enabled="true">
-      <description></description>
-      <content type="WinWrap Basic"><![CDATA['#Uses "C:\Users\KnowBrainer\CommonModules\utilities.bas"
-
-
-
-Sub Main
-'    ensureSpace()
-    dim letters(5) as String
-    letters(0) = UCase(Split(ListVar1, "\")(0))
-    letters(1) = UCase(Split(ListVar2, "\")(0))
-    letters(2) = UCase(Split(ListVar3, "\")(0))
-    letters(3) = UCase(Split(ListVar4, "\")(0))
-    letters(4) = UCase(Split(ListVar5, "\")(0))
-    SendKeys letters(0) & letters(1) & letters(2) & letters(3) & letters(4)
-End Sub
-]]></content>
-    </Command>
-    <Command name="acronym &lt;ica_complex&gt; &lt;ica_complex&gt; &lt;ica_complex&gt; &lt;ica_complex&gt; &lt;ica_complex&gt; &lt;ica_complex&gt;" group="" enabled="true">
-      <description></description>
-      <content type="WinWrap Basic"><![CDATA['#Uses "C:\Users\KnowBrainer\CommonModules\utilities.bas"
-
-
-
-Sub Main
-'    ensureSpace()
-    dim letters(5) as String
-    letters(0) = UCase(Split(ListVar1, "\")(0))
-    letters(1) = UCase(Split(ListVar2, "\")(0))
-    letters(2) = UCase(Split(ListVar3, "\")(0))
-    letters(3) = UCase(Split(ListVar4, "\")(0))
-    letters(4) = UCase(Split(ListVar5, "\")(0))
-    letters(5) = UCase(Split(ListVar6, "\")(0))
-    SendKeys letters(0) & letters(1) & letters(2) & letters(3) & letters(4) & letters(5)
-End Sub
-]]></content>
-    </Command>
-    <Command name="acronym &lt;ica_complex&gt; &lt;ica_complex&gt; &lt;ica_complex&gt; &lt;ica_complex&gt; &lt;ica_complex&gt; &lt;ica_complex&gt; &lt;ica_complex&gt;" group="" enabled="true">
-      <description></description>
-      <content type="WinWrap Basic"><![CDATA['#Uses "C:\Users\KnowBrainer\CommonModules\utilities.bas"
-
-
-
-Sub Main
-'    ensureSpace()
-    dim letters(6) as String
-    letters(0) = UCase(Split(ListVar1, "\")(0))
-    letters(1) = UCase(Split(ListVar2, "\")(0))
-    letters(2) = UCase(Split(ListVar3, "\")(0))
-    letters(3) = UCase(Split(ListVar4, "\")(0))
-    letters(4) = UCase(Split(ListVar5, "\")(0))
-    letters(5) = UCase(Split(ListVar6, "\")(0))
-    letters(6) = UCase(Split(ListVar7, "\")(0))
-    SendKeys letters(0) & letters(1) & letters(2) & letters(3) & letters(4) & letters(5) & letters(6)
 End Sub
 ]]></content>
     </Command>
@@ -14236,13 +12825,6 @@ Begin Dialog UserDialog 420,84, "KnowBrainer Command Editor" ' %GRID:10,7,1,1
  End Dialog
  Dim dlg As UserDialog
  Dialog dlg
-End Sub
-]]></content>
-    </Command>
-    <Command name="manage" group="" enabled="true">
-      <description></description>
-      <content type="WinWrap Basic"><![CDATA[Sub Main
-
 End Sub
 ]]></content>
     </Command>
@@ -16124,20 +14706,6 @@ End Sub
 End Sub
 ]]></content>
     </Command>
-    <Command name="Mouse &lt;Direction&gt; &lt;1to5000&gt; &lt;mouse_command&gt;" group="" enabled="true">
-      <description>Mouse Up, Down, Left or Right 1 to 1000 pixels, perform mouse action</description>
-      <content type="WinWrap Basic"><![CDATA[Sub Main
-offset = Val( ListVar2)
-if ListVar1 = "Up"     then SetMousePosition 2, 0, -offset
-if ListVar1 = "Down"   then SetMousePosition 2, 0, offset
-if ListVar1 = "Left"   then SetMousePosition 2, -offset, 0
-if ListVar1 = "Right"  then SetMousePosition 2, offset, 0
-
-EmulateRecognition(ListVar3)
-
-End Sub
-]]></content>
-    </Command>
     <Command name="skype notification" group="" enabled="true">
       <description></description>
       <content type="WinWrap Basic"><![CDATA[Sub Main
@@ -16384,15 +14952,6 @@ Sub Main
     Wait(0.1)
 
     SendKeys(result)
-End Sub
-]]></content>
-    </Command>
-    <Command name="acronym &lt;dictation&gt;" group="" enabled="true">
-      <description>To add a space at the beginning say "acronym space &lt;dictation&gt;"</description>
-      <content type="WinWrap Basic"><![CDATA['#Uses "C:\Users\KnowBrainer\CommonModules\utilities.bas"
-
-Sub Main
-    SendKeys DictationToKeystrokes(ListVar1, true)
 End Sub
 ]]></content>
     </Command>
@@ -17607,18 +16166,6 @@ Sub Main
 End Sub
 ]]></content>
     </Command>
-    <Command name="test macro &lt;dictation&gt;" group="" enabled="true">
-      <description></description>
-      <content type="WinWrap Basic"><![CDATA['#Uses "C:\Users\KnowBrainer\CommonModules\mouse.bas"
-
-
-
-Sub Main
-    'SendKeys("This is a test: " & ListVar1)
-    DoMouseInput(MouseButton.Left, MouseButtonPosition.Down)
-End Sub
-]]></content>
-    </Command>
     <Command name="old start scrolling &lt;Direction&gt; &lt;1to300&gt;" group="" enabled="true">
       <description>Mouse Up, Down, Left or Right 13 to 300 </description>
       <content type="WinWrap Basic"><![CDATA[Sub Main
@@ -17855,6 +16402,151 @@ End Sub
       <description></description>
       <content type="WinWrap Basic"><![CDATA[Sub Main
     SendKeys("{WindowsHold}v")
+End Sub
+]]></content>
+    </Command>
+    <Command name="stop repeating" group="" enabled="true">
+      <description></description>
+      <content type="WinWrap Basic"><![CDATA['#Uses "C:\Users\KnowBrainer\CommonModules\globals.bas"
+
+Sub Main
+    DoStopCommands()
+End Sub
+]]></content>
+    </Command>
+    <Command name="Hyphenate &lt;dictation&gt;" group="" enabled="true">
+      <description></description>
+      <content type="WinWrap Basic"><![CDATA['#Reference {5c486340-2f92-11d1-a47c-00a024a3a678}#1.0#0#C:\Program Files (x86)\Nuance\NaturallySpeaking14\Program\dnstk10.dll#Dragon NaturallySpeaking ActiveX Controls#DNSTools
+'#Uses "C:\Users\KnowBrainer\CommonModules\utilities.bas"
+
+Sub Main
+    SendKeys formatHyphens(ListVar1)
+End Sub
+
+'Sub Main
+'Dim engCtrl As New DgnEngineControl
+'engCtrl.Register
+'engCtrl.RecognitionMimic("select " & ListVar1)
+'engCtrl.RecognitionMimic("hyphenate that")
+'Wait .5
+'engCtrl.RecognitionMimic("go back")
+'engCtrl.UnRegister(False)
+'End Sub
+
+]]></content>
+    </Command>
+    <Command name="Hyphenate caps &lt;dictation&gt;" group="" enabled="true">
+      <description></description>
+      <content type="WinWrap Basic"><![CDATA['#Reference {5c486340-2f92-11d1-a47c-00a024a3a678}#1.0#0#C:\Program Files (x86)\Nuance\NaturallySpeaking14\Program\dnstk10.dll#Dragon NaturallySpeaking ActiveX Controls#DNSTools
+'#Uses "C:\Users\KnowBrainer\CommonModules\utilities.bas"
+
+Sub Main
+    SendKeys formatHyphens(ListVar1, CaseType.initialCaps)
+End Sub
+
+'Sub Main
+'Dim engCtrl As New DgnEngineControl
+'engCtrl.Register
+'engCtrl.RecognitionMimic("select " & ListVar1)
+'engCtrl.RecognitionMimic("hyphenate that")
+'Wait .5
+'engCtrl.RecognitionMimic("go back")
+'engCtrl.UnRegister(False)
+'End Sub
+
+]]></content>
+    </Command>
+    <Command name="show process name" group="" enabled="true">
+      <description></description>
+      <content type="WinWrap Basic"><![CDATA['#Uses "C:\Users\KnowBrainer\CommonModules\utilities.bas"
+
+Sub Main
+    MsgBox GetForegroundProcessName()
+End Sub
+]]></content>
+    </Command>
+    <Command name="acronym &lt;dictation&gt;" group="" enabled="true">
+      <description>To add a space at the beginning say "acronym space &lt;dictation&gt;"</description>
+      <content type="WinWrap Basic"><![CDATA['#Uses "C:\Users\KnowBrainer\CommonModules\utilities.bas"
+
+Sub Main
+    SendKeys DictationToKeystrokes(ListVar1, true)
+End Sub
+]]></content>
+    </Command>
+    <Command name="ack &lt;ica_complex&gt; &lt;ica_complex&gt; &lt;ica_complex&gt;" group="" enabled="true">
+      <description>ack is short for Acronym.  </description>
+      <content type="WinWrap Basic"><![CDATA['#Uses "C:\Users\KnowBrainer\CommonModules\globals.bas"
+
+Sub Main
+    DoAck(ListVar1, ListVar2, ListVar3)
+End Sub
+]]></content>
+    </Command>
+    <Command name="ack &lt;ica_complex&gt; &lt;ica_complex&gt; &lt;ica_complex&gt; &lt;ica_complex&gt;" group="" enabled="true">
+      <description>ack is short for Acronym.  </description>
+      <content type="WinWrap Basic"><![CDATA['#Uses "C:\Users\KnowBrainer\CommonModules\globals.bas"
+
+Sub Main
+    DoAck(ListVar1, ListVar2, ListVar3, ListVar4)
+End Sub
+]]></content>
+    </Command>
+    <Command name="ack &lt;ica_complex&gt; &lt;ica_complex&gt; &lt;ica_complex&gt; &lt;ica_complex&gt; &lt;ica_complex&gt;" group="" enabled="true">
+      <description>ack is short for Acronym.  </description>
+      <content type="WinWrap Basic"><![CDATA['#Uses "C:\Users\KnowBrainer\CommonModules\globals.bas"
+
+Sub Main
+    DoAck(ListVar1, ListVar2, ListVar3, ListVar4, ListVar5)
+End Sub
+]]></content>
+    </Command>
+    <Command name="ack &lt;ica_complex&gt; &lt;ica_complex&gt; &lt;ica_complex&gt; &lt;ica_complex&gt; &lt;ica_complex&gt; &lt;ica_complex&gt;" group="" enabled="true">
+      <description>ack is short for Acronym.  </description>
+      <content type="WinWrap Basic"><![CDATA['#Uses "C:\Users\KnowBrainer\CommonModules\globals.bas"
+
+Sub Main
+    DoAck(ListVar1, ListVar2, ListVar3, ListVar4, ListVar5, ListVar6)
+End Sub
+]]></content>
+    </Command>
+    <Command name="ack &lt;ica_complex&gt; &lt;ica_complex&gt; &lt;ica_complex&gt; &lt;ica_complex&gt; &lt;ica_complex&gt; &lt;ica_complex&gt; &lt;ica_complex&gt;" group="" enabled="true">
+      <description>ack is short for acronym</description>
+      <content type="WinWrap Basic"><![CDATA['#Uses "C:\Users\KnowBrainer\CommonModules\globals.bas"
+
+Sub Main
+    DoAck(ListVar1, ListVar2, ListVar3, ListVar4, ListVar5, ListVar6, ListVar7)
+End Sub
+]]></content>
+    </Command>
+    <Command name="test macro &lt;dictation&gt;" group="" enabled="true">
+      <description></description>
+      <content type="WinWrap Basic"><![CDATA['#Uses "C:\Users\KnowBrainer\CommonModules\cache.bas"
+
+
+
+Sub Main
+    'SendKeys("This is a test: " & ListVar1)
+    SwitchToApp(ListVar1)
+End Sub
+]]></content>
+    </Command>
+    <Command name="Mouse &lt;compass&gt; &lt;1to5000&gt; &lt;mouse_command&gt;" group="" enabled="true">
+      <description>Mouse Up, Down, Left or Right 1 to 1000 pixels, perform mouse action</description>
+      <content type="WinWrap Basic"><![CDATA['#Uses "C:\Users\KnowBrainer\CommonModules\mouse.bas"
+
+
+Sub Main
+    MoveMouseAction(ListVar1, ListVar2, ListVar3)
+End Sub
+]]></content>
+    </Command>
+    <Command name="Mouse &lt;compass&gt; &lt;1to5000&gt;" group="" enabled="true">
+      <description>Mouse Up, Down, Left or Right 1 to 1000 pixels</description>
+      <content type="WinWrap Basic"><![CDATA['#Uses "C:\Users\KnowBrainer\CommonModules\mouse.bas"
+
+Sub Main
+    MoveMouseAction(ListVar1, ListVar2)
 End Sub
 ]]></content>
     </Command>
@@ -21270,102 +19962,6 @@ End Sub
       <value><![CDATA[a\audio]]></value>
       <value><![CDATA[h\help]]></value>
     </List>
-    <List name="ica_complex_cap">
-      <value><![CDATA[a\alpha]]></value>
-      <value><![CDATA[A\cap alpha]]></value>
-      <value><![CDATA[b\bravo]]></value>
-      <value><![CDATA[B\cap bravo]]></value>
-      <value><![CDATA[c\charlie]]></value>
-      <value><![CDATA[C\cap charlie]]></value>
-      <value><![CDATA[d\delta]]></value>
-      <value><![CDATA[D\cap delta]]></value>
-      <value><![CDATA[e\echo]]></value>
-      <value><![CDATA[E\cap echo]]></value>
-      <value><![CDATA[f\foxtrot]]></value>
-      <value><![CDATA[F\cap foxtrot]]></value>
-      <value><![CDATA[g\golf]]></value>
-      <value><![CDATA[G\cap golf]]></value>
-      <value><![CDATA[h\hotel]]></value>
-      <value><![CDATA[H\cap hotel]]></value>
-      <value><![CDATA[i\india]]></value>
-      <value><![CDATA[I\cap india]]></value>
-      <value><![CDATA[j\juliett]]></value>
-      <value><![CDATA[J\cap juliett]]></value>
-      <value><![CDATA[k\kilo]]></value>
-      <value><![CDATA[K\cap kilo]]></value>
-      <value><![CDATA[l\Lima]]></value>
-      <value><![CDATA[L\cap Lima]]></value>
-      <value><![CDATA[m\mike]]></value>
-      <value><![CDATA[M\cap mike]]></value>
-      <value><![CDATA[n\november]]></value>
-      <value><![CDATA[N\cap november]]></value>
-      <value><![CDATA[o\oscar]]></value>
-      <value><![CDATA[O\cap oscar]]></value>
-      <value><![CDATA[p\papa]]></value>
-      <value><![CDATA[P\cap papa]]></value>
-      <value><![CDATA[q\quebec]]></value>
-      <value><![CDATA[Q\cap quebec]]></value>
-      <value><![CDATA[r\romeo]]></value>
-      <value><![CDATA[R\cap romeo]]></value>
-      <value><![CDATA[s\sierra]]></value>
-      <value><![CDATA[S\cap sierra]]></value>
-      <value><![CDATA[t\tango]]></value>
-      <value><![CDATA[T\cap tango]]></value>
-      <value><![CDATA[u\uniform]]></value>
-      <value><![CDATA[U\cap uniform]]></value>
-      <value><![CDATA[v\victor]]></value>
-      <value><![CDATA[V\cap victor]]></value>
-      <value><![CDATA[w\whiskey]]></value>
-      <value><![CDATA[W\cap whiskey]]></value>
-      <value><![CDATA[x\xray]]></value>
-      <value><![CDATA[X\cap xray]]></value>
-      <value><![CDATA[y\yankee]]></value>
-      <value><![CDATA[Y\cap yankee]]></value>
-      <value><![CDATA[z\zulu]]></value>
-      <value><![CDATA[Z\cap zulu]]></value>
-      <value><![CDATA[a\a]]></value>
-      <value><![CDATA[a\A]]></value>
-      <value><![CDATA[b\be]]></value>
-      <value><![CDATA[b\B]]></value>
-      <value><![CDATA[c\see]]></value>
-      <value><![CDATA[c\C]]></value>
-      <value><![CDATA[d\d]]></value>
-      <value><![CDATA[d\dee]]></value>
-      <value><![CDATA[d\D]]></value>
-      <value><![CDATA[e\e]]></value>
-      <value><![CDATA[e\ee]]></value>
-      <value><![CDATA[f\f]]></value>
-      <value><![CDATA[g\g]]></value>
-      <value><![CDATA[h\h]]></value>
-      <value><![CDATA[i\eye]]></value>
-      <value><![CDATA[j\Jay]]></value>
-      <value><![CDATA[k\Kay]]></value>
-      <value><![CDATA[l\l]]></value>
-      <value><![CDATA[m\m]]></value>
-      <value><![CDATA[n\n]]></value>
-      <value><![CDATA[o\oh]]></value>
-      <value><![CDATA[p\pea]]></value>
-      <value><![CDATA[q\cue]]></value>
-      <value><![CDATA[r\are]]></value>
-      <value><![CDATA[s\s]]></value>
-      <value><![CDATA[t\tea]]></value>
-      <value><![CDATA[u\you]]></value>
-      <value><![CDATA[v\v]]></value>
-      <value><![CDATA[w\w]]></value>
-      <value><![CDATA[x\x]]></value>
-      <value><![CDATA[y\why]]></value>
-      <value><![CDATA[z\z]]></value>
-      <value><![CDATA[0\zero]]></value>
-      <value><![CDATA[1\one]]></value>
-      <value><![CDATA[2\two]]></value>
-      <value><![CDATA[3\three]]></value>
-      <value><![CDATA[4\four]]></value>
-      <value><![CDATA[5\five]]></value>
-      <value><![CDATA[6\six]]></value>
-      <value><![CDATA[7\seven]]></value>
-      <value><![CDATA[8\eight]]></value>
-      <value><![CDATA[9\nine]]></value>
-    </List>
     <List name="emclient_commands">
       <value><![CDATA[inbox]]></value>
       <value><![CDATA[sent]]></value>
@@ -21432,70 +20028,6 @@ End Sub
       <value><![CDATA[X]]></value>
       <value><![CDATA[Y]]></value>
       <value><![CDATA[Z]]></value>
-    </List>
-    <List name="ica_complex">
-      <value><![CDATA[a\alpha]]></value>
-      <value><![CDATA[b\bravo]]></value>
-      <value><![CDATA[c\charlie]]></value>
-      <value><![CDATA[d\delta]]></value>
-      <value><![CDATA[e\echo]]></value>
-      <value><![CDATA[f\foxtrot]]></value>
-      <value><![CDATA[g\golf]]></value>
-      <value><![CDATA[h\hotel]]></value>
-      <value><![CDATA[i\india]]></value>
-      <value><![CDATA[j\juliett]]></value>
-      <value><![CDATA[k\kilo]]></value>
-      <value><![CDATA[l\Lima]]></value>
-      <value><![CDATA[m\mike]]></value>
-      <value><![CDATA[n\november]]></value>
-      <value><![CDATA[o\oscar]]></value>
-      <value><![CDATA[p\papa]]></value>
-      <value><![CDATA[q\quebec]]></value>
-      <value><![CDATA[r\romeo]]></value>
-      <value><![CDATA[s\sierra]]></value>
-      <value><![CDATA[t\tango]]></value>
-      <value><![CDATA[u\uniform]]></value>
-      <value><![CDATA[v\victor]]></value>
-      <value><![CDATA[w\whiskey]]></value>
-      <value><![CDATA[x\xray]]></value>
-      <value><![CDATA[y\yankee]]></value>
-      <value><![CDATA[z\zulu]]></value>
-      <value><![CDATA[a\A]]></value>
-      <value><![CDATA[b\B]]></value>
-      <value><![CDATA[c\C]]></value>
-      <value><![CDATA[d\D]]></value>
-      <value><![CDATA[e\E]]></value>
-      <value><![CDATA[f\F]]></value>
-      <value><![CDATA[g\G]]></value>
-      <value><![CDATA[h\H]]></value>
-      <value><![CDATA[i\I]]></value>
-      <value><![CDATA[j\J]]></value>
-      <value><![CDATA[k\K]]></value>
-      <value><![CDATA[l\L]]></value>
-      <value><![CDATA[m\M]]></value>
-      <value><![CDATA[n\N]]></value>
-      <value><![CDATA[o\O]]></value>
-      <value><![CDATA[p\P]]></value>
-      <value><![CDATA[q\Q]]></value>
-      <value><![CDATA[r\R]]></value>
-      <value><![CDATA[s\S]]></value>
-      <value><![CDATA[t\T]]></value>
-      <value><![CDATA[u\U]]></value>
-      <value><![CDATA[v\V]]></value>
-      <value><![CDATA[w\W]]></value>
-      <value><![CDATA[x\X]]></value>
-      <value><![CDATA[y\Y]]></value>
-      <value><![CDATA[z\Z]]></value>
-      <value><![CDATA[0\zero]]></value>
-      <value><![CDATA[1\one]]></value>
-      <value><![CDATA[2\two]]></value>
-      <value><![CDATA[3\three]]></value>
-      <value><![CDATA[4\four]]></value>
-      <value><![CDATA[5\five]]></value>
-      <value><![CDATA[6\six]]></value>
-      <value><![CDATA[7\seven]]></value>
-      <value><![CDATA[8\eight]]></value>
-      <value><![CDATA[9\nine]]></value>
     </List>
     <List name="data_type">
       <value><![CDATA[string]]></value>
@@ -22310,30 +20842,6 @@ End Sub
       <value><![CDATA[11]]></value>
       <value><![CDATA[12]]></value>
     </List>
-    <List name="code_block">
-      <value><![CDATA[for]]></value>
-      <value><![CDATA[for each]]></value>
-      <value><![CDATA[if]]></value>
-      <value><![CDATA[select]]></value>
-      <value><![CDATA[do while]]></value>
-      <value><![CDATA[do until]]></value>
-      <value><![CDATA[do loop]]></value>
-      <value><![CDATA[do loop until]]></value>
-      <value><![CDATA[do loop while]]></value>
-      <value><![CDATA[try]]></value>
-      <value><![CDATA[catch]]></value>
-      <value><![CDATA[finally]]></value>
-      <value><![CDATA[with]]></value>
-      <value><![CDATA[class]]></value>
-      <value><![CDATA[namespace]]></value>
-      <value><![CDATA[using]]></value>
-      <value><![CDATA[while]]></value>
-      <value><![CDATA[switch]]></value>
-      <value><![CDATA[property]]></value>
-      <value><![CDATA[full property]]></value>
-      <value><![CDATA[lock]]></value>
-      <value><![CDATA[invoke]]></value>
-    </List>
     <List name="code_logical_operator">
       <value><![CDATA[equal]]></value>
       <value><![CDATA[equals]]></value>
@@ -22608,17 +21116,6 @@ End Sub
       <value><![CDATA[y\yankee]]></value>
       <value><![CDATA[z\zulu]]></value>
     </List>
-    <List name="NextOrPrevious">
-      <value><![CDATA[Back]]></value>
-      <value><![CDATA[Down]]></value>
-      <value><![CDATA[Forward]]></value>
-      <value><![CDATA[Last]]></value>
-      <value><![CDATA[Left]]></value>
-      <value><![CDATA[Next]]></value>
-      <value><![CDATA[Previous]]></value>
-      <value><![CDATA[Right]]></value>
-      <value><![CDATA[Up]]></value>
-    </List>
     <List name="taskbar_apps">
       <value><![CDATA[files]]></value>
       <value><![CDATA[chrome]]></value>
@@ -22666,6 +21163,258 @@ End Sub
       <value><![CDATA[*\*]]></value>
       <value><![CDATA[/\divided by]]></value>
       <value><![CDATA[/\/]]></value>
+    </List>
+    <List name="outlook_priority">
+      <value><![CDATA[high]]></value>
+      <value><![CDATA[low]]></value>
+      <value><![CDATA[normal]]></value>
+      <value><![CDATA[clear]]></value>
+    </List>
+    <List name="NextOrPrevious">
+      <value><![CDATA[Back]]></value>
+      <value><![CDATA[Down]]></value>
+      <value><![CDATA[Forward]]></value>
+      <value><![CDATA[Last]]></value>
+      <value><![CDATA[Left]]></value>
+      <value><![CDATA[Next]]></value>
+      <value><![CDATA[next]]></value>
+      <value><![CDATA[Previous]]></value>
+      <value><![CDATA[Right]]></value>
+      <value><![CDATA[Up]]></value>
+    </List>
+    <List name="remote_app">
+      <value><![CDATA[beyond compare]]></value>
+      <value><![CDATA[clearcase]]></value>
+      <value><![CDATA[merge manager]]></value>
+      <value><![CDATA[explorer]]></value>
+      <value><![CDATA[slick edit]]></value>
+      <value><![CDATA[are sart]]></value>
+      <value><![CDATA[word]]></value>
+    </List>
+    <List name="ica_complex_cap">
+      <value><![CDATA[a\alpha]]></value>
+      <value><![CDATA[A\cap alpha]]></value>
+      <value><![CDATA[b\bravo]]></value>
+      <value><![CDATA[B\cap bravo]]></value>
+      <value><![CDATA[c\charlie]]></value>
+      <value><![CDATA[C\cap charlie]]></value>
+      <value><![CDATA[d\delta]]></value>
+      <value><![CDATA[D\cap delta]]></value>
+      <value><![CDATA[e\echo]]></value>
+      <value><![CDATA[E\cap echo]]></value>
+      <value><![CDATA[f\foxtrot]]></value>
+      <value><![CDATA[F\cap foxtrot]]></value>
+      <value><![CDATA[g\golf]]></value>
+      <value><![CDATA[G\cap golf]]></value>
+      <value><![CDATA[h\hotel]]></value>
+      <value><![CDATA[H\cap hotel]]></value>
+      <value><![CDATA[i\india]]></value>
+      <value><![CDATA[I\cap india]]></value>
+      <value><![CDATA[j\juliett]]></value>
+      <value><![CDATA[J\cap juliett]]></value>
+      <value><![CDATA[k\kilo]]></value>
+      <value><![CDATA[K\cap kilo]]></value>
+      <value><![CDATA[l\Lima]]></value>
+      <value><![CDATA[L\cap Lima]]></value>
+      <value><![CDATA[m\mike]]></value>
+      <value><![CDATA[M\cap mike]]></value>
+      <value><![CDATA[n\november]]></value>
+      <value><![CDATA[N\cap november]]></value>
+      <value><![CDATA[o\oscar]]></value>
+      <value><![CDATA[O\cap oscar]]></value>
+      <value><![CDATA[p\papa]]></value>
+      <value><![CDATA[P\cap papa]]></value>
+      <value><![CDATA[q\quebec]]></value>
+      <value><![CDATA[Q\cap quebec]]></value>
+      <value><![CDATA[r\romeo]]></value>
+      <value><![CDATA[R\cap romeo]]></value>
+      <value><![CDATA[s\sierra]]></value>
+      <value><![CDATA[S\cap sierra]]></value>
+      <value><![CDATA[t\tango]]></value>
+      <value><![CDATA[T\cap tango]]></value>
+      <value><![CDATA[u\uniform]]></value>
+      <value><![CDATA[U\cap uniform]]></value>
+      <value><![CDATA[v\victor]]></value>
+      <value><![CDATA[V\cap victor]]></value>
+      <value><![CDATA[w\whiskey]]></value>
+      <value><![CDATA[W\cap whiskey]]></value>
+      <value><![CDATA[x\xray]]></value>
+      <value><![CDATA[X\cap xray]]></value>
+      <value><![CDATA[y\yankee]]></value>
+      <value><![CDATA[Y\cap yankee]]></value>
+      <value><![CDATA[z\zulu]]></value>
+      <value><![CDATA[Z\cap zulu]]></value>
+      <value><![CDATA[a\a]]></value>
+      <value><![CDATA[a\A]]></value>
+      <value><![CDATA[b\be]]></value>
+      <value><![CDATA[b\B]]></value>
+      <value><![CDATA[c\see]]></value>
+      <value><![CDATA[c\C]]></value>
+      <value><![CDATA[d\d]]></value>
+      <value><![CDATA[d\dee]]></value>
+      <value><![CDATA[d\D]]></value>
+      <value><![CDATA[e\e]]></value>
+      <value><![CDATA[e\ee]]></value>
+      <value><![CDATA[f\f]]></value>
+      <value><![CDATA[g\g]]></value>
+      <value><![CDATA[h\h]]></value>
+      <value><![CDATA[i\eye]]></value>
+      <value><![CDATA[j\Jay]]></value>
+      <value><![CDATA[k\Kay]]></value>
+      <value><![CDATA[l\l]]></value>
+      <value><![CDATA[m\m]]></value>
+      <value><![CDATA[n\n]]></value>
+      <value><![CDATA[o\oh]]></value>
+      <value><![CDATA[p\pea]]></value>
+      <value><![CDATA[q\cue]]></value>
+      <value><![CDATA[r\are]]></value>
+      <value><![CDATA[s\s]]></value>
+      <value><![CDATA[t\tea]]></value>
+      <value><![CDATA[u\you]]></value>
+      <value><![CDATA[v\v]]></value>
+      <value><![CDATA[w\w]]></value>
+      <value><![CDATA[x\x]]></value>
+      <value><![CDATA[y\why]]></value>
+      <value><![CDATA[z\z]]></value>
+      <value><![CDATA[0\zero]]></value>
+      <value><![CDATA[1\one]]></value>
+      <value><![CDATA[2\two]]></value>
+      <value><![CDATA[3\three]]></value>
+      <value><![CDATA[4\four]]></value>
+      <value><![CDATA[5\five]]></value>
+      <value><![CDATA[6\six]]></value>
+      <value><![CDATA[7\seven]]></value>
+      <value><![CDATA[8\eight]]></value>
+      <value><![CDATA[9\nine]]></value>
+      <value><![CDATA[_\_]]></value>
+      <value><![CDATA[ \space]]></value>
+    </List>
+    <List name="ica_complex">
+      <value><![CDATA[a\alpha]]></value>
+      <value><![CDATA[b\bravo]]></value>
+      <value><![CDATA[c\charlie]]></value>
+      <value><![CDATA[d\delta]]></value>
+      <value><![CDATA[e\echo]]></value>
+      <value><![CDATA[f\foxtrot]]></value>
+      <value><![CDATA[g\golf]]></value>
+      <value><![CDATA[h\hotel]]></value>
+      <value><![CDATA[i\india]]></value>
+      <value><![CDATA[j\juliett]]></value>
+      <value><![CDATA[k\kilo]]></value>
+      <value><![CDATA[l\Lima]]></value>
+      <value><![CDATA[m\mike]]></value>
+      <value><![CDATA[n\november]]></value>
+      <value><![CDATA[o\oscar]]></value>
+      <value><![CDATA[p\papa]]></value>
+      <value><![CDATA[q\quebec]]></value>
+      <value><![CDATA[r\romeo]]></value>
+      <value><![CDATA[s\sierra]]></value>
+      <value><![CDATA[t\tango]]></value>
+      <value><![CDATA[u\uniform]]></value>
+      <value><![CDATA[v\victor]]></value>
+      <value><![CDATA[w\whiskey]]></value>
+      <value><![CDATA[x\xray]]></value>
+      <value><![CDATA[y\yankee]]></value>
+      <value><![CDATA[z\zulu]]></value>
+      <value><![CDATA[a\a]]></value>
+      <value><![CDATA[a\A]]></value>
+      <value><![CDATA[b\be]]></value>
+      <value><![CDATA[b\B]]></value>
+      <value><![CDATA[c\see]]></value>
+      <value><![CDATA[c\C]]></value>
+      <value><![CDATA[d\d]]></value>
+      <value><![CDATA[d\dee]]></value>
+      <value><![CDATA[d\D]]></value>
+      <value><![CDATA[e\e]]></value>
+      <value><![CDATA[e\ee]]></value>
+      <value><![CDATA[f\f]]></value>
+      <value><![CDATA[g\g]]></value>
+      <value><![CDATA[h\h]]></value>
+      <value><![CDATA[i\eye]]></value>
+      <value><![CDATA[j\Jay]]></value>
+      <value><![CDATA[k\Kay]]></value>
+      <value><![CDATA[l\l]]></value>
+      <value><![CDATA[m\m]]></value>
+      <value><![CDATA[n\n]]></value>
+      <value><![CDATA[o\oh]]></value>
+      <value><![CDATA[p\pea]]></value>
+      <value><![CDATA[q\cue]]></value>
+      <value><![CDATA[r\are]]></value>
+      <value><![CDATA[s\s]]></value>
+      <value><![CDATA[t\tea]]></value>
+      <value><![CDATA[u\you]]></value>
+      <value><![CDATA[v\v]]></value>
+      <value><![CDATA[w\w]]></value>
+      <value><![CDATA[x\x]]></value>
+      <value><![CDATA[y\why]]></value>
+      <value><![CDATA[z\z]]></value>
+      <value><![CDATA[0\zero]]></value>
+      <value><![CDATA[1\one]]></value>
+      <value><![CDATA[2\two]]></value>
+      <value><![CDATA[3\three]]></value>
+      <value><![CDATA[4\four]]></value>
+      <value><![CDATA[5\five]]></value>
+      <value><![CDATA[6\six]]></value>
+      <value><![CDATA[7\seven]]></value>
+      <value><![CDATA[8\eight]]></value>
+      <value><![CDATA[9\nine]]></value>
+      <value><![CDATA[0\numeral zero]]></value>
+      <value><![CDATA[1\numeral one]]></value>
+      <value><![CDATA[2\numeral two]]></value>
+      <value><![CDATA[3\numeral three]]></value>
+      <value><![CDATA[4\numeral four]]></value>
+      <value><![CDATA[5\numeral five]]></value>
+      <value><![CDATA[6\numeral six]]></value>
+      <value><![CDATA[7\numeral seven]]></value>
+      <value><![CDATA[8\numeral eight]]></value>
+      <value><![CDATA[9\numeral nine]]></value>
+      <value><![CDATA[0\0]]></value>
+      <value><![CDATA[1\1]]></value>
+      <value><![CDATA[2\2]]></value>
+      <value><![CDATA[3\3]]></value>
+      <value><![CDATA[4\4]]></value>
+      <value><![CDATA[5\5]]></value>
+      <value><![CDATA[6\6]]></value>
+      <value><![CDATA[7\7]]></value>
+      <value><![CDATA[8\8]]></value>
+      <value><![CDATA[9\9]]></value>
+      <value><![CDATA[_\_]]></value>
+      <value><![CDATA[space\space]]></value>
+    </List>
+    <List name="compass">
+      <value><![CDATA[North]]></value>
+      <value><![CDATA[South]]></value>
+      <value><![CDATA[East]]></value>
+      <value><![CDATA[West]]></value>
+      <value><![CDATA[Northwest]]></value>
+      <value><![CDATA[Northeast]]></value>
+      <value><![CDATA[Southwest]]></value>
+      <value><![CDATA[Southeast]]></value>
+    </List>
+    <List name="code_block">
+      <value><![CDATA[for]]></value>
+      <value><![CDATA[for each]]></value>
+      <value><![CDATA[if]]></value>
+      <value><![CDATA[select]]></value>
+      <value><![CDATA[do while]]></value>
+      <value><![CDATA[do until]]></value>
+      <value><![CDATA[do loop]]></value>
+      <value><![CDATA[do loop until]]></value>
+      <value><![CDATA[do loop while]]></value>
+      <value><![CDATA[try]]></value>
+      <value><![CDATA[catch]]></value>
+      <value><![CDATA[finally]]></value>
+      <value><![CDATA[with]]></value>
+      <value><![CDATA[class]]></value>
+      <value><![CDATA[namespace]]></value>
+      <value><![CDATA[using]]></value>
+      <value><![CDATA[while]]></value>
+      <value><![CDATA[switch]]></value>
+      <value><![CDATA[select]]></value>
+      <value><![CDATA[property]]></value>
+      <value><![CDATA[full property]]></value>
+      <value><![CDATA[lock]]></value>
+      <value><![CDATA[invoke]]></value>
     </List>
   </Lists>
   <Commands scope="application" module="outlook" company="Microsoft Corporation" moduleDescription="Microsoft Outlook">
@@ -23956,32 +22705,6 @@ End Sub
 End Sub
 ]]></content>
     </Command>
-    <Command name="sort by &lt;sort_by&gt;" group="" enabled="true">
-      <description></description>
-      <content type="WinWrap Basic"><![CDATA[Sub Main
-    SendKeys "%vab"
-
-    select case ListVar1
-    case "from"
-        SendKeys "f"
-    Case "date"
-        SendKeys "d"
-    Case "received"
-        SendKeys "d"
-    Case "name"
-        SendKeys "t"
-    Case  "to"
-        SendKeys "t"
-    Case "subject"
-        SendKeys "j"
-    Case "sent"
-        SendKeys "f"
-    Case "size"
-        SendKeys "s"
-    end select
-End Sub
-]]></content>
-    </Command>
     <Command name="Download Pictures" group="" enabled="true">
       <description></description>
       <content type="WinWrap Basic"><![CDATA[Sub Main
@@ -24121,14 +22844,6 @@ Wait 0.5
 SendKeys "inbox{Right}"
 Wait 0.5
 SendKeys ListVar1 & "{Enter}"
-End Sub
-]]></content>
-    </Command>
-    <Command name="archive mail" group="" enabled="true">
-      <description></description>
-      <content type="WinWrap Basic"><![CDATA[Sub Main
-    ' you have to set this shortcut to an archive email action
-    SendKeys "^+1"
 End Sub
 ]]></content>
     </Command>
@@ -24425,46 +23140,6 @@ End Sub
 
 Sub Main
     ShowGridByString("--location-x 139 --location-y 108 --width 966 --height 901")
-End Sub
-]]></content>
-    </Command>
-    <Command name="move to folder &lt;dictation&gt;" group="" enabled="true">
-      <description></description>
-      <content type="WinWrap Basic"><![CDATA[Sub Main
-    SendKeys "^+v"
-    Wait 0.1
-    SendKeys "{Home}"
-    SendKeys ListVar1
-    'SendKeys "{Enter}"
-End Sub
-]]></content>
-    </Command>
-    <Command name="Move To &lt;dictation&gt;" group="" enabled="true">
-      <description></description>
-      <content type="WinWrap Basic"><![CDATA[Sub Main
-SendKeys "^+v"
-Wait 0.5
-SendKeys "{Home}inbox{Right}"
-Wait 0.5
-SendKeys ListVar1
-Wait 0.3
-'SendKeys "{Enter}"
-End Sub
-]]></content>
-    </Command>
-    <Command name="&lt;folders&gt;" group="" enabled="true">
-      <description></description>
-      <content type="WinWrap Basic"><![CDATA['#Uses "C:\Users\KnowBrainer\CommonModules\outlook.bas"
-
-Sub Main
-if ListVar1 = "Calendar" then SendKeys "^2"
-if ListVar1 = "Notes" then SendKeys "^5"
-if ListVar1 = "Tasks" then SelectFolder("Tasks")
-if ListVar1 = "Journal" then SendKeys "^8"
-if ListVar1 = "Contacts" then SendKeys "^3"
-if ListVar1 = "Folder List" then SendKeys "^6"
-if ListVar1 = "Shortcuts" then SendKeys "^7"
-if ListVar1 = "Mail" then SendKeys "^1"
 End Sub
 ]]></content>
     </Command>
@@ -24783,17 +23458,6 @@ SendKeys "+{Tab 2}{Enter}"
 End Sub
 ]]></content>
     </Command>
-    <Command name="mail folder &lt;dictation&gt;" group="" enabled="true">
-      <description>Say the folder name to select it.  If a folder is a sub folder, say the first word of the parent folder followed by the desired folder, i.e. "Outlook folder inbox help".</description>
-      <content type="WinWrap Basic"><![CDATA['#Uses "C:\Users\KnowBrainer\CommonModules\outlook.bas"
-
-Sub Main
-    dim text as string
-    text = Replace(ListVar1, " ", ",")
-    SelectFolder text
-End Sub
-]]></content>
-    </Command>
     <Command name="update reminder" group="" enabled="true">
       <description></description>
       <content type="WinWrap Basic"><![CDATA[Sub Main
@@ -24984,19 +23648,6 @@ End Sub
 
 ]]></content>
     </Command>
-    <Command name="select &lt;dictation&gt;" group="" enabled="true">
-      <description></description>
-      <content type="WinWrap Basic"><![CDATA['#Uses "C:\Users\KnowBrainer\CommonModules\window.bas"
-
-Sub Main
-    if CheckWindowText("Message") then
-        SendKeys("^f")
-        SendKeys(ListVar1)
-        SendKeys("{Enter}{Escape}")
-    end if
-End Sub
-]]></content>
-    </Command>
     <Command name="Font Color" group="" enabled="true">
       <description></description>
       <content type="WinWrap Basic"><![CDATA[Sub Main
@@ -25119,23 +23770,6 @@ End Sub
 End Sub
 ]]></content>
     </Command>
-    <Command name="&lt;NextOrPrevious&gt; week" group="" enabled="true">
-      <description></description>
-      <content type="WinWrap Basic"><![CDATA['#Uses "C:\Users\KnowBrainer\CommonModules\window.bas"
-
-Sub Main
-    if CheckWindowText("Calendar") then
-        if ListVar1 = "Back" or ListVar1 = "Last" or ListVar1 = "Left" or _
-           ListVar1 = "Previous" or ListVar1 = "Up" then
-            SendKeys "%{Up}"
-        elseif ListVar1 = "Down" or ListVar1 = "Forward" or ListVar1 = "Next" or _
-            ListVar1 = "Right" then
-            SendKeys "%{Down}"
-        end if
-    End If
-End Sub
-]]></content>
-    </Command>
     <Command name="Start Time" group="" enabled="true">
       <description></description>
       <content type="WinWrap Basic"><![CDATA[Sub Main
@@ -25247,6 +23881,140 @@ End Sub
       <description></description>
       <content type="WinWrap Basic"><![CDATA[Sub Main
     SendKeys("%jlkt")
+End Sub
+]]></content>
+    </Command>
+    <Command name="archive email" group="" enabled="true">
+      <description></description>
+      <content type="WinWrap Basic"><![CDATA[Sub Main
+    ' you have to set this shortcut to an archive email action
+    SendKeys "^+1"
+End Sub
+]]></content>
+    </Command>
+    <Command name="sort by &lt;sort_by&gt;" group="" enabled="true">
+      <description></description>
+      <content type="WinWrap Basic"><![CDATA[Sub Main
+    SendKeys "%vab"
+
+    select case ListVar1
+    case "from"
+        SendKeys "f"
+    Case "date"
+        SendKeys "d"
+    Case "received"
+        SendKeys "d"
+    Case "name"
+        SendKeys "t"
+    Case  "to"
+        SendKeys "t"
+    Case "subject"
+        SendKeys "j"
+    Case "sent"
+        SendKeys "f"
+    Case "size"
+        SendKeys "s"
+    case "type"
+        SendKeys "y"
+    end select
+End Sub
+]]></content>
+    </Command>
+    <Command name="priority &lt;outlook_priority&gt;" group="" enabled="true">
+      <description></description>
+      <content type="WinWrap Basic"><![CDATA[Sub Main
+    SendKeys("{Escape}{Home}{Space}")
+    select case ListVar1
+        Case "high"
+            SendKeys("{End}")
+        Case "low"
+            SendKeys("{Home}")
+        Case "normal", "clear"
+            SendKeys("{Home}{Down}")
+    end select
+    SendKeys("{Enter}")
+End Sub
+]]></content>
+    </Command>
+    <Command name="mail folder &lt;dictation&gt;" group="" enabled="true">
+      <description>Say the folder name to select it.  If a folder is a sub folder, say the first word of the parent folder followed by "sub" then the desired folder, i.e. "mail folder inbox sub help".</description>
+      <content type="WinWrap Basic"><![CDATA['#Uses "C:\Users\KnowBrainer\CommonModules\outlook.bas"
+
+' Say the folder name to select it.
+' If a folder is a sub folder, say the first word of the parent folder followed by "sub"
+' then the desired folder, i.e. "mail folder my inbox sub encrypted".
+Sub Main
+    dim text as string
+    text = Replace(ListVar1, " sub ", ",")
+    SelectFolder text
+End Sub
+]]></content>
+    </Command>
+    <Command name="&lt;folders&gt;" group="" enabled="true">
+      <description></description>
+      <content type="WinWrap Basic"><![CDATA['#Uses "C:\Users\KnowBrainer\CommonModules\outlook.bas"
+
+Sub Main
+if ListVar1 = "Calendar" then SendKeys "^2"
+if ListVar1 = "Notes" then SendKeys "^5"
+'if ListVar1 = "Tasks" then SendKeys("^4")
+if ListVar1 = "Tasks" then SelectFolder("tasks")
+if ListVar1 = "Journal" then SendKeys "^8"
+if ListVar1 = "Contacts" then SendKeys "^3"
+if ListVar1 = "Folder List" then SendKeys "^6"
+if ListVar1 = "Shortcuts" then SendKeys "^7"
+if ListVar1 = "Mail" then SendKeys "^1"
+End Sub
+]]></content>
+    </Command>
+    <Command name="select &lt;dictation&gt;" group="" enabled="true">
+      <description></description>
+      <content type="WinWrap Basic"><![CDATA['#Uses "C:\Users\KnowBrainer\CommonModules\window.bas"
+
+Sub Main
+    dim windowText(3) as String
+    windowText(0) = "Message"
+    windowText(1) = "Meeting Response"
+    windowText(2) = "Task"
+    if CheckWindowText(windowText) then
+        SendKeys("^f")
+        SendKeys(ListVar1)
+        SendKeys("{Enter}{Escape}")
+    end if
+End Sub
+]]></content>
+    </Command>
+    <Command name="&lt;NextOrPrevious&gt; week" group="" enabled="true">
+      <description></description>
+      <content type="WinWrap Basic"><![CDATA['#Uses "C:\Users\KnowBrainer\CommonModules\window.bas"
+
+Sub Main
+    if CheckWindowText("Calendar") then
+        if ListVar1 = "Back" or ListVar1 = "Last" or ListVar1 = "Left" or _
+           ListVar1 = "Previous" or ListVar1 = "Up" then
+            SendKeys "%{Up}"
+        elseif ListVar1 = "Down" or ListVar1 = "Forward" or ListVar1 = "Next" or ListVar1 = "next" or _
+            ListVar1 = "Right" then
+            SendKeys "%{Down}"
+        end if
+    End If
+End Sub
+]]></content>
+    </Command>
+    <Command name="move to folder &lt;dictation&gt;" group="" enabled="true">
+      <description></description>
+      <content type="WinWrap Basic"><![CDATA['#Uses "C:\Users\KnowBrainer\CommonModules\outlook.bas"
+
+Sub Main
+
+   ' Say the folder name to move to it.
+   ' If a folder is a sub folder, say the first word of the parent folder followed by "sub"
+   ' then the desired folder, i.e. "mail folder my inbox sub encrypted".
+
+    dim folders as String
+    folders = Replace(ListVar1, " sub ", ",")
+
+    MoveToFolder(folders, ",")
 End Sub
 ]]></content>
     </Command>
@@ -33598,14 +32366,6 @@ End Sub
 
 ]]></content>
     </Command>
-    <Command name="Detach Tab" group="" enabled="true">
-      <description></description>
-      <content type="WinWrap Basic"><![CDATA[' Depends on Vimium Chrome Extension
-Sub Main
-SendKeys "W"
-End Sub
-]]></content>
-    </Command>
     <Command name="JIRA heading &lt;jira_heading&gt;" group="" enabled="false">
       <description></description>
       <content type="WinWrap Basic"><![CDATA[Sub Main
@@ -33675,16 +32435,6 @@ End Sub
       <description></description>
       <content type="WinWrap Basic"><![CDATA[Sub Main
     SendKeys "{Esc}F"
-End Sub
-]]></content>
-    </Command>
-    <Command name="open download" group="" enabled="true">
-      <description></description>
-      <content type="WinWrap Basic"><![CDATA['#Uses "C:\Users\KnowBrainer\CommonModules\mouse.bas"
-Sub Main
-    PositionMouseRelativeToActiveWindow(WindowCorner.SW, 126, 34)
-    Wait .5
-    ButtonClick 1,1
 End Sub
 ]]></content>
     </Command>
@@ -33759,21 +32509,6 @@ End Sub
       <description></description>
       <content type="WinWrap Basic"><![CDATA[Sub Main
 SendKeys "^t"
-End Sub
-]]></content>
-    </Command>
-    <Command name="new link &lt;dictation&gt;" group="" enabled="true">
-      <description></description>
-      <content type="WinWrap Basic"><![CDATA[Sub Main
-    SendKeys "^f"
-    Wait 0.1
-    SendKeys "^a{Del}"
-    SendKeys ListVar1
-    SendKeys "{Enter}{Esc}"
-    Wait 0.1
-    SendKeys "+{F10}"
-    Wait 0.5
-    SendKeys "{Down}{Enter}"
 End Sub
 ]]></content>
     </Command>
@@ -34200,18 +32935,6 @@ End Sub
 End Sub
 ]]></content>
     </Command>
-    <Command name="link &lt;dictation&gt;" group="" enabled="true">
-      <description></description>
-      <content type="WinWrap Basic"><![CDATA[Sub Main
-    SendKeys "^f"
-    Wait 0.1
-    SendKeys ListVar1
-    SendKeys "{Enter}"
-    Wait 0.1
-    SendKeys "{esc}{Enter}"
-End Sub
-]]></content>
-    </Command>
     <Command name="select link &lt;dictation&gt;" group="" enabled="true">
       <description></description>
       <content type="WinWrap Basic"><![CDATA[Sub Main
@@ -34229,6 +32952,67 @@ End Sub
     Wait(0.1)
     SendKeys("%d")
     SendKeys("chrome://settings/content/all~")
+End Sub
+]]></content>
+    </Command>
+    <Command name="send tab to new window" group="" enabled="true">
+      <description></description>
+      <content type="WinWrap Basic"><![CDATA[Sub Main
+    SendKeys("^l^c^w^n^v{Enter}")
+End Sub
+]]></content>
+    </Command>
+    <Command name="new link &lt;dictation&gt;" group="" enabled="true">
+      <description></description>
+      <content type="WinWrap Basic"><![CDATA[Sub Main
+    SendKeys "^f"
+    Wait 0.1
+    SendKeys "^a{Del}"
+    SendKeys ListVar1
+    SendKeys "{Enter}"
+    Wait 0.1
+    SendKeys("{Escape}")
+    SendKeys "+{F10}"
+    Wait 0.5
+    SendKeys "{Down}~"
+End Sub
+]]></content>
+    </Command>
+    <Command name="link &lt;dictation&gt;" group="" enabled="true">
+      <description></description>
+      <content type="WinWrap Basic"><![CDATA[Sub Main
+    SendKeys "^f"
+    Wait 0.1
+    SendKeys("^a{del}")
+    SendKeys ListVar1
+    SendKeys "{Enter}"
+    Wait 0.1
+    SendKeys "{esc}{Enter}"
+End Sub
+]]></content>
+    </Command>
+    <Command name="open download" group="" enabled="true">
+      <description></description>
+      <content type="WinWrap Basic"><![CDATA['#Uses "C:\Users\KnowBrainer\CommonModules\mouse.bas"
+'Sub Main
+'    PositionMouseRelativeToActiveWindow(WindowCorner.SW, 126, 34)
+'    Wait .5
+'    ButtonClick 1,1
+'End Sub
+
+Sub Main
+    PositionMouseRelativeToActiveWindow(WindowCorner.NE, 158 ,32)
+    Wait .5
+    ButtonClick 1,1
+End Sub
+]]></content>
+    </Command>
+    <Command name="Detach Tab" group="" enabled="true">
+      <description></description>
+      <content type="WinWrap Basic"><![CDATA[Sub Main
+    SendKeys("^l^c^w^n")
+    Wait(0.5)
+    SendKeys("^v{Enter}")
 End Sub
 ]]></content>
     </Command>
@@ -35877,18 +34661,6 @@ SendKeys "{Down 2}~"
 End Sub
 ]]></content>
     </Command>
-    <Command name="paste folder path" group="" enabled="true">
-      <description></description>
-      <content type="WinWrap Basic"><![CDATA['#Uses "C:\Users\KnowBrainer\CommonModules\explorer.bas"
-
-Sub Main
-    doAddressBar
-    SendKeys "^v"
-    Wait(0.1)
-    SendKeys "{Enter}"
-End Sub
-]]></content>
-    </Command>
     <Command name="New Shortcut" group="" enabled="true">
       <description></description>
       <content type="WinWrap Basic"><![CDATA[Sub Main
@@ -35937,6 +34709,18 @@ Sub Main
         Wait(0.5)
         SendKeys("^v")
     End If
+End Sub
+]]></content>
+    </Command>
+    <Command name="paste folder path" group="" enabled="true">
+      <description></description>
+      <content type="WinWrap Basic"><![CDATA['#Uses "C:\Users\KnowBrainer\CommonModules\explorer.bas"
+
+Sub Main
+    doAddressBar
+    SendKeys "^v"
+    Wait(0.1)
+    SendKeys "{Enter}"
 End Sub
 ]]></content>
     </Command>
@@ -45412,22 +44196,6 @@ End Sub
 End Sub
 ]]></content>
     </Command>
-    <Command name="&lt;NextOrPrevious&gt; page" group="" enabled="true">
-      <description></description>
-      <content type="WinWrap Basic"><![CDATA[Sub Main
-    if ListVar1 = "Next" then SendKeys "^{PgDn}"
-    if ListVar1 = "Previous" then SendKeys "^{PgUp}"
-End Sub
-]]></content>
-    </Command>
-    <Command name="&lt;NextOrPrevious&gt; &lt;2to8&gt; pages" group="" enabled="true">
-      <description></description>
-      <content type="WinWrap Basic"><![CDATA[Sub Main
-    if ListVar1 = "Next" then SendKeys "^{PgDn " & ListVar2 & "}"
-    if ListVar1 = "Previous" then SendKeys "^{PgUp " & ListVar2 & "}"
-End Sub
-]]></content>
-    </Command>
     <Command name="page &lt;DirLeftRight&gt;" group="" enabled="true">
       <description></description>
       <content type="WinWrap Basic"><![CDATA[Sub Main
@@ -45458,13 +44226,6 @@ End Sub
       <description></description>
       <content type="WinWrap Basic"><![CDATA[Sub Main
 SendKeys("^{.}")
-End Sub
-]]></content>
-    </Command>
-    <Command name="go back" group="" enabled="true">
-      <description></description>
-      <content type="WinWrap Basic"><![CDATA[Sub Main
-SendKeys("%{Left}")
 End Sub
 ]]></content>
     </Command>
@@ -45617,13 +44378,6 @@ SendKeys("+^{Down}")
 End Sub
 ]]></content>
     </Command>
-    <Command name="go forward" group="" enabled="true">
-      <description></description>
-      <content type="WinWrap Basic"><![CDATA[Sub Main
-    SendKeys("%{Right}")
-End Sub
-]]></content>
-    </Command>
     <Command name="go tab &lt;DirLeftRight&gt;" group="" enabled="true">
       <description></description>
       <content type="WinWrap Basic"><![CDATA[Sub Main
@@ -45675,6 +44429,51 @@ End Sub
 End Sub
 ]]></content>
     </Command>
+    <Command name="&lt;before_after&gt; &lt;dictation&gt;" group="" enabled="true">
+      <description></description>
+      <content type="WinWrap Basic"><![CDATA[Sub Main
+    SendKeys("^f")
+    Wait(0.1)
+
+    ' Surround the text with quotes so that it searches the whole string and not individual words
+    SendKeys("{""}")
+    SendKeys(ListVar2)
+    SendKeys("{""}")
+    Wait(0.1)
+    SendKeys("{Esc}")
+
+    if ListVar1 = "before" then
+        SendKeys("{Left}")
+    ElseIf ListVar1 = "after" then
+        SendKeys("{Right}")
+    End If
+End Sub
+]]></content>
+    </Command>
+    <Command name="font &lt;dictation&gt;" group="" enabled="true">
+      <description></description>
+      <content type="WinWrap Basic"><![CDATA[Sub Main
+    SendKeys("%hff")
+    SendKeys(ListVar1)
+End Sub
+]]></content>
+    </Command>
+    <Command name="&lt;NextOrPrevious&gt; page" group="" enabled="true">
+      <description></description>
+      <content type="WinWrap Basic"><![CDATA[Sub Main
+    if LCase(ListVar1) = "next" then SendKeys "^{PgDn}"
+    if LCase(ListVar1) = "previous" then SendKeys "^{PgUp}"
+End Sub
+]]></content>
+    </Command>
+    <Command name="&lt;NextOrPrevious&gt; &lt;2to8&gt; pages" group="" enabled="true">
+      <description></description>
+      <content type="WinWrap Basic"><![CDATA[Sub Main
+    if ListVar1 = "Next" or ListVar1 = "next" then SendKeys "^{PgDn " & ListVar2 & "}"
+    if ListVar1 = "Previous" then SendKeys "^{PgUp " & ListVar2 & "}"
+End Sub
+]]></content>
+    </Command>
     <Command name="select &lt;dictation&gt;" group="" enabled="true">
       <description></description>
       <content type="WinWrap Basic"><![CDATA[Sub Main
@@ -45685,7 +44484,50 @@ End Sub
     SendKeys("{""}")
     SendKeys(ListVar1)
     SendKeys("{""}")
+    Wait(0.5)
+    SendKeys("{Esc}")
+End Sub
+]]></content>
+    </Command>
+    <Command name="format numbering" group="" enabled="true">
+      <description></description>
+      <content type="WinWrap Basic"><![CDATA[Sub Main
+    SendKeys("%hn{Right}")
+End Sub
+]]></content>
+    </Command>
+    <Command name="Go Back" group="" enabled="true">
+      <description></description>
+      <content type="WinWrap Basic"><![CDATA[Sub Main
+SendKeys("%{Left}")
+End Sub
+]]></content>
+    </Command>
+    <Command name="Go Forward" group="" enabled="true">
+      <description></description>
+      <content type="WinWrap Basic"><![CDATA[Sub Main
+    SendKeys("%{Right}")
+End Sub
+]]></content>
+    </Command>
+    <Command name="select &lt;1st_10th&gt; &lt;dictation&gt;" group="" enabled="true">
+      <description></description>
+      <content type="WinWrap Basic"><![CDATA['#Uses "C:\Users\KnowBrainer\CommonModules\utilities.bas"
+
+Sub Main
+    SendKeys("^f")
     Wait(0.1)
+
+    ' Surround the text with quotes so that it searches the whole string and not individual words
+    SendKeys("{""}")
+    SendKeys(ListVar2)
+    SendKeys("{""}")
+    Wait(0.5)
+
+    ' Go to nth instance
+    dim cardinal as Integer
+    cardinal = OrdinalToCardinal(ListVar1)
+    SendKeys("{enter " & cardinal - 1 & "}")
     SendKeys("{Esc}")
 End Sub
 ]]></content>
@@ -48040,6 +46882,26 @@ End Sub
 End Sub
 ]]></content>
     </Command>
+    <Command name="recent files" group="" enabled="true">
+      <description></description>
+      <content type="WinWrap Basic"><![CDATA[Sub Main
+    SendKeys("%fj")
+End Sub
+]]></content>
+    </Command>
+    <Command name="test dialog" group="" enabled="true">
+      <description></description>
+      <content type="WinWrap Basic"><![CDATA[Sub Main
+ Begin Dialog UserDialog 400,203 ' %GRID:10,7,1,1
+  TextBox 40,21,310,126,.TextBox1
+  OKButton 40,161,80,21
+  CancelButton 170,154,90,28
+ End Dialog
+ Dim dlg As UserDialog
+ Dialog dlg
+End Sub
+]]></content>
+    </Command>
   </Commands>
   <Commands scope="application" module="WindowsInternal.ComposableShell.Experiences.TextInput.InputApp" company="Microsoft Corporation" moduleDescription="WindowsInternal.ComposableShell.Experiences.TextInput.InputApp.exe">
     <Command name="copy file path" group="" enabled="true">
@@ -48835,6 +47697,84 @@ End Sub
 End Sub
 ]]></content>
     </Command>
+    <Command name="show app" group="" enabled="true">
+      <description></description>
+      <content type="WinWrap Basic"><![CDATA['#Uses "C:\Users\KnowBrainer\CommonModules\remote.bas"
+
+Sub Main
+    dim app as String
+    app = GetActiveApplication()
+    if app = "" then
+        MsgBox("Active app is not set.  Say ""set app <app>"" to set the active application.")
+    else
+        MsgBox(app)
+    end if
+End Sub
+]]></content>
+    </Command>
+    <Command name="&lt;NextOrPrevious&gt; diff" group="" enabled="true">
+      <description></description>
+      <content type="WinWrap Basic"><![CDATA['#Uses "C:\Users\KnowBrainer\CommonModules\remote.bas"
+
+Sub Main
+    dim activeApp as String
+    activeApp = LCase(GetActiveApplication())
+
+    select case ListVar1
+        case "Back", "Last", "Previous", "Up", "Left"
+            if activeApp = "beyond compare" then
+                SendKeys("^p")
+            ElseIf activeApp = "merge manager" then
+                SendKeys("%{Left}")
+            End If
+
+        case "Down", "Forward", "Next", "next", "Right"
+            if activeApp = "beyond compare" then
+                SendKeys("^n")
+            ElseIf activeApp = "merge manager" then
+                SendKeys("%{Right}")
+            End If
+
+    end select
+
+End Sub
+]]></content>
+    </Command>
+    <Command name="Version Tree" group="" enabled="true">
+      <description></description>
+      <content type="WinWrap Basic"><![CDATA['#Uses "C:\Users\KnowBrainer\CommonModules\remote.bas"
+
+Sub Main
+    if not CheckActiveApplication("clearcase") then
+        exit sub
+    End If
+
+    SendKeys("%tv")
+End Sub
+]]></content>
+    </Command>
+    <Command name="set app &lt;remote_app&gt;" group="" enabled="true">
+      <description></description>
+      <content type="WinWrap Basic"><![CDATA['#Uses "C:\Users\KnowBrainer\CommonModules\remote.bas"
+
+Sub Main
+    SetActiveApplication(ListVar1)
+End Sub
+]]></content>
+    </Command>
+    <Command name="check out" group="" enabled="true">
+      <description></description>
+      <content type="WinWrap Basic"><![CDATA['#Uses "C:\Users\KnowBrainer\CommonModules\remote.bas"
+
+Sub Main
+    if not CheckActiveApplication("clearcase") then
+        exit Sub
+    End If
+
+    SendKeys("%to")
+End Sub
+]]></content>
+    </Command>
   </Commands>
   <Commands scope="application" module="mspaint" company="Microsoft Corporation" moduleDescription="Paint">
     <Command name="save as" group="" enabled="true">
@@ -49150,7 +48090,7 @@ End Sub
 End Sub
 ]]></content>
     </Command>
-    <Command name="search &lt;dictation&gt;" group="" enabled="true">
+    <Command name="find &lt;dictation&gt;" group="" enabled="true">
       <description></description>
       <content type="WinWrap Basic"><![CDATA[
 Sub Main
@@ -49524,11 +48464,21 @@ end select
 End Sub
 ]]></content>
     </Command>
-    <Command name="find &lt;dictation&gt;" group="" enabled="true">
+    <Command name="Find &lt;dictation&gt;" group="" enabled="true">
       <description></description>
       <content type="WinWrap Basic"><![CDATA[Sub Main
     SendKeys("^f")
     Wait(0.1)
+    SendKeys(ListVar1)
+    SendKeys("~")
+End Sub
+]]></content>
+    </Command>
+    <Command name="search for &lt;dictation&gt;" group="" enabled="true">
+      <description></description>
+      <content type="WinWrap Basic"><![CDATA[Sub Main
+    SendKeys("^f")
+    Wait(1.0)
     SendKeys(ListVar1)
     SendKeys("~")
 End Sub
@@ -52027,6 +50977,35 @@ End Sub
       <description></description>
       <content type="WinWrap Basic"><![CDATA[Sub Main
     SendKeys("^+r")
+End Sub
+]]></content>
+    </Command>
+    <Command name="&lt;NextOrPrevious&gt; diff" group="" enabled="true">
+      <description></description>
+      <content type="WinWrap Basic"><![CDATA[Sub Main
+
+    select case ListVar1
+        case "Back", "Last", "Left", "Previous", "Up"
+            SendKeys("^p")
+        Case "Down", "Forward", "Next", "next", "Right"
+            SendKeys("^n")
+    end select
+
+End Sub
+]]></content>
+    </Command>
+    <Command name="leave alone" group="" enabled="true">
+      <description></description>
+      <content type="WinWrap Basic"><![CDATA[Sub Main
+    SendKeys("%av")
+End Sub
+]]></content>
+    </Command>
+    <Command name="exclude" group="" enabled="true">
+      <description></description>
+      <content type="WinWrap Basic"><![CDATA[Sub Main
+    SendKeys("%ae")
+    TTSPlayString "Excluded"
 End Sub
 ]]></content>
     </Command>
